@@ -143,18 +143,17 @@ const Hero = () => {
             </motion.button>
 
             <motion.a
-              href='cv.pdf'
-              download='Osama_Ahmed_CV.pdf'
-              target='__blank'
-              rel='noopener noreferrer'
-              whileHover={{ y: -4 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-              className='group w-full sm:w-auto px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 dark:border-gray-700 flex items-center justify-center gap-2'
+            href="/Osama_Ahmed_CV.pdf"
+            download
+            whileHover={{ y: -4 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            className='group w-full sm:w-auto px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 dark:border-gray-700 flex items-center justify-center gap-2'
             >
-              <Download size={20} className='group-hover:animate-bounce' />
-              <span>Download CV</span>
+            <Download size={20} className='group-hover:animate-bounce' />
+            <span>Download CV</span>
             </motion.a>
+
           </motion.div>
 
           {/* Stats */}

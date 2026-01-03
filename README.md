@@ -285,11 +285,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Your Name**
-- Portfolio: [https://your-portfolio.com](https://your-portfolio.com)
-- LinkedIn: [https://linkedin.com/in/your-profile](https://linkedin.com/in/your-profile)
-- GitHub: [https://github.com/your-username](https://github.com/your-username)
-- Email: your.email@example.com
+Osama Ahmed
+
+Portfolio: https://osama-portfolio.vercel.app
+LinkedIn: https://www.linkedin.com/in/osama-ahmed-67127222a/
+GitHub: https://github.com/Osama2214
+Email: osamahamad261981@gmail.com
 
 ## 🙏 Acknowledgments
 

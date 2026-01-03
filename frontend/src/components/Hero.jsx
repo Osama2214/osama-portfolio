@@ -143,8 +143,10 @@ const Hero = () => {
             </motion.button>
 
             <motion.a
-              href='/cv.pdf'
+              href='cv.pdf'
               download='Osama_Ahmed_CV.pdf'
+              target='__blank'
+              rel='noopener noreferrer'
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 400, damping: 17 }}

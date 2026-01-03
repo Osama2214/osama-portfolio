@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(cors());
@@ -60,30 +60,22 @@ app.get('/api/projects', (req, res) => {
 app.post('/api/contact', (req, res) => {
   const { name, email, subject, message } = req.body;
 
-  // Basic validation
   if (!name || !email || !subject || !message) {
-    return res.status(400).json({
-      message: 'All fields are required',
-    });
+    return res.status(400).json({ message: 'All fields are required' });
   }
 
-  // Email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    return res.status(400).json({
-      message: 'Invalid email format',
-    });
+    return res.status(400).json({ message: 'Invalid email format' });
   }
 
-  // Here you would typically send an email or save to database
   console.log('Contact form submission:', { name, email, subject, message });
 
   res.json({
     message: 'Thank you! Your message has been sent successfully.',
-    data: { name, email, subject, message },
   });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

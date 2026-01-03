@@ -287,10 +287,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Osama Ahmed
 
-- Portfolio: [https://osama-portfolio.vercel.app](https://osama-portfolio.vercel.app)
-- LinkedIn: [https://www.linkedin.com/in/osama-ahmed-67127222a/](hhttps://www.linkedin.com/in/osama-ahmed-67127222a/)
-- GitHub: [https://github.com/Osama2214](https://github.com/Osama2214)
-- Email: osamahamad261981@gmail.com
+- **Portfolio:** [https://osama-portfolio.vercel.app](https://osama-portfolio.vercel.app)
+- **LinkedIn:** [Osama Ahmed](https://www.linkedin.com/in/osama-ahmed-67127222a/)
+- **GitHub:** [Osama2214](https://github.com/Osama2214)
+- **Email:** [osamahamad261981@gmail.com](mailto:osamahamad261981@gmail.com)
 
 ## 🙏 Acknowledgments
 

@@ -53,17 +53,17 @@ const Hero = () => {
   return (
     <section
       id='home'
-      className='min-h-screen flex items-center justify-center relative overflow-hidden pb-16 md:pb-20'
+      className='min-h-screen flex items-center justify-center relative overflow-hidden pt-24 sm:pt-28 pb-16 md:pb-20'
     >
-      {/* Animated Background Blobs */}
-      <div className='absolute inset-0 overflow-hidden'>
+      {/* Animated Background Blobs - z-0 to stay behind content */}
+      <div className='absolute inset-0 overflow-hidden z-0'>
         <div className='absolute -top-40 -right-40 w-80 h-80 bg-primary/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob' />
         <div className='absolute -bottom-40 -left-40 w-80 h-80 bg-accent/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000' />
         <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000' />
       </div>
 
-      {/* Grid Pattern Overlay */}
-      <div className='absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px]' />
+      {/* Grid Pattern Overlay - z-0 to stay behind content */}
+      <div className='absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px] z-0' />
 
       <div className='container mx-auto px-6 text-center relative z-10'>
         <motion.div
@@ -72,14 +72,6 @@ const Hero = () => {
           animate='visible'
           className='max-w-4xl mx-auto'
         >
-          {/* Badge */}
-          <motion.div variants={itemVariants} className='mb-6'>
-            <span className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/20 text-primary text-sm font-medium border border-primary/20'>
-              <Sparkles size={16} className='animate-pulse' />
-              Available for Work
-            </span>
-          </motion.div>
-
           {/* Main Heading */}
           <motion.h1
             variants={itemVariants}

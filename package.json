@@ -1,12 +1,10 @@
 {
   "name": "portfolio",
   "version": "1.0.0",
-  "description": "Modern Portfolio Website with React & Node.js",
+  "description": "Modern Portfolio Website with React & Tailwind CSS",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "cd backend && node server.js",
+    "dev": "cd frontend && npm run dev",
     "build": "cd frontend && npm run build",
     "lint": "cd frontend && npm run lint",
     "test": "echo \"No tests specified\" && exit 0"
@@ -14,7 +12,6 @@
   "keywords": [
     "portfolio",
     "react",
-    "nodejs",
     "tailwindcss",
     "framer-motion"
   ],

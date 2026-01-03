@@ -1,15 +1,4 @@
-import express from 'express';
-import cors from 'cors';
-
-const app = express();
-const PORT = process.env.PORT || 8000;
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Mock data
-const projects = [
+export const projects = [
   {
     id: 1,
     title: 'E-Commerce Web App',
@@ -51,31 +40,3 @@ const projects = [
     featured: true,
   },
 ];
-
-// Routes
-app.get('/api/projects', (req, res) => {
-  res.json(projects);
-});
-
-app.post('/api/contact', (req, res) => {
-  const { name, email, subject, message } = req.body;
-
-  if (!name || !email || !subject || !message) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ message: 'Invalid email format' });
-  }
-
-  console.log('Contact form submission:', { name, email, subject, message });
-
-  res.json({
-    message: 'Thank you! Your message has been sent successfully.',
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});

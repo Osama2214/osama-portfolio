@@ -254,9 +254,9 @@ const Contact = () => {
                   <div className='relative'>
                     <label
                       htmlFor='name'
-                      className={`absolute left-4 transition-all duration-300 pointer-events-none ${
+                      className={`absolute left-4 transition-all duration-300 pointer-events-none z-10 ${
                         focusedField === 'name' || formData.name
-                          ? '-top-2 text-xs bg-white dark:bg-gray-800 px-2 text-primary'
+                          ? '-top-3 text-xs bg-white dark:bg-gray-800 px-2 text-primary rounded'
                           : 'top-4 text-gray-400'
                       }`}
                     >
@@ -278,9 +278,9 @@ const Contact = () => {
                   <div className='relative'>
                     <label
                       htmlFor='email'
-                      className={`absolute left-4 transition-all duration-300 pointer-events-none ${
+                      className={`absolute left-4 transition-all duration-300 pointer-events-none z-10 ${
                         focusedField === 'email' || formData.email
-                          ? '-top-2 text-xs bg-white dark:bg-gray-800 px-2 text-primary'
+                          ? '-top-3 text-xs bg-white dark:bg-gray-800 px-2 text-primary rounded'
                           : 'top-4 text-gray-400'
                       }`}
                     >
@@ -303,9 +303,9 @@ const Contact = () => {
                 <div className='mb-6 relative'>
                   <label
                     htmlFor='subject'
-                    className={`absolute left-4 transition-all duration-300 pointer-events-none ${
+                    className={`absolute left-4 transition-all duration-300 pointer-events-none z-10 ${
                       focusedField === 'subject' || formData.subject
-                        ? '-top-2 text-xs bg-white dark:bg-gray-800 px-2 text-primary'
+                        ? '-top-3 text-xs bg-white dark:bg-gray-800 px-2 text-primary rounded'
                         : 'top-4 text-gray-400'
                     }`}
                   >
@@ -328,9 +328,9 @@ const Contact = () => {
                 <div className='mb-8 relative'>
                   <label
                     htmlFor='message'
-                    className={`absolute left-4 transition-all duration-300 pointer-events-none ${
+                    className={`absolute left-4 transition-all duration-300 pointer-events-none z-10 ${
                       focusedField === 'message' || formData.message
-                        ? '-top-2 text-xs bg-white dark:bg-gray-800 px-2 text-primary'
+                        ? '-top-3 text-xs bg-white dark:bg-gray-800 px-2 text-primary rounded'
                         : 'top-4 text-gray-400'
                     }`}
                   >

@@ -13,26 +13,6 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - VITE_API_URL=http://localhost:8000
-    depends_on:
-      - backend
-    networks:
-      - portfolio-network
-    restart: unless-stopped
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: osama-portfolio-backend
-    ports:
-      - '8000:8000'
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - PORT=8000
     networks:
       - portfolio-network
     restart: unless-stopped
@@ -40,7 +20,3 @@ services:
 networks:
   portfolio-network:
     driver: bridge
-
-volumes:
-  node_modules_frontend:
-  node_modules_backend:

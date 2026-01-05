@@ -38,7 +38,7 @@ const Footer = () => {
       label: 'LinkedIn',
     },
     {
-      icon: Twitter,
+      icon: X,
       href: 'https://x.com/OSAMA3974',
       label: 'Twitter (X)',
     },

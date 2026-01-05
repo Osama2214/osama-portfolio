@@ -5,6 +5,7 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { useDarkMode } from './hooks/useDarkMode';
+import { motion } from 'framer-motion';
 
 function App() {
   const { darkMode, toggleDarkMode } = useDarkMode();

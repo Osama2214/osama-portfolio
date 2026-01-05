@@ -149,7 +149,7 @@ const Contact = () => {
               </p>
             </motion.div>
 
-            {contactInfo.map((info, index) => (
+            {contactInfo.map(info => (
               <motion.a
                 key={info.title}
                 href={info.href}

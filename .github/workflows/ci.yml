@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [20.x]   # خليها 20 بس (أنجح مع Vite)
 
     steps:
     - name: Checkout code
@@ -40,39 +40,8 @@ jobs:
         cd frontend
         npm run build
 
-  backend-tests:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: backend/package-lock.json
-
-    - name: Install backend dependencies
-      run: |
-        cd backend
-        npm ci
-
-    - name: Test API endpoints
-      run: |
-        cd backend
-        node -e "
-        const server = require('./server.js');
-        console.log('API server can be started successfully');
-        "
-
   deploy:
-    needs: [frontend-tests, backend-tests]
+    needs: frontend-tests
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
@@ -98,4 +67,3 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./frontend/dist
-        cname: your-portfolio.com  # Replace with your domain

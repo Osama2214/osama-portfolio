@@ -15,17 +15,17 @@
     "tailwindcss",
     "framer-motion"
   ],
-  "author": "Your Name",
+  "author": "Osama Ahmed",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^9.0.1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/portfolio.git"
+    "url": "https://github.com/Osama2214/osama-portfolio.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/portfolio/issues"
+    "url": "https://github.com/Osama2214/osama-portfolio/issues"
   },
-  "homepage": "https://github.com/your-username/portfolio#readme"
+  "homepage": "https://osama2214.github.io"
 }

@@ -15,13 +15,14 @@ If you discover a security vulnerability in this project, please help us by repo
 
 ### How to Report
 
-1. **Email**: Send details to [your-email@example.com]
+1. **Email**: Send details to [osamahamad261981@gmail.com]
 2. **GitHub Issue**: Create a private security advisory on GitHub
 3. **Do NOT** create a public issue
 
 ### What to Include
 
 Please include the following information in your report:
+
 - A clear description of the vulnerability
 - Steps to reproduce the issue
 - Potential impact and severity
@@ -40,26 +41,40 @@ Please include the following information in your report:
 
 When using this portfolio:
 
-- Keep dependencies updated
-- Use HTTPS in production
-- Validate all user inputs
-- Implement proper CORS policies
-- Use environment variables for sensitive data
+- Keep dependencies updated regularly
+- Use HTTPS in production deployments
+- Validate all user inputs on both client and server side
+- Monitor for security vulnerabilities in dependencies
+- Use environment variables for any sensitive configuration
 
 ## 🛡️ Security Measures
 
-This project implements several security measures:
+This project implements several security measures for a modern React portfolio:
 
-- **Input Validation**: All API inputs are validated
-- **CORS Protection**: Cross-origin requests are controlled
-- **Dependency Scanning**: Regular security audits of dependencies
-- **HTTPS Enforcement**: Secure connections in production
-- **Error Handling**: Sensitive information not exposed in errors
+### Frontend Security
+
+- **Content Security Policy**: Implemented through meta tags and secure headers
+- **XSS Protection**: React's automatic escaping prevents XSS attacks
+- **Input Validation**: Contact form inputs are validated and sanitized
+- **Secure External Links**: All external links use `rel="noopener noreferrer"`
+
+### EmailJS Integration
+
+- **Secure API Keys**: EmailJS public keys are safely exposed (as intended by EmailJS)
+- **Input Sanitization**: All form data is validated before sending
+- **Rate Limiting**: EmailJS provides built-in rate limiting protection
+
+### Dependencies & Build Security
+
+- **Dependency Scanning**: Regular security audits using npm audit
+- **Vite Security**: Modern build tool with security best practices
+- **HTTPS Enforcement**: All deployments use HTTPS certificates
 
 ## 📞 Contact
 
 For security-related questions or concerns:
-- Email: your-email@example.com
-- GitHub Security Advisories: [Enable here](https://github.com/your-username/portfolio/security/advisories)
+
+- Email: [osamahamad261981@gmail.com](mailto:osamahamad261981@gmail.com)
+- GitHub Security Advisories: [Enable here](https://github.com/Osama2214/osama-portfolio/security/advisories)
 
 Thank you for helping keep our project secure! 🛡️

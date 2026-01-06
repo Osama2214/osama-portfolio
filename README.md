@@ -2,6 +2,8 @@
 
 A stunning, fully responsive portfolio website showcasing modern web development skills. Built with React, Tailwind CSS, and Framer Motion with beautiful animations and dark/light mode support.
 
+![Portfolio Preview](frontend/public/screenshots/portfolio-preview.png)
+
 ## 📋 Project Overview
 
 This portfolio website demonstrates modern web development practices including:
@@ -10,6 +12,8 @@ This portfolio website demonstrates modern web development practices including:
 - **UI/UX:** Clean, modern design with dark/light mode toggle
 - **Performance:** Optimized with Vite build tool
 - **Contact Form:** EmailJS integration for direct email sending
+- **Animations:** Smooth Framer Motion animations with auto-hide notifications
+- **Responsive:** Fully responsive design across all devices
 
 ## 🛠️ Tech Stack
 
@@ -19,6 +23,7 @@ This portfolio website demonstrates modern web development practices including:
 - **Framer Motion** - Animation library for React
 - **EmailJS** - Email sending without backend
 - **Lucide React** - Beautiful icons
+- **React Router** - Client-side routing
 
 ### Development Tools
 
@@ -34,6 +39,8 @@ This portfolio website demonstrates modern web development practices including:
 - 📱 **Fully Responsive** - Works perfectly on all devices (mobile, tablet, desktop)
 - 🎭 **Modern UI/UX** - Clean, professional design with attention to detail
 - ✨ **Smooth Animations** - Framer Motion powered transitions and micro-interactions
+- 🎯 **Auto-Hide Notifications** - Success messages disappear automatically with progress animation
+- 🎨 **Custom Animations** - Gradient text effects, floating elements, and progress bars
 
 ### 🚀 Functionality
 
@@ -41,12 +48,38 @@ This portfolio website demonstrates modern web development practices including:
 - 🏗️ **Projects Showcase** - Projects with filtering (All/Featured)
 - 🎯 **Smooth Scrolling** - Navigation with smooth scroll to sections
 - 🔝 **Scroll to Top** - Button appears after scrolling down
+- 📧 **Direct Email Links** - Gmail integration for easy contact
+- 🔗 **Social Media Links** - Direct links to GitHub, LinkedIn, Twitter
+- 🔔 **Smart Notifications** - Animated progress bar for temporary messages
 
 ### 💻 Developer Experience
 
 - 🧹 **Clean Code** - Well-structured, maintainable codebase
 - ⚡ **Fast Development** - Hot reload and optimized build process
 - 🐳 **Docker Ready** - Easy deployment with Docker
+- 📱 **Mobile-First** - Responsive design approach
+- 🎨 **Component-Based** - Modular React architecture
+
+## 🚀 Recent Updates
+
+### v1.1.0 - Enhanced User Experience
+
+- ✨ **Auto-Hide Success Messages** - Contact form success messages now disappear automatically after 5 seconds
+- 🎯 **Animated Progress Bar** - Added moving progress bar under success notifications
+- 🎨 **Improved Animations** - Enhanced hover effects and button animations
+- 🔗 **Updated Social Links** - Fixed GitHub project links and email integration
+- 🎭 **Unified Design** - Consistent styling across all components
+- 📧 **Gmail Integration** - Direct Gmail links for easy contact
+
+### v1.0.0 - Initial Release
+
+- 🌟 Complete portfolio website with modern design
+- 📱 Fully responsive across all devices
+- 🌙 Dark/Light mode toggle
+- 📧 Working contact form with EmailJS
+- 🎨 Beautiful animations with Framer Motion
+- 📱 **Mobile-First** - Responsive design approach
+- 🎨 **Custom Animations** - Gradient text, floating elements, and progress bars
 
 ## 🚀 How to Run
 
@@ -95,26 +128,44 @@ Then open `http://localhost:5173`
 ```
 Portfolio/
 ├── frontend/
-│   ├── public/              # Static assets
-│   │   └── favicon.svg      # Site favicon
-│   └── src/
-│       ├── components/      # React components
-│       │   ├── Header.jsx   # Navigation + theme toggle
-│       │   ├── Hero.jsx     # Hero section
-│       │   ├── About.jsx    # About section
-│       │   ├── Projects.jsx # Projects grid
-│       │   ├── Contact.jsx  # Contact form (EmailJS)
-│       │   └── Footer.jsx   # Footer with modals
-│       ├── data/            # Static data
-│       │   └── projects.js  # Projects data
-│       ├── hooks/           # Custom hooks
-│       │   └── useDarkMode.js
-│       ├── App.jsx          # Main app component
-│       ├── App.css          # Global styles
-│       ├── index.css        # Tailwind imports
-│       └── main.jsx         # Entry point
-├── docker-compose.yml       # Docker configuration
-└── README.md               # This file
+│   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── favicon.svg
+│   │   └── screenshots/
+│   │       └── README.md
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Header.jsx      # Navigation + theme toggle
+│   │   │   ├── Hero.jsx        # Hero section with CTA
+│   │   │   ├── About.jsx       # About section with skills
+│   │   │   ├── Projects.jsx    # Projects grid with filtering
+│   │   │   ├── Contact.jsx     # Contact form with auto-hide messages
+│   │   │   ├── Footer.jsx      # Footer with social links
+│   │   │   ├── NotFound.jsx    # 404 error page
+│   │   │   └── Root.jsx        # App wrapper component
+│   │   ├── data/
+│   │   │   └── projects.js     # Projects data configuration
+│   │   ├── hooks/
+│   │   │   └── useDarkMode.js  # Dark mode toggle hook
+│   │   ├── App.jsx             # Main app component
+│   │   ├── App.css             # Global styles
+│   │   ├── index.css           # Tailwind imports + custom animations
+│   │   └── main.jsx            # Entry point
+│   ├── Dockerfile              # Docker configuration
+│   ├── eslint.config.js        # ESLint configuration
+│   ├── index.html              # HTML template
+│   ├── package.json            # Dependencies and scripts
+│   ├── postcss.config.js       # PostCSS configuration
+│   ├── tailwind.config.js      # Tailwind CSS configuration
+│   ├── vercel.json             # Vercel deployment config
+│   └── vite.config.js          # Vite build configuration
+├── docker-compose.yml          # Docker Compose setup
+├── CHANGELOG.md                # Version history
+├── CODE_OF_CONDUCT.md          # Community guidelines
+├── CONTRIBUTING.md             # Contribution guidelines
+├── LICENSE                     # MIT License
+├── README.md                   # This file
+└── SECURITY.md                 # Security policy
 ```
 
 ## 🔧 Available Scripts
@@ -177,7 +228,23 @@ await emailjs.send(
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+### GitHub Pages (Recommended for Portfolio)
+
+1. **Build the project:**
+
+   ```bash
+   cd frontend
+   npm run build
+   ```
+
+2. **Deploy to GitHub Pages:**
+   - Go to your repository settings
+   - Navigate to "Pages" section
+   - Select "Deploy from a branch"
+   - Choose "gh-pages" branch
+   - Upload the `dist` folder contents to the `gh-pages` branch
+
+### Vercel (Alternative)
 
 1. Push your code to GitHub
 2. Import project on [Vercel](https://vercel.com)
@@ -190,20 +257,24 @@ await emailjs.send(
 2. Upload `dist` folder to Netlify
 3. Done!
 
-### GitHub Pages
+### Docker Deployment
 
-1. Build: `npm run build`
-2. Deploy `dist` folder to `gh-pages` branch
+```bash
+docker-compose up -d
+```
 
 ## 👨‍💻 Author
 
 **Osama Ahmed**
 
+- **Portfolio:** [osama2214.github.io](https://osama2214.github.io/)
 - **GitHub:** [Osama2214](https://github.com/Osama2214)
 - **LinkedIn:** [Osama Ahmed](https://www.linkedin.com/in/osama-ahmed-67127222a/)
 - **Twitter:** [@OSAMA3974](https://x.com/OSAMA3974)
 - **Email:** [osamahamad261981@gmail.com](mailto:osamahamad261981@gmail.com)
 - **Location:** Giza, Egypt
+
+_Backend Developer | Full Stack Enthusiast | Open Source Contributor_
 
 ## 📄 License
 

@@ -26,7 +26,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
         if (element) {
           const rect = element.getBoundingClientRect();
           if (rect.top <= 150) {
-            // فقط إذا تغيرت القيمة
+            
             setActiveSection(prev => (prev !== section ? section : prev));
             break;
           }
@@ -36,8 +36,8 @@ const Header = ({ darkMode, toggleDarkMode }) => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-    // تعتمد فقط على navItems
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
+    
   }, [navItems]);
 
   return (

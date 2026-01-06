@@ -14,7 +14,7 @@ const Projects = () => {
       return projects.filter(project => project.featured);
     }
     return projects;
-  }, [filter, projects]);
+  }, [filter]);
 
   const filters = [
     { id: 'all', label: 'All Projects' },
@@ -80,13 +80,18 @@ const Projects = () => {
             {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.07, delay: index * 0.07 }}
                 viewport={{ once: true }}
                 onMouseEnter={() => setHoveredId(project.id)}
                 onMouseLeave={() => setHoveredId(null)}
-                className='group relative bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-800'
+                whileHover={{
+                  y: -5,
+                  scale: 1.02,
+                  transition: { duration: 0.1 },
+                }}
+                className='group relative bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-150 border border-gray-100 dark:border-gray-800 cursor-pointer transform-gpu'
               >
                 {/* Featured Badge */}
                 {project.featured && (
@@ -103,7 +108,7 @@ const Projects = () => {
                   <img
                     src={project.image}
                     alt={project.title}
-                    className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
+                    className='w-full h-full object-cover transition-transform duration-150 group-hover:scale-110'
                     loading='lazy'
                   />
                   {/* Overlay */}
@@ -181,7 +186,7 @@ const Projects = () => {
             className='text-center mt-8 sm:mt-10 md:mt-12'
           >
             <motion.a
-              href='https://github.com/Osama2214'
+              href='https://github.com/Osama2214?tab=projects'
               target='_blank'
               rel='noopener noreferrer'
               whileHover={{ scale: 1.05 }}

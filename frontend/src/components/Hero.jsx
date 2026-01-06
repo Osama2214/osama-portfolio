@@ -137,24 +137,35 @@ const Hero = () => {
                 boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3)',
               }}
               whileTap={{ scale: 0.95 }}
-              className='w-full sm:w-auto btn-shine px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-glow-lg transition-all duration-300 text-center'
+              className='w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-shadow duration-300 text-center'
             >
               View My Work
             </motion.button>
-
-           <motion.a
-            href="/Osama_Ahmed_CV.pdf"
-            download="Osama_Ahmed_CV.pdf"
-            whileHover={{ y: -4 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-            className="group w-full sm:w-auto px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 dark:border-gray-700 flex items-center justify-center gap-2"
+            <motion.a
+              href='/Osama_Ahmed_CV.pdf'
+              download='Osama_Ahmed_CV.pdf'
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.5,
+                y: { duration: 0.15 },
+                scale: { duration: 0.15 },
+              }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 20px 40px rgba(59, 130, 246, 0.3)',
+              }}
+              whileTap={{ scale: 0.95 }}
+              className='group w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-shadow duration-300 flex items-center justify-center gap-3'
             >
-            <Download size={20} className="group-hover:animate-bounce" />
-            <span>Download CV</span>
+              <span className='inline-flex items-center gap-3'>
+                <span className='inline-block w-5 h-5'>
+                  <Download size={20} className='animate-bounce' />
+                </span>
+                <span>Download CV</span>
+              </span>
             </motion.a>
-
-
           </motion.div>
 
           {/* Stats */}

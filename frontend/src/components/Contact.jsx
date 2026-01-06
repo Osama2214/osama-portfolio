@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Send,
@@ -20,6 +20,15 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
   const [focusedField, setFocusedField] = useState(null);
+
+  useEffect(() => {
+    if (submitMessage) {
+      const timer = setTimeout(() => {
+        setSubmitMessage('');
+      }, 5000); // 5 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [submitMessage]);
 
   const handleChange = e => {
     setFormData({
@@ -375,7 +384,7 @@ const Contact = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className='mt-6 flex items-center justify-center gap-2 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 p-4 rounded-xl'
+                    className='mt-6 flex items-center justify-center gap-2 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 p-4 rounded-xl animated-progress'
                   >
                     <CheckCircle size={20} />
                     <p>{submitMessage}</p>

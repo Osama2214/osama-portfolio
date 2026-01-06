@@ -261,7 +261,9 @@ const Footer = () => {
                 </h4>
                 <div className='space-y-3 sm:space-y-4'>
                   <a
-                    href='mailto:osamahamad261981@gmail.com'
+                    href='https://mail.google.com/mail/?view=cm&fs=1&to=osamahamad261981@gmail.com&su=Contact from Portfolio&body=Hi Osama, I saw your portfolio and would like to get in touch.'
+                    target='_blank'
+                    rel='noopener noreferrer'
                     className='flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors group'
                   >
                     <div className='p-2 bg-gray-200 dark:bg-gray-800 rounded-lg group-hover:bg-primary/20 transition-colors'>

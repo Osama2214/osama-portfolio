@@ -7,6 +7,11 @@ import {
   Globe,
   Award,
   Coffee,
+  Server,
+  Box,
+  Cloud,
+  GitBranch,
+  Target,
 } from 'lucide-react';
 
 const About = () => {
@@ -47,6 +52,32 @@ const About = () => {
     'Redis',
     'Git',
   ];
+
+  const getTechIcon = tech => {
+    const iconMap = {
+      React: Code,
+      'Node.js': Server,
+      TypeScript: Code,
+      Python: Code,
+      Java: Code,
+      Laravel: Code,
+      MongoDB: Database,
+      MySQL: Database,
+      PostgreSQL: Database,
+      Docker: Box,
+      AWS: Cloud,
+      'Tailwind CSS': Palette,
+      Redis: Database,
+      Git: GitBranch,
+    };
+    const IconComponent = iconMap[tech] || Code;
+    return (
+      <IconComponent
+        size={16}
+        className='inline mr-1 text-gray-600 dark:text-gray-400'
+      />
+    );
+  };
 
   const stats = [
     { icon: Award, value: '1+', label: 'Years Learning & Building' },
@@ -98,7 +129,6 @@ const About = () => {
             projects and continuously improving my skills.
           </p>
         </motion.div>
-
         {/* Stats Grid */}
         <motion.div
           variants={containerVariants}
@@ -111,11 +141,38 @@ const About = () => {
             <motion.div
               key={stat.label}
               variants={itemVariants}
-              className='bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-center group card-hover'
+              transition={{
+                y: { duration: 0.15 },
+                scale: { duration: 0.15 },
+                rotate: { duration: 0.15 },
+              }}
+              whileHover={{
+                y: -12,
+                rotate: [0, 1, -1, 0],
+                scale: 1.03,
+                transition: {
+                  duration: 0.3,
+                  ease: [0.34, 1.56, 0.64, 1],
+                  rotate: { duration: 0.4 },
+                },
+              }}
+              className='bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-shadow duration-300 text-center group cursor-pointer border border-gray-100 dark:border-gray-800'
+              style={{ transformStyle: 'preserve-3d' }}
             >
-              <div className='w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform'>
+              <motion.div
+                transition={{
+                  scale: { duration: 0.15 },
+                  rotate: { duration: 0.15 },
+                }}
+                whileHover={{
+                  scale: 1.15,
+                  rotate: 12,
+                  transition: { duration: 0.3, ease: 'easeOut' },
+                }}
+                className='w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg'
+              >
                 <stat.icon size={28} className='text-white' />
-              </div>
+              </motion.div>
               <div className='text-3xl md:text-4xl font-bold gradient-text mb-1'>
                 {stat.value}
               </div>
@@ -159,13 +216,17 @@ const About = () => {
                 {techStack.map((tech, index) => (
                   <motion.span
                     key={tech}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.05 }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{
+                      delay: index * 0.07,
+                      duration: 0.4,
+                      ease: 'easeOut',
+                    }}
                     viewport={{ once: true }}
-                    className='px-3 sm:px-4 py-1.5 sm:py-2 bg-white dark:bg-gray-900 rounded-lg text-xs sm:text-sm font-medium shadow-sm hover:shadow-md hover:scale-105 transition-all cursor-default border border-gray-100 dark:border-gray-700'
+                    className='px-3 sm:px-4 py-1.5 sm:py-2 bg-white dark:bg-gray-900 rounded-lg text-xs sm:text-sm font-medium shadow-sm hover:shadow-md hover:scale-105 transition-all duration-0 cursor-pointer border border-gray-100 dark:border-gray-700 transform-gpu'
                   >
-                    {tech}
+                    {getTechIcon(tech)} {tech}
                   </motion.span>
                 ))}
               </div>
@@ -210,19 +271,41 @@ const About = () => {
                 key={skill.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1,
+                  y: { duration: 0.15 },
+                  scale: { duration: 0.15 },
+                  rotate: { duration: 0.15 },
+                }}
                 viewport={{ once: true }}
                 whileHover={{
-                  y: -8,
-                  transition: { duration: 0.3, ease: 'easeOut' },
+                  y: -12,
+                  rotate: [0, 1, -1, 0],
+                  scale: 1.03,
+                  transition: {
+                    duration: 0.3,
+                    ease: [0.34, 1.56, 0.64, 1],
+                    rotate: { duration: 0.4 },
+                  },
                 }}
-                className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 border border-gray-100 dark:border-gray-800'
+                className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-shadow duration-300 border border-gray-100 dark:border-gray-800 cursor-pointer'
+                style={{ transformStyle: 'preserve-3d' }}
               >
-                <div
-                  className={`w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-br ${skill.color} rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}
+                <motion.div
+                  transition={{
+                    scale: { duration: 0.15 },
+                    rotate: { duration: 0.15 },
+                  }}
+                  whileHover={{
+                    scale: 1.15,
+                    rotate: 12,
+                    transition: { duration: 0.3, ease: 'easeOut' },
+                  }}
+                  className={`w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-br ${skill.color} rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-lg`}
                 >
                   <skill.icon size={24} className='text-white sm:w-8 sm:h-8' />
-                </div>
+                </motion.div>
                 <h4 className='text-lg sm:text-xl font-bold mb-2 sm:mb-3'>
                   {skill.title}
                 </h4>
@@ -249,17 +332,41 @@ const About = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{
+                duration: 0.5,
+                delay: 0.1,
+                y: { duration: 0.15 },
+                scale: { duration: 0.15 },
+                rotate: { duration: 0.15 },
+              }}
               viewport={{ once: true }}
               whileHover={{
-                y: -8,
-                transition: { duration: 0.3, ease: 'easeOut' },
+                y: -12,
+                rotate: [0, 1, -1, 0],
+                scale: 1.03,
+                transition: {
+                  duration: 0.3,
+                  ease: [0.34, 1.56, 0.64, 1],
+                  rotate: { duration: 0.4 },
+                },
               }}
-              className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 border border-gray-100 dark:border-gray-800 text-center'
+              className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-shadow duration-300 border border-gray-100 dark:border-gray-800 text-center cursor-pointer'
+              style={{ transformStyle: 'preserve-3d' }}
             >
-              <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
-                ⚛️
-              </div>
+              <motion.div
+                transition={{
+                  scale: { duration: 0.15 },
+                  rotate: { duration: 0.15 },
+                }}
+                whileHover={{
+                  scale: 1.15,
+                  rotate: 12,
+                  transition: { duration: 0.3, ease: 'easeOut' },
+                }}
+                className='w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg'
+              >
+                <Zap size={24} className='text-white' />
+              </motion.div>
               <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
                 React Query
               </h4>
@@ -267,20 +374,45 @@ const About = () => {
                 Data fetching & caching
               </p>
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{
+                duration: 0.5,
+                delay: 0.2,
+                y: { duration: 0.15 },
+                scale: { duration: 0.15 },
+                rotate: { duration: 0.15 },
+              }}
               viewport={{ once: true }}
               whileHover={{
-                y: -8,
-                transition: { duration: 0.3, ease: 'easeOut' },
+                y: -12,
+                rotate: [0, 1, -1, 0],
+                scale: 1.03,
+                transition: {
+                  duration: 0.3,
+                  ease: [0.34, 1.56, 0.64, 1],
+                  rotate: { duration: 0.4 },
+                },
               }}
-              className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 border border-gray-100 dark:border-gray-800 text-center'
+              className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-shadow duration-300 border border-gray-100 dark:border-gray-800 text-center cursor-pointer'
+              style={{ transformStyle: 'preserve-3d' }}
             >
-              <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
-                🎨
-              </div>
+              <motion.div
+                transition={{
+                  scale: { duration: 0.15 },
+                  rotate: { duration: 0.15 },
+                }}
+                whileHover={{
+                  scale: 1.15,
+                  rotate: 12,
+                  transition: { duration: 0.3, ease: 'easeOut' },
+                }}
+                className='w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg'
+              >
+                <Palette size={24} className='text-white' />
+              </motion.div>
               <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
                 Tailwind Advanced
               </h4>
@@ -288,20 +420,45 @@ const About = () => {
                 Advanced styling techniques
               </p>
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{
+                duration: 0.5,
+                delay: 0.3,
+                y: { duration: 0.15 },
+                scale: { duration: 0.15 },
+                rotate: { duration: 0.15 },
+              }}
               viewport={{ once: true }}
               whileHover={{
-                y: -8,
-                transition: { duration: 0.3, ease: 'easeOut' },
+                y: -12,
+                rotate: [0, 1, -1, 0],
+                scale: 1.03,
+                transition: {
+                  duration: 0.3,
+                  ease: [0.34, 1.56, 0.64, 1],
+                  rotate: { duration: 0.4 },
+                },
               }}
-              className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 border border-gray-100 dark:border-gray-800 text-center'
+              className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-shadow duration-300 border border-gray-100 dark:border-gray-800 text-center cursor-pointer'
+              style={{ transformStyle: 'preserve-3d' }}
             >
-              <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
-                🐳
-              </div>
+              <motion.div
+                transition={{
+                  scale: { duration: 0.15 },
+                  rotate: { duration: 0.15 },
+                }}
+                whileHover={{
+                  scale: 1.15,
+                  rotate: 12,
+                  transition: { duration: 0.3, ease: 'easeOut' },
+                }}
+                className='w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg'
+              >
+                <Box size={24} className='text-white' />
+              </motion.div>
               <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
                 Docker Basics
               </h4>
@@ -309,20 +466,45 @@ const About = () => {
                 Containerization fundamentals
               </p>
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              transition={{
+                duration: 0.5,
+                delay: 0.4,
+                y: { duration: 0.15 },
+                scale: { duration: 0.15 },
+                rotate: { duration: 0.15 },
+              }}
               viewport={{ once: true }}
               whileHover={{
-                y: -8,
-                transition: { duration: 0.3, ease: 'easeOut' },
+                y: -12,
+                rotate: [0, 1, -1, 0],
+                scale: 1.03,
+                transition: {
+                  duration: 0.3,
+                  ease: [0.34, 1.56, 0.64, 1],
+                  rotate: { duration: 0.4 },
+                },
               }}
-              className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 border border-gray-100 dark:border-gray-800 text-center'
+              className='group bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:shadow-primary/30 transition-shadow duration-300 border border-gray-100 dark:border-gray-800 text-center cursor-pointer'
+              style={{ transformStyle: 'preserve-3d' }}
             >
-              <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
-                🎯
-              </div>
+              <motion.div
+                transition={{
+                  scale: { duration: 0.15 },
+                  rotate: { duration: 0.15 },
+                }}
+                whileHover={{
+                  scale: 1.15,
+                  rotate: 12,
+                  transition: { duration: 0.3, ease: 'easeOut' },
+                }}
+                className='w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg'
+              >
+                <Target size={24} className='text-white' />
+              </motion.div>
               <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
                 UI/UX
               </h4>

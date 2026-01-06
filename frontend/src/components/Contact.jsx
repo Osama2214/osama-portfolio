@@ -10,21 +10,33 @@ import {
 } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
+/**
+ * Contact Component
+ * A contact form with validation, rate limiting, spam protection, and animated feedback.
+ */
 const Contact = () => {
+  // Form data state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
     message: '',
   });
+
+  // Submission states
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
   const [isErrorMessage, setIsErrorMessage] = useState(false);
+
+  // UI states
   const [focusedField, setFocusedField] = useState(null);
+
+  // Rate limiting states
   const [lastSubmitTime, setLastSubmitTime] = useState(0);
   const [submitCount, setSubmitCount] = useState(0);
   const [cooldownRemaining, setCooldownRemaining] = useState(0);
 
+  // Load initial data from localStorage and handle message auto-hide
   useEffect(() => {
     // Load submit history from localStorage
     const storedSubmitCount = localStorage.getItem('contactSubmitCount');
@@ -37,6 +49,7 @@ const Contact = () => {
       setLastSubmitTime(parseInt(storedLastSubmit));
     }
 
+    // Auto-hide submit message after 5 seconds (only if no cooldown active)
     if (submitMessage && cooldownRemaining === 0) {
       const timer = setTimeout(() => {
         setSubmitMessage('');
@@ -44,9 +57,9 @@ const Contact = () => {
       }, 5000); // 5 seconds
       return () => clearTimeout(timer);
     }
-  }, [submitMessage]);
+  }, [submitMessage, cooldownRemaining]);
 
-  // Update cooldown timer
+  // Handle cooldown timer countdown
   useEffect(() => {
     if (cooldownRemaining > 0) {
       const interval = setInterval(() => {
@@ -61,7 +74,7 @@ const Contact = () => {
     }
   }, [cooldownRemaining]);
 
-  // Update message when cooldown changes
+  // Update submit message text during cooldown
   useEffect(() => {
     if (
       cooldownRemaining > 0 &&
@@ -75,9 +88,12 @@ const Contact = () => {
       setSubmitMessage('');
       setIsErrorMessage(false);
     }
-  }, [cooldownRemaining]);
+  }, [cooldownRemaining, isErrorMessage, submitMessage]);
 
-  // Check rate limiting
+  /**
+   * Check rate limiting and cooldown
+   * @returns {boolean} true if allowed to submit, false otherwise
+   */
   const checkRateLimit = () => {
     const now = Date.now();
     const timeWindow = 24 * 60 * 60 * 1000; // 24 hours
@@ -104,7 +120,11 @@ const Contact = () => {
     return true;
   };
 
-  // Check for spam patterns
+  /**
+   * Check for spam patterns in message
+   * @param {string} message - The message to check
+   * @returns {boolean} true if spam detected
+   */
   const checkForSpam = message => {
     const spamPatterns = [
       /http[s]?:\/\//gi, // URLs
@@ -117,6 +137,10 @@ const Contact = () => {
     return spamPatterns.some(pattern => pattern.test(message));
   };
 
+  /**
+   * Handle form input changes
+   * @param {Event} e - The change event
+   */
   const handleChange = e => {
     setFormData({
       ...formData,
@@ -124,6 +148,10 @@ const Contact = () => {
     });
   };
 
+  /**
+   * Handle form submission with validation, rate limiting, and email sending
+   * @param {Event} e - The submit event
+   */
   const handleSubmit = async e => {
     e.preventDefault();
 
@@ -152,7 +180,7 @@ const Contact = () => {
       return;
     }
 
-    // Check minimum message length - ERROR MESSAGE
+    // Check minimum message length
     if (formData.message.trim().length < 10) {
       setSubmitMessage(
         'Message is too short. Please provide more details (at least 10 characters).'
@@ -161,7 +189,7 @@ const Contact = () => {
       return;
     }
 
-    // Check rate limiting
+    // Check rate limiting and cooldown
     if (!checkRateLimit()) {
       const now = Date.now();
       if (now - lastSubmitTime < 60 * 1000) {
@@ -181,14 +209,16 @@ const Contact = () => {
       return;
     }
 
-    // Check for spam
+    // Check for spam patterns
     if (checkForSpam(formData.message) || checkForSpam(formData.subject)) {
       setSubmitMessage(
         'Message contains suspicious content. Please revise and try again.'
       );
+      setIsErrorMessage(true);
       return;
     }
 
+    // Start submission process
     setIsSubmitting(true);
 
     try {
@@ -228,6 +258,7 @@ const Contact = () => {
     }
   };
 
+  // Contact information data
   const contactInfo = [
     {
       icon: Mail,
@@ -245,6 +276,7 @@ const Contact = () => {
     },
   ];
 
+  // Animation variants for staggered animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -258,6 +290,7 @@ const Contact = () => {
     visible: { opacity: 1, y: 0 },
   };
 
+  // Render the contact section
   return (
     <section
       id='contact'

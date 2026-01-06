@@ -2,8 +2,6 @@
 
 A stunning, fully responsive portfolio website showcasing modern web development skills. Built with React, Tailwind CSS, and Framer Motion with beautiful animations and dark/light mode support.
 
-![Portfolio Preview](frontend/public/screenshots/portfolio-preview.png)
-
 ## 📋 Project Overview
 
 This portfolio website demonstrates modern web development practices including:
@@ -29,7 +27,6 @@ This portfolio website demonstrates modern web development practices including:
 
 - **ESLint** - Code linting
 - **PostCSS** - CSS processing
-- **Docker** - Containerization (optional)
 
 ## ✨ Features
 
@@ -115,14 +112,6 @@ This portfolio website demonstrates modern web development practices including:
    http://localhost:5173
    ```
 
-### Using Docker
-
-```bash
-docker-compose up -d
-```
-
-Then open `http://localhost:5173`
-
 ## 📁 Project Structure
 
 ```
@@ -130,9 +119,8 @@ Portfolio/
 ├── frontend/
 │   ├── public/
 │   │   ├── favicon.ico
-│   │   ├── favicon.svg
-│   │   └── screenshots/
-│   │       └── README.md
+│   │   └── favicon.svg
+│   │   └── Osama_Ahmed_CV.pdf
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── Header.jsx      # Navigation + theme toggle
@@ -151,15 +139,12 @@ Portfolio/
 │   │   ├── App.css             # Global styles
 │   │   ├── index.css           # Tailwind imports + custom animations
 │   │   └── main.jsx            # Entry point
-│   ├── Dockerfile              # Docker configuration
 │   ├── eslint.config.js        # ESLint configuration
 │   ├── index.html              # HTML template
 │   ├── package.json            # Dependencies and scripts
 │   ├── postcss.config.js       # PostCSS configuration
 │   ├── tailwind.config.js      # Tailwind CSS configuration
-│   ├── vercel.json             # Vercel deployment config
 │   └── vite.config.js          # Vite build configuration
-├── docker-compose.yml          # Docker Compose setup
 ├── CHANGELOG.md                # Version history
 ├── CODE_OF_CONDUCT.md          # Community guidelines
 ├── CONTRIBUTING.md             # Contribution guidelines
@@ -244,24 +229,11 @@ await emailjs.send(
    - Choose "gh-pages" branch
    - Upload the `dist` folder contents to the `gh-pages` branch
 
-### Vercel (Alternative)
-
-1. Push your code to GitHub
-2. Import project on [Vercel](https://vercel.com)
-3. Set root directory to `frontend`
-4. Deploy!
-
 ### Netlify
 
 1. Build the project: `cd frontend && npm run build`
 2. Upload `dist` folder to Netlify
 3. Done!
-
-### Docker Deployment
-
-```bash
-docker-compose up -d
-```
 
 ## 👨‍💻 Author
 

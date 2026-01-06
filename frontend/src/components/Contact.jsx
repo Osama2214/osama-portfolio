@@ -19,16 +19,103 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  const [isErrorMessage, setIsErrorMessage] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
+  const [lastSubmitTime, setLastSubmitTime] = useState(0);
+  const [submitCount, setSubmitCount] = useState(0);
+  const [cooldownRemaining, setCooldownRemaining] = useState(0);
 
   useEffect(() => {
-    if (submitMessage) {
+    // Load submit history from localStorage
+    const storedSubmitCount = localStorage.getItem('contactSubmitCount');
+    const storedLastSubmit = localStorage.getItem('lastSubmitTime');
+
+    if (storedSubmitCount) {
+      setSubmitCount(parseInt(storedSubmitCount));
+    }
+    if (storedLastSubmit) {
+      setLastSubmitTime(parseInt(storedLastSubmit));
+    }
+
+    if (submitMessage && cooldownRemaining === 0) {
       const timer = setTimeout(() => {
         setSubmitMessage('');
+        setIsErrorMessage(false);
       }, 5000); // 5 seconds
       return () => clearTimeout(timer);
     }
   }, [submitMessage]);
+
+  // Update cooldown timer
+  useEffect(() => {
+    if (cooldownRemaining > 0) {
+      const interval = setInterval(() => {
+        setCooldownRemaining(prev => {
+          if (prev <= 1) {
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [cooldownRemaining]);
+
+  // Update message when cooldown changes
+  useEffect(() => {
+    if (
+      cooldownRemaining > 0 &&
+      isErrorMessage &&
+      submitMessage.includes('wait')
+    ) {
+      setSubmitMessage(
+        `Please wait ${cooldownRemaining} seconds before sending another message.`
+      );
+    } else if (cooldownRemaining === 0 && submitMessage.includes('wait')) {
+      setSubmitMessage('');
+      setIsErrorMessage(false);
+    }
+  }, [cooldownRemaining]);
+
+  // Check rate limiting
+  const checkRateLimit = () => {
+    const now = Date.now();
+    const timeWindow = 24 * 60 * 60 * 1000; // 24 hours
+    const maxSubmits = 5; // Max 5 submissions per day
+    const cooldown = 60 * 1000; // 1 minute cooldown between submissions
+
+    // Check cooldown
+    if (now - lastSubmitTime < cooldown) {
+      return false; // Too soon since last submission
+    }
+
+    // Reset counter if time window passed
+    if (now - lastSubmitTime > timeWindow) {
+      setSubmitCount(0);
+      localStorage.setItem('contactSubmitCount', '0');
+      return true;
+    }
+
+    // Check if under limit
+    if (submitCount >= maxSubmits) {
+      return false;
+    }
+
+    return true;
+  };
+
+  // Check for spam patterns
+  const checkForSpam = message => {
+    const spamPatterns = [
+      /http[s]?:\/\//gi, // URLs
+      /www\./gi, // Web addresses
+      /bit\.ly|tinyurl|goo\.gl|t\.co/gi, // URL shorteners
+      /viagra|casino|lottery|winner/gi, // Spam keywords
+      /(.)\1{10,}/gi, // Repeated characters
+    ];
+
+    return spamPatterns.some(pattern => pattern.test(message));
+  };
 
   const handleChange = e => {
     setFormData({
@@ -39,6 +126,69 @@ const Contact = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+
+    // Basic validation
+    if (!formData.name.trim()) {
+      setSubmitMessage('Please enter your name.');
+      setIsErrorMessage(true);
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      setSubmitMessage('Please enter your email.');
+      setIsErrorMessage(true);
+      return;
+    }
+
+    if (!formData.subject.trim()) {
+      setSubmitMessage('Please enter a subject.');
+      setIsErrorMessage(true);
+      return;
+    }
+
+    if (!formData.message.trim()) {
+      setSubmitMessage('Please enter a message.');
+      setIsErrorMessage(true);
+      return;
+    }
+
+    // Check minimum message length - ERROR MESSAGE
+    if (formData.message.trim().length < 10) {
+      setSubmitMessage(
+        'Message is too short. Please provide more details (at least 10 characters).'
+      );
+      setIsErrorMessage(true);
+      return;
+    }
+
+    // Check rate limiting
+    if (!checkRateLimit()) {
+      const now = Date.now();
+      if (now - lastSubmitTime < 60 * 1000) {
+        const remaining = Math.ceil(
+          (60 * 1000 - (now - lastSubmitTime)) / 1000
+        );
+        setCooldownRemaining(remaining);
+        setSubmitMessage(
+          `Please wait ${remaining} seconds before sending another message.`
+        );
+      } else {
+        setSubmitMessage(
+          'Too many messages sent today. Please try again tomorrow.'
+        );
+      }
+      setIsErrorMessage(true);
+      return;
+    }
+
+    // Check for spam
+    if (checkForSpam(formData.message) || checkForSpam(formData.subject)) {
+      setSubmitMessage(
+        'Message contains suspicious content. Please revise and try again.'
+      );
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -53,15 +203,26 @@ const Contact = () => {
         },
         'fm1U_67Drx8TBAWoU'
       );
+
+      // Update rate limiting
+      const now = Date.now();
+      const newCount = submitCount + 1;
+      setSubmitCount(newCount);
+      setLastSubmitTime(now);
+      localStorage.setItem('contactSubmitCount', newCount.toString());
+      localStorage.setItem('lastSubmitTime', now.toString());
+
       setSubmitMessage(
         'Message sent successfully! I will get back to you soon.'
       );
+      setIsErrorMessage(false);
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
       console.error('Error sending message:', error);
       setSubmitMessage(
         'Sorry, there was an error sending your message. Please try again.'
       );
+      setIsErrorMessage(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -247,14 +408,24 @@ const Contact = () => {
               <div className='absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full blur-2xl opacity-20' />
 
               <div className='relative'>
-                <div className='flex items-center gap-3 mb-8'>
-                  <div className='p-3 bg-gradient-to-br from-primary to-accent rounded-xl'>
-                    <Sparkles size={24} className='text-white' />
+                <div className='flex items-center justify-between mb-8'>
+                  <div className='flex items-center gap-3'>
+                    <div className='p-3 bg-gradient-to-br from-primary to-accent rounded-xl'>
+                      <Send size={24} className='text-white' />
+                    </div>
+                    <div>
+                      <h3 className='text-xl font-bold'>Send a Message</h3>
+                      <p className='text-sm text-gray-500 dark:text-gray-400'>
+                        Fill in the form below
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className='text-xl font-bold'>Send a Message</h3>
+                  <div className='text-right'>
                     <p className='text-sm text-gray-500 dark:text-gray-400'>
-                      Fill in the form below
+                      Messages sent today
+                    </p>
+                    <p className='text-lg font-semibold text-primary'>
+                      {submitCount}/5
                     </p>
                   </div>
                 </div>
@@ -339,8 +510,15 @@ const Contact = () => {
                     htmlFor='message'
                     className={`absolute left-4 transition-all duration-300 pointer-events-none z-10 ${
                       focusedField === 'message' || formData.message
-                        ? '-top-3 text-xs bg-white dark:bg-gray-800 px-2 text-primary rounded'
-                        : 'top-4 text-gray-400'
+                        ? '-top-3 text-xs bg-white dark:bg-gray-800 px-2 rounded'
+                        : 'top-4'
+                    } ${
+                      isErrorMessage &&
+                      submitMessage.toLowerCase().includes('message')
+                        ? 'text-red-500'
+                        : focusedField === 'message' || formData.message
+                        ? 'text-primary'
+                        : 'text-gray-400'
                     }`}
                   >
                     Your Message *
@@ -355,7 +533,12 @@ const Contact = () => {
                     required
                     dir='auto'
                     rows={5}
-                    className='w-full px-4 py-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-primary focus:ring-0 bg-transparent text-gray-900 dark:text-white resize-none transition-colors'
+                    className={`w-full px-4 py-4 border-2 rounded-xl focus:ring-0 bg-transparent text-gray-900 dark:text-white resize-none transition-colors ${
+                      isErrorMessage &&
+                      submitMessage.toLowerCase().includes('message')
+                        ? 'border-red-500 focus:border-red-500'
+                        : 'border-gray-200 dark:border-gray-700 focus:border-primary'
+                    }`}
                   />
                 </div>
 
@@ -384,9 +567,29 @@ const Contact = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className='mt-6 flex items-center justify-center gap-2 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 p-4 rounded-xl animated-progress'
+                    className={`mt-6 flex items-center justify-center gap-2 p-4 rounded-xl animated-progress ${
+                      isErrorMessage
+                        ? 'error-progress text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20'
+                        : 'success-progress text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20'
+                    }`}
                   >
-                    <CheckCircle size={20} />
+                    {isErrorMessage ? (
+                      <svg
+                        className='w-5 h-5'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth={2}
+                          d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z'
+                        />
+                      </svg>
+                    ) : (
+                      <CheckCircle size={20} />
+                    )}
                     <p>{submitMessage}</p>
                   </motion.div>
                 )}

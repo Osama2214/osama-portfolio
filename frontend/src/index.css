@@ -100,6 +100,14 @@ html {
   animation: progress-move 5s linear infinite;
 }
 
+.error-progress::after {
+  background: linear-gradient(90deg, transparent, #ef4444, transparent);
+}
+
+.success-progress::after {
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+}
+
 @keyframes progress-move {
   0% {
     transform: translateX(-100%);

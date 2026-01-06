@@ -26,7 +26,6 @@ const Header = ({ darkMode, toggleDarkMode }) => {
         if (element) {
           const rect = element.getBoundingClientRect();
           if (rect.top <= 150) {
-            
             setActiveSection(prev => (prev !== section ? section : prev));
             break;
           }
@@ -36,8 +35,6 @@ const Header = ({ darkMode, toggleDarkMode }) => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-    
-    
   }, [navItems]);
 
   return (
@@ -63,7 +60,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
             >
               <Code2 size={20} className='text-white sm:w-6 sm:h-6' />
             </motion.div>
-            <span className='text-lg sm:text-xl font-bold'>
+            <span className='text-lg sm:text-xl xl:text-2xl font-bold'>
               Port<span className='text-primary'>folio</span>
             </span>
           </motion.a>
@@ -80,7 +77,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  className={`relative px-3 sm:px-4 xl:px-6 py-2 rounded-lg text-sm xl:text-base font-medium transition-all duration-300 ${
                     activeSection === item.href.substring(1)
                       ? 'text-white'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'

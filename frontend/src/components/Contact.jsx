@@ -107,7 +107,7 @@ const Contact = () => {
       <div className='absolute top-0 left-1/4 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-primary/10 rounded-full blur-3xl' />
       <div className='absolute bottom-0 right-1/4 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-accent/10 rounded-full blur-3xl' />
 
-      <div className='container mx-auto px-4 sm:px-6 relative z-10'>
+      <div className='container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10'>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -65,7 +65,7 @@ const Hero = () => {
       {/* Grid Pattern Overlay - z-0 to stay behind content */}
       <div className='absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px] z-0' />
 
-      <div className='container mx-auto px-6 text-center relative z-10'>
+      <div className='container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 text-center relative z-10'>
         <motion.div
           variants={containerVariants}
           initial='hidden'
@@ -75,7 +75,7 @@ const Hero = () => {
           {/* Main Heading */}
           <motion.h1
             variants={itemVariants}
-            className='text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight'
+            className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-tight'
           >
             Hi, I'm <span className='gradient-text'>Osama</span>
           </motion.h1>

@@ -163,7 +163,7 @@ const Footer = () => {
         <div className='absolute inset-0 bg-gradient-to-t from-gray-200 via-gray-100 to-gray-100 dark:from-black dark:via-gray-900 dark:to-gray-900' />
         <div className='absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent' />
 
-        <div className='container mx-auto px-4 sm:px-6 relative z-10'>
+        <div className='container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10'>
           {/* Main Footer Content */}
           <div className='py-10 sm:py-12 md:py-16'>
             <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12'>

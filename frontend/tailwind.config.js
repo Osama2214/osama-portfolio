@@ -3,6 +3,30 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      screens: {
+        xs: '475px',
+        '3xl': '1600px',
+        '4xl': '1920px',
+      },
+      maxWidth: {
+        '8xl': '88rem',
+        '9xl': '96rem',
+      },
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: '1rem',
+          sm: '2rem',
+          lg: '4rem',
+          xl: '5rem',
+          '2xl': '6rem',
+        },
+        screens: {
+          '2xl': '1400px',
+          '3xl': '1600px',
+          '4xl': '1920px',
+        },
+      },
       colors: {
         primary: {
           DEFAULT: '#3B82F6',

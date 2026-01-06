@@ -104,4 +104,4 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 
 ---
 
-**Full Changelog**: [View on GitHub](https://github.com/your-username/portfolio/releases)
+**Full Changelog**: [View on GitHub](https://github.com/Osama2214/osama-portfolio/releases)

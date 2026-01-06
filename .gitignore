@@ -91,9 +91,6 @@ temp/
 *.sln
 *.sw?
 
-# Screenshots (uncomment if you want to commit them)
-# frontend/public/screenshots/
-
 # Laravel specific
 /storage/app/
 /storage/framework/

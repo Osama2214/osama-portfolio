@@ -53,8 +53,7 @@ This portfolio website demonstrates modern web development practices including:
 
 - 🧹 **Clean Code** - Well-structured, maintainable codebase
 - ⚡ **Fast Development** - Hot reload and optimized build process
-- 🐳 **Docker Ready** - Easy deployment with Docker
-- 📱 **Mobile-First** - Responsive design approach
+- **Mobile-First** - Responsive design approach
 - 🎨 **Component-Based** - Modular React architecture
 
 ## 🚀 Recent Updates

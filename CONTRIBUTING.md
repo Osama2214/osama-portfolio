@@ -11,7 +11,7 @@ Click the "Fork" button at the top right of this repository.
 ### 2. Clone Your Fork
 
 ```bash
-git clone https://github.com/your-username/osama-portfolio.git
+git clone https://github.com/Osama2214/osama-portfolio.git
 cd osama-portfolio
 ```
 

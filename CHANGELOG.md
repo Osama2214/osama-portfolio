@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-01-07
+
+### ✨ Added
+
+- **Enhanced PWA Manifest** - Added app shortcuts, screenshots, categories, and improved metadata
+- **App Shortcuts** - Quick access to Projects and Contact sections from home screen
+- **PWA Categories** - Proper categorization for app store discovery
+- **Manifest Screenshots** - Placeholder screenshots for installation prompts
+- **Improved PWA Features** - Better offline support and native app experience
+
+### 🎨 Changed
+
+- **Manifest Configuration** - Enhanced with orientation, scope, and language settings
+- **Icon Configuration** - Added purpose attributes for better PWA compliance
+- **Theme Integration** - Updated theme colors to match design system
+
 ## [1.1.0] - 2026-01-06
 
 ### ✨ Added
@@ -40,26 +56,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Framer Motion animations
   - Dark/Light mode toggle
   - Fully responsive design (mobile, tablet, desktop)
-  - Contact form with validation
+  - Contact form with EmailJS integration
   - Dynamic projects section with filtering
   - Smooth scrolling navigation
-- **Backend Features**:
-  - Node.js Express API server
-  - RESTful endpoints for projects and contact
-  - CORS enabled for frontend integration
-  - Input validation and error handling
 - **Developer Experience**:
   - Vite for fast development and building
   - ESLint for code quality
   - Hot reload during development
   - Clean project structure
-  - API abstraction layer
   - Custom hooks for theme management
 
 ### 🛠️ Technical Details
 
-- **Frontend**: React + Vite + Tailwind CSS + Framer Motion + Axios
-- **Backend**: Node.js + Express.js + CORS
+- **Frontend**: React + Vite + Tailwind CSS + Framer Motion + EmailJS
 - **Build Tools**: Vite, PostCSS, Autoprefixer
 - **Icons**: Lucide React
 - **Development**: ESLint, Hot reload

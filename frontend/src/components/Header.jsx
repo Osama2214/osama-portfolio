@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Moon, Sun, Code2 } from 'lucide-react';
 
@@ -7,12 +7,15 @@ const Header = ({ darkMode, toggleDarkMode }) => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
-  ];
+  const navItems = useMemo(
+    () => [
+      { name: 'Home', href: '#home' },
+      { name: 'About', href: '#about' },
+      { name: 'Projects', href: '#projects' },
+      { name: 'Contact', href: '#contact' },
+    ],
+    []
+  );
 
   // Handle scroll effect
   useEffect(() => {

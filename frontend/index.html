@@ -4,13 +4,35 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    /></noscript>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Osama Ahmed | Portfolio</title>
-    <!-- SEO Meta Description -->
+    <!-- SEO Meta Tags -->
     <meta
       name="description"
       content="Portfolio of Osama Ahmed - Backend / Full Stack Developer. View projects, contact, and learn more about my skills and journey."
     />
+    <meta
+      name="keywords"
+      content="Osama Ahmed, Portfolio, Backend Developer, Full Stack Developer, React, Node.js, JavaScript, Python, Web Development"
+    />
+    <meta name="author" content="Osama Ahmed" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://osama2214.github.io" />
     <!-- Open Graph Tags -->
     <meta property="og:title" content="Osama Ahmed | Portfolio" />
     <meta
@@ -19,11 +41,66 @@
     />
     <meta property="og:url" content="https://osama2214.github.io" />
     <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://osama2214.github.io/og-image.png"
+    />
+    <meta property="og:site_name" content="Osama Ahmed Portfolio" />
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Osama Ahmed | Portfolio" />
+    <meta
+      name="twitter:description"
+      content="Portfolio of Osama Ahmed - Backend / Full Stack Developer. View projects, contact, and learn more about my skills and journey."
+    />
+    <meta
+      name="twitter:image"
+      content="https://osama2214.github.io/og-image.png"
+    />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="msapplication-TileColor" content="#3b82f6" />
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Osama Ahmed",
+        "jobTitle": "Backend / Full Stack Developer",
+        "url": "https://osama2214.github.io",
+        "sameAs": [
+          "https://github.com/Osama2214",
+          "https://www.linkedin.com/in/osama-ahmed-67127222a/",
+          "https://x.com/OSAMA3974"
+        ],
+        "knowsAbout": [
+          "JavaScript",
+          "React",
+          "Node.js",
+          "Python",
+          "Web Development",
+          "Backend Development",
+          "Full Stack Development"
+        ],
+        "description": "Portfolio of Osama Ahmed - Backend / Full Stack Developer. View projects, contact, and learn more about my skills and journey."
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <!-- Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"

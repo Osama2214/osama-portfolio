@@ -22,19 +22,5 @@
       "sizes": "32x32",
       "type": "image/x-icon"
     }
-  ],
-  "shortcuts": [
-    {
-      "name": "View Projects",
-      "short_name": "Projects",
-      "url": "/#projects",
-      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
-    },
-    {
-      "name": "Contact Me",
-      "short_name": "Contact",
-      "url": "/#contact",
-      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
-    }
   ]
 }

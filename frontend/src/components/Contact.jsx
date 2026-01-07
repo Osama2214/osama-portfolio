@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
   Send,
@@ -36,6 +36,9 @@ const Contact = () => {
   const [submitCount, setSubmitCount] = useState(0);
   const [cooldownRemaining, setCooldownRemaining] = useState(0);
 
+  // Ref for timeout cleanup
+  const timeoutRef = useRef(null);
+
   // Load initial data from localStorage and handle message auto-hide
   useEffect(() => {
     // Load submit history from localStorage
@@ -49,7 +52,44 @@ const Contact = () => {
       setLastSubmitTime(parseInt(storedLastSubmit));
     }
 
-    // Auto-hide submit message after 5 seconds (only if no cooldown active)
+    // Auto-reset counter every 24 hours at a fixed time
+    const DAY = 24 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    let resetAt = localStorage.getItem('contactDailyReset');
+
+    if (!resetAt) {
+      resetAt = now + DAY;
+      localStorage.setItem('contactDailyReset', resetAt.toString());
+    }
+
+    const timeLeft = parseInt(resetAt) - now;
+
+    if (timeLeft <= 0) {
+      setSubmitCount(0);
+      localStorage.setItem('contactSubmitCount', '0');
+
+      const nextReset = now + DAY;
+      localStorage.setItem('contactDailyReset', nextReset.toString());
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setSubmitCount(0);
+      localStorage.setItem('contactSubmitCount', '0');
+
+      const nextReset = Date.now() + DAY;
+      localStorage.setItem('contactDailyReset', nextReset.toString());
+    }, timeLeft);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Auto-hide submit message after 5 seconds (only if no cooldown active)
+  useEffect(() => {
     if (submitMessage && cooldownRemaining === 0) {
       const timer = setTimeout(() => {
         setSubmitMessage('');
@@ -57,6 +97,7 @@ const Contact = () => {
       }, 5000); // 5 seconds
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [submitMessage, cooldownRemaining]);
 
   // Handle cooldown timer countdown
@@ -96,20 +137,12 @@ const Contact = () => {
    */
   const checkRateLimit = () => {
     const now = Date.now();
-    const timeWindow = 24 * 60 * 60 * 1000; // 24 hours
-    const maxSubmits = 5; // Max 5 submissions per day
     const cooldown = 60 * 1000; // 1 minute cooldown between submissions
+    const maxSubmits = 5; // Max 5 submissions per day
 
     // Check cooldown
     if (now - lastSubmitTime < cooldown) {
       return false; // Too soon since last submission
-    }
-
-    // Reset counter if time window passed
-    if (now - lastSubmitTime > timeWindow) {
-      setSubmitCount(0);
-      localStorage.setItem('contactSubmitCount', '0');
-      return true;
     }
 
     // Check if under limit

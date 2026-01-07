@@ -2,116 +2,131 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Favicons -->
     <link rel="icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- PWA -->
     <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="msapplication-TileColor" content="#3b82f6" />
+
+    <!-- Performance: Preconnect & Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://images.unsplash.com" />
+
     <link
       rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
-    <noscript
-      ><link
+    <noscript>
+      <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-    /></noscript>
+      />
+    </noscript>
+
+    <!-- Basic Meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Osama Ahmed | Portfolio</title>
-    <!-- SEO Meta Tags -->
+
+    <!-- SEO -->
     <meta
       name="description"
-      content="Portfolio of Osama Ahmed - Backend / Full Stack Developer. View projects, contact, and learn more about my skills and journey."
+      content="Osama Ahmed portfolio – Backend / Full Stack Developer specializing in PHP, Laravel, REST APIs, and modern web technologies."
     />
     <meta
       name="keywords"
-      content="Osama Ahmed, Portfolio, Backend Developer, Full Stack Developer, React, Node.js, JavaScript, Python, Web Development"
+      content="Osama Ahmed, Backend Developer, Full Stack Developer, PHP, Laravel, REST APIs, Web Development, Portfolio"
     />
     <meta name="author" content="Osama Ahmed" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://osama2214.github.io" />
-    <!-- Open Graph Tags -->
+    <link
+      rel="canonical"
+      href="https://osama-portfolio-eight.vercel.app"
+    />
+
+    <!-- Open Graph -->
     <meta property="og:title" content="Osama Ahmed | Portfolio" />
     <meta
       property="og:description"
-      content="Portfolio of Osama Ahmed - Backend / Full Stack Developer. View projects, contact, and learn more about my skills and journey."
+      content="Backend / Full Stack Developer portfolio showcasing projects, skills, and experience."
     />
-    <meta property="og:url" content="https://osama2214.github.io" />
+    <meta
+      property="og:url"
+      content="https://osama-portfolio-eight.vercel.app"
+    />
     <meta property="og:type" content="website" />
     <meta
       property="og:image"
-      content="https://osama2214.github.io/og-image.png"
+      content="https://osama-portfolio-eight.vercel.app/og-image.png"
     />
     <meta property="og:site_name" content="Osama Ahmed Portfolio" />
-    <!-- Twitter Card Tags -->
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Osama Ahmed | Portfolio" />
     <meta
       name="twitter:description"
-      content="Portfolio of Osama Ahmed - Backend / Full Stack Developer. View projects, contact, and learn more about my skills and journey."
+      content="Backend / Full Stack Developer portfolio showcasing projects and skills."
     />
     <meta
       name="twitter:image"
-      content="https://osama2214.github.io/og-image.png"
+      content="https://osama-portfolio-eight.vercel.app/og-image.png"
     />
-    <meta name="theme-color" content="#3b82f6" />
-    <meta name="msapplication-TileColor" content="#3b82f6" />
-    <!-- Structured Data (JSON-LD) -->
+
+    <!-- Structured Data -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Osama Ahmed",
         "jobTitle": "Backend / Full Stack Developer",
-        "url": "https://osama2214.github.io",
+        "url": "https://osama-portfolio-eight.vercel.app",
         "sameAs": [
           "https://github.com/Osama2214",
           "https://www.linkedin.com/in/osama-ahmed-67127222a/",
           "https://x.com/OSAMA3974"
         ],
         "knowsAbout": [
+          "PHP",
+          "Laravel",
+          "REST APIs",
           "JavaScript",
           "React",
-          "Node.js",
-          "Python",
-          "Web Development",
           "Backend Development",
           "Full Stack Development"
         ],
-        "description": "Portfolio of Osama Ahmed - Backend / Full Stack Developer. View projects, contact, and learn more about my skills and journey."
+        "description": "Backend / Full Stack Developer portfolio showcasing projects and professional experience."
       }
     </script>
   </head>
+
   <body>
     <div id="root"></div>
+
+    <!-- Vite Entry -->
     <script type="module" src="/src/main.jsx"></script>
-    <!-- Google Analytics -->
+
+    <!-- Vercel Speed Insights -->
+    <script defer src="/_vercel/speed-insights/script.js"></script>
+
+    <!-- Google Analytics (GA4) -->
     <script
       async
-      src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+      src="https://www.googletagmanager.com/gtag/js?id=G-J73HJWCLW1"
     ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
+      gtag("js", new Date());
+      gtag("config", "G-J73HJWCLW1");
     </script>
   </body>
 </html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://osama2214.github.io/sitemap.xml

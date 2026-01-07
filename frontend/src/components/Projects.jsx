@@ -77,12 +77,12 @@ const Projects = () => {
             transition={{ duration: 0.3 }}
             className='grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8'
           >
-            {filteredProjects.map((project, index) => (
+            {filteredProjects.map(project => (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.07, delay: index * 0.07 }}
+                transition={{ duration: 0.07 }}
                 viewport={{ once: true }}
                 onMouseEnter={() => setHoveredId(project.id)}
                 onMouseLeave={() => setHoveredId(null)}

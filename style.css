@@ -1893,6 +1893,7 @@ a.cert-card-link:hover {
   .hero-actions { justify-content: center; }
   .hero-stats { justify-content: center; }
   .hero-name { text-align: center; }
+  .hero-title { justify-content: center; }
   .title-dynamic { min-width: auto; }
   .scroll-indicator { display: none; }
 
@@ -1915,7 +1916,7 @@ a.cert-card-link:hover {
   .nav-mobile.open { display: flex; }
 
   .hero-name { font-size: 52px; }
-  .hero-title { flex-direction: row; flex-wrap: wrap; gap: 0 4px; font-size: 18px; }
+  .hero-title { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0 4px; font-size: 18px; }
 
   .skills-grid { grid-template-columns: 1fr; }
   .learning-group { grid-column: 1; }

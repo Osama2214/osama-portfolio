@@ -250,6 +250,10 @@ nav.scrolled {
    ───────────────────────────────────────────── */
 .hero {
   min-height: 100vh;
+  min-height: 100svh; /* mobile browsers resize the 100vh viewport as the
+    address bar shows/hides, causing a visible height jump on scroll;
+    100svh (small viewport height) stays stable. Falls back to 100vh above
+    on browsers that don't support svh. */
   display: flex;
   align-items: center;
   padding: 100px 24px 80px;
@@ -1905,6 +1909,12 @@ a.cert-card-link:hover {
   .project-features { grid-template-columns: 1fr 1fr; }
   .footer-inner { flex-direction: row; justify-content: center; text-align: center; gap: 28px; }
   .footer-copy { justify-content: center; }
+
+  /* Floating badges use negative top/right/left offsets (e.g. right: -40px)
+     designed for the extra side-margin desktop/wide-tablet layouts have.
+     On phone-width viewports there isn't enough space, so they get clipped
+     against the viewport edge — hide them here instead of letting them overflow. */
+  .floating-badge { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -1913,9 +1923,19 @@ a.cert-card-link:hover {
   .section { padding: 70px 0; }
   .hero-name { font-size: 42px; letter-spacing: -2px; }
   .project-features { grid-template-columns: 1fr; }
-  .floating-badge { display: none; }
   .about-info-grid { grid-template-columns: 1fr; }
   .contact-quicklinks { grid-template-columns: 1fr; }
+
+  /* Buttons previously hugged their own content and wrapped onto separate
+     lines at inconsistent widths — stack them full-width for a cleaner,
+     more native mobile look. */
+  .hero-actions { flex-direction: column; width: 100%; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+
+  /* Safety net: JetBrains Mono code lines shouldn't overflow on very
+     narrow phones (<360px), but scroll instead of breaking the layout
+     if they ever do. */
+  .code-body { overflow-x: auto; }
 }
 
 /* ─────────────────────────────────────────────

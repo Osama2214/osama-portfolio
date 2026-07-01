@@ -367,6 +367,14 @@ nav.scrolled {
 @media (max-width: 640px) {
   .hero-desc-full  { display: none; }
   .hero-desc-short { display: block; }
+
+  .hero-badge {
+    font-size: 12px;
+    padding: 5px 12px;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .badge-dot { width: 6px; height: 6px; }
 }
 
 .hero-link {

@@ -375,6 +375,15 @@ nav.scrolled {
     margin-bottom: 18px;
   }
   .badge-dot { width: 6px; height: 6px; }
+
+  /* Centered multi-line paragraphs read as a ragged, unbalanced triangle
+     once the badge/name/title above are centered too — left-align just the
+     body copy (readers scan ragged-right text faster than ragged-both) and
+     tighten the rhythm between it and the buttons below. */
+  .hero-desc-short {
+    text-align: left;
+    margin: 0 auto 28px;
+  }
 }
 
 .hero-link {

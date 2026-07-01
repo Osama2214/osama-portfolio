@@ -360,6 +360,15 @@ nav.scrolled {
   max-width: 520px;
 }
 
+/* Show the full bio on larger screens, swap to a shorter version on phones
+   so the hero doesn't feel like a wall of text before you even scroll. */
+.hero-desc-short { display: none; }
+
+@media (max-width: 640px) {
+  .hero-desc-full  { display: none; }
+  .hero-desc-short { display: block; }
+}
+
 .hero-link {
   color: var(--p-light);
   text-decoration: none;

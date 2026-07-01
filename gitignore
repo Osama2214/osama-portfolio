@@ -1,0 +1,14 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swp~
+.vscode/
+.idea/
+
+# Vercel local build output / cache
+.vercel/
+
+# Node (in case any tooling gets added later — npm/live-server/etc.)
+node_modules/
+npm-debug.log*

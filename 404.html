@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page Not Found | Osama Ahmed</title>
+  <meta name="description" content="The page you're looking for doesn't exist. Head back to Osama Ahmed's portfolio." />
+  <meta name="robots" content="noindex, follow" />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ── 404-PAGE-ONLY STYLES ──
+       Everything shared (colors, buttons, fonts, particles, mouse-glow, reveal
+       animations) comes from style.css so this page stays visually consistent
+       with the rest of the site without duplicating the whole design system. */
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .error-page {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .error-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      margin-bottom: 56px;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .error-logo:hover { opacity: 1; }
+
+    .error-logo .logo-bracket { color: var(--p-light); }
+
+    .error-code {
+      font-size: clamp(96px, 22vw, 168px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -4px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--p-light) 55%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .error-code span {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--text) 0%, var(--p-light) 55%, var(--accent) 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .error-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .error-desc {
+      font-size: 15px;
+      color: var(--text-2);
+      line-height: 1.7;
+      max-width: 440px;
+      margin: 0 auto 36px;
+    }
+
+    .error-desc code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 7px;
+      color: var(--p-light);
+    }
+
+    .error-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .error-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .error-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .error-links a:hover { color: var(--p-light); }
+
+    @media (max-width: 480px) {
+      .error-logo { margin-bottom: 40px; }
+      .error-actions { flex-direction: column; width: 100%; }
+      .error-actions .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particle Canvas (same effect as the main site) -->
+  <canvas id="particles"></canvas>
+
+  <!-- Mouse Glow -->
+  <div class="mouse-glow" id="mouseGlow"></div>
+
+  <div class="error-page">
+    <a href="index.html" class="error-logo reveal-up" data-delay="0">
+      <span class="logo-bracket">&lt;</span>OA<span class="logo-bracket">/&gt;</span>
+    </a>
+
+    <h1 class="error-code reveal-up" data-delay="80" aria-label="404">4<span>0</span>4</h1>
+
+    <h2 class="error-title reveal-up" data-delay="160">Page Not Found</h2>
+    <p class="error-desc reveal-up" data-delay="220">
+      Looks like this route doesn't exist — maybe it 404'd, moved, or was never deployed.
+      Let's get you back to <code>/</code>.
+    </p>
+
+    <div class="error-actions reveal-up" data-delay="280">
+      <a href="index.html" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Back to Home
+      </a>
+      <a href="index.html#projects" class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        View Projects
+      </a>
+    </div>
+
+    <div class="error-links reveal-up" data-delay="340">
+      <a href="index.html#contact">Contact</a>
+      <a href="https://github.com/Osama2214" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:osamaahmed.dev00@gmail.com" target="_blank" rel="noopener">Email</a>
+    </div>
+  </div>
+
+  <script>
+    // ── MOUSE GLOW ──────────────────────────────
+    const mouseGlow = document.getElementById('mouseGlow');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      document.addEventListener('mousemove', (e) => {
+        mouseGlow.style.setProperty('--mx', e.clientX + 'px');
+        mouseGlow.style.setProperty('--my', e.clientY + 'px');
+      });
+    }
+
+    // ── PARTICLE CANVAS (spatial-grid version, same as script.js) ──
+    (function () {
+      if (prefersReducedMotion) return;
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const N = 80;
+      const CONNECT_DIST = 120;
+      const CELL_SIZE = CONNECT_DIST;
+      const particles = [];
+
+      for (let i = 0; i < N; i++) {
+        particles.push({
+          x:  Math.random() * canvas.width,
+          y:  Math.random() * canvas.height,
+          r:  Math.random() * 1.5 + 0.3,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          a:  Math.random(),
+        });
+      }
+
+      function buildGrid() {
+        const grid = new Map();
+        for (let i = 0; i < particles.length; i++) {
+          const p  = particles[i];
+          const cx = Math.floor(p.x / CELL_SIZE);
+          const cy = Math.floor(p.y / CELL_SIZE);
+          const key = cx + ',' + cy;
+          let bucket = grid.get(key);
+          if (!bucket) { bucket = []; grid.set(key, bucket); }
+          bucket.push(i);
+        }
+        return grid;
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const grid = buildGrid();
+
+        for (let i = 0; i < particles.length; i++) {
+          const p  = particles[i];
+          const cx = Math.floor(p.x / CELL_SIZE);
+          const cy = Math.floor(p.y / CELL_SIZE);
+
+          for (let ox = -1; ox <= 1; ox++) {
+            for (let oy = -1; oy <= 1; oy++) {
+              const bucket = grid.get((cx + ox) + ',' + (cy + oy));
+              if (!bucket) continue;
+              for (const j of bucket) {
+                if (j <= i) continue;
+                const q = particles[j];
+                const dx = p.x - q.x;
+                const dy = p.y - q.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < CONNECT_DIST) {
+                  const alpha = (1 - dist / CONNECT_DIST) * 0.15;
+                  ctx.beginPath();
+                  ctx.strokeStyle = `rgba(124, 58, 237, ${alpha})`;
+                  ctx.lineWidth = 0.5;
+                  ctx.moveTo(p.x, p.y);
+                  ctx.lineTo(q.x, q.y);
+                  ctx.stroke();
+                }
+              }
+            }
+          }
+        }
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(167, 139, 250, ${p.a * 0.6})`;
+          ctx.fill();
+        });
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+
+    // ── REVEAL ON LOAD ────────────────────────
+    // (no scroll needed on this page, so just stagger everything in on load)
+    document.querySelectorAll('[class*="reveal-"]').forEach(el => {
+      const delay = parseInt(el.dataset.delay || '0');
+      setTimeout(() => el.classList.add('visible'), 150 + delay);
+    });
+  </script>
+</body>
+</html>

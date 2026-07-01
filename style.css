@@ -1978,8 +1978,19 @@ a.cert-card-link:hover {
   /* Buttons previously hugged their own content and wrapped onto separate
      lines at inconsistent widths — stack them full-width for a cleaner,
      more native mobile look. */
-  .hero-actions { flex-direction: column; width: 100%; }
-  .hero-actions .btn { width: 100%; justify-content: center; }
+  .hero-actions { flex-direction: column; width: 100%; gap: 10px; }
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+    /* Full-width buttons at the base 48px height + 24px side padding read
+       as oversized slabs once they span the whole screen — scale them
+       down a bit so three stacked buttons feel like a tidy button group
+       instead of three big bars. */
+    height: 44px;
+    padding: 0 20px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
 
   /* Safety net: JetBrains Mono code lines shouldn't overflow on very
      narrow phones (<360px), but scroll instead of breaking the layout

@@ -383,6 +383,8 @@ nav.scrolled {
   .hero-desc-short {
     text-align: left;
     margin: 0 auto 28px;
+    font-size: 15px;
+    line-height: 1.65;
   }
 }
 
@@ -1904,7 +1906,17 @@ a.cert-card-link:hover {
    RESPONSIVE
    ───────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .hero { flex-direction: column; text-align: center; padding: 100px 24px 60px; }
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 100px 24px 60px;
+    /* On mobile the code-card visual and scroll indicator are hidden, so
+       .hero-content is the only flex child. With the default flex-start
+       it hugs the top of the 100svh section and leaves a big dead zone
+       at the bottom. Centering it makes the hero feel balanced instead
+       of top-heavy — this is the very first thing visitors see. */
+    justify-content: center;
+  }
   .hero-visual { flex: none; width: 100%; max-width: 420px; }
   .hero-desc { margin: 0 auto 36px; }
   .hero-actions { justify-content: center; }
@@ -1932,8 +1944,8 @@ a.cert-card-link:hover {
   .nav-hamburger { display: flex; }
   .nav-mobile.open { display: flex; }
 
-  .hero-name { font-size: 52px; }
-  .hero-title { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0 4px; font-size: 18px; }
+  .hero-name { font-size: 52px; margin-bottom: 12px; }
+  .hero-title { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0 4px; font-size: 18px; margin-bottom: 18px; }
 
   /* The developer.cs code card is a nice desktop flourish, but on phones it
      just adds a big scroll before the fold ever gets to real content —

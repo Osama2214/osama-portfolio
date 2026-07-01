@@ -1935,6 +1935,11 @@ a.cert-card-link:hover {
   .hero-name { font-size: 52px; }
   .hero-title { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0 4px; font-size: 18px; }
 
+  /* The developer.cs code card is a nice desktop flourish, but on phones it
+     just adds a big scroll before the fold ever gets to real content —
+     drop it and let the hero end right after the CTA buttons. */
+  .hero-visual { display: none; }
+
   .skills-grid { grid-template-columns: 1fr; }
   .learning-group { grid-column: 1; }
 

@@ -1848,37 +1848,6 @@ a.cert-card-link:hover {
   .floating-badge { display: none; }
 }
 
-@media (max-width: 480px) {
-  .container { padding: 0 16px; }
-  .hero { padding: 90px 16px 60px; }
-  .section { padding: 70px 0; }
-  .hero-name { font-size: 42px; letter-spacing: -2px; }
-  .project-features { grid-template-columns: 1fr; }
-  .about-info-grid { grid-template-columns: 1fr; }
-  .contact-quicklinks { grid-template-columns: 1fr; }
-
-  /* Buttons previously hugged their own content and wrapped onto separate
-     lines at inconsistent widths — stack them full-width for a cleaner,
-     more native mobile look. */
-  .hero-actions { display: flex; flex-direction: column; width: 100%; gap: 10px; }
-  .hero-actions .btn {
-    width: 100%;
-    justify-content: center;
-    /* Full-width buttons at the base 48px height + 24px side padding read
-       as oversized slabs once they span the whole screen — scale them
-       down a bit so three stacked buttons feel like a tidy button group
-       instead of three big bars. */
-    height: 44px;
-    padding: 0 20px;
-    font-size: 14px;
-    border-radius: 12px;
-  }
-
-  /* Safety net: JetBrains Mono code lines shouldn't overflow on very
-     narrow phones (<360px), but scroll instead of breaking the layout
-     if they ever do. */
-  .code-body { overflow-x: auto; }
-}
 
 /* Mobile-only redesign overrides. Desktop/tablet styles above stay intact. */
 @media (max-width: 768px) {
@@ -2395,6 +2364,27 @@ a.cert-card-link:hover {
   }
 }
 
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .hero { padding: 90px 16px 60px; }
+  .section { padding: 70px 0; }
+  .hero-name { font-size: 42px; letter-spacing: -2px; }
+  .project-features { grid-template-columns: 1fr; }
+  .about-info-grid { grid-template-columns: 1fr; }
+  .contact-quicklinks { grid-template-columns: 1fr; }
+
+  .hero-actions { display: flex !important; flex-direction: column !important; width: 100%; gap: 10px; }
+  .hero-actions .btn {
+    width: 100% !important;
+    justify-content: center;
+    height: 44px;
+    padding: 0 20px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+  .code-body { overflow-x: auto; }
+}
+
 @media (max-width: 360px) {
   .footer-copy {
     font-size: 11px;
@@ -2455,6 +2445,7 @@ a.cert-card-link:hover {
 
 .project-card.more-project.hide-project {
   max-height: 0 !important;
+  min-height: 0 !important;
   opacity: 0 !important;
   padding-top: 0 !important;
   padding-bottom: 0 !important;

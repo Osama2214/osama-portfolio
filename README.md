@@ -1,94 +1,64 @@
-# Osama Ahmed — Developer Portfolio
+# Osama Ahmed - Developer Portfolio Website
 
-Welcome to the repository of my personal developer portfolio! This website serves as a digital resume, highlighting my projects, skills, education, and credentials as an IT student and aspiring backend developer.
+Welcome to the source code repository of my personal developer portfolio website. This is a premium, highly interactive, and responsive portfolio designed to showcase my engineering projects, technical skills, certifications, and academic background.
 
-🌐 **Live URL:** [https://osama-portfolio-six.vercel.app/](https://osama-portfolio-six.vercel.app/)
-
----
-
-## 🚀 Key Highlights & Developer Info
-*   **Developer:** Osama Ahmed Abdelaziz
-*   **Role:** Aspiring Backend Developer (.NET) & IT Student
-*   **Education:** B.Sc. in Information Technology at the **Egyptian E-Learning University (EELU)** (Expected Graduation: 2028)
-*   **Location:** 6th of October, Giza, Egypt
-*   **Certifications:** Cisco CCNA: Introduction to Networks
+Live Deployment: **[osama-portfolio-six.vercel.app](https://osama-portfolio-six.vercel.app/)**
 
 ---
 
-## 🎨 Tech Stack & Website Architecture
-This portfolio is built from scratch as a highly optimized, single-page application utilizing vanilla web technologies to achieve premium design aesthetics, fast load times, and smooth micro-interactions.
+## 🚀 Key Features
 
-*   **HTML5:** Structured semantic markup optimized for accessibility and SEO.
-*   **Vanilla CSS3:** A fully custom design system using CSS variables, featuring a sleek modern dark mode (`#050812`), glassmorphism, responsive grids, flex layouts, and custom media queries.
-*   **JavaScript (ES6+):** Pure vanilla JavaScript handling all page animations, states, and interactive graphics without external library bloat.
-*   **Hosting & Deployment:** Deployed on **Vercel** with clean URLs enabled via `vercel.json`.
-
----
-
-## ✨ Features & Micro-Interactions
-The website incorporates advanced client-side scripts to deliver a premium user experience:
-
-1.  **Optimized Particle Canvas Background:**
-    *   An interactive particle network drawn on an HTML5 `<canvas>`.
-    *   To prevent performance drops, particles are bucketed into a **2D Spatial Grid Map** (`O(N)` average complexity) rather than checking all pairs (`O(N²)`). Connections are drawn dynamically based on distance.
-2.  **Magnetic Card Tilt & Cursor Glow:**
-    *   Cards (projects, credentials, and contact) compute mouse coordinates relative to the card's bounding rectangle on `mousemove` to apply interactive 3D rotation (`rotateX`/`rotateY`) and reposition a radial glow spotlight.
-3.  **Dynamic Scroll Indicators & Active Navigation Pill:**
-    *   Uses the browser's `IntersectionObserver` API to track the currently visible section, dynamically moving the navigation indicator pill (`#navPill`) to underline the active menu item.
-4.  **Role Typewriter Effect:**
-    *   A fluid text animation loops through core developer profiles (Backend Developer, .NET Learner, App Builder, IT Student, Problem Solver).
-5.  **AJAX Contact Form:**
-    *   Integrated with **Formspree** via asynchronous `fetch` requests, handling loading states, success prompts, and error boundaries without page reloads.
+* **Sleek Glassmorphism & Dark Theme**: Built with a custom, modern dark UI using a tailored color palette, gradients, and soft glows.
+* **Optimized Canvas Particle Network**: Features a custom particle network background implemented in pure JavaScript using an **O(n) grid-bucket algorithm** (rather than O(n²)) to ensure high-frame-rate rendering on all viewports.
+* **Interactive Mouse-Glow Backlight**: A dynamic cursor-tracking light spotlight (`--mx` & `--my` CSS variables) that enhances background readability and depth.
+* **C# IDE Mock Editor Window**: An interactive, syntax-highlighted code editor mockup representing developer credentials.
+* **Typewriter Tagline loops**: Automated, zero-dependency typewriter animation cycling through core backend developer taglines.
+* **Smooth "Show More/Less" Project Toggle**: An animated projects grid expand/collapse button equipped with CSS transitions that avoids layout jumping.
+* **Secure AJAX Contact Form**: Intercepts contact requests for asynchronous, inline submission via Formspree.
+* **100% Responsive Architecture**: Built with fluid clamp typography, CSS grids, and mobile navigation auto-close.
 
 ---
 
-## 🛠️ Main Showcase Projects
-The portfolio highlights:
+## 🛠️ Tech Stack & Technologies
 
-*   **Munjez:** A full-featured, offline-first productivity desktop application designed, built, and shipped solo. 
-    *   *Features:* Task Management, Calendar (including Hijri support), Pomodoro Focus Timer, Habit Tracker with Streaks, Stopwatch, and a White Noise Mixer.
-    *   *Tech Stack:* React, TypeScript, Tauri, Rust, Vite, Firebase.
-    *   *Links:* [Live Site](https://munjez-website.vercel.app) | [GitHub Releases](https://github.com/Osama2214/munjez-releases)
-*   **Munjez Landing Page:** A multilingual (Arabic/English) marketing landing page, changelog, and privacy policy for the Munjez app.
-    *   *Tech Stack:* HTML, CSS, JavaScript, Vercel.
-    *   *Links:* [Live Site](https://munjez-website.vercel.app) | [GitHub](https://github.com/Osama2214/munjez-website)
+* **Core Structure**: HTML5 (Semantic elements)
+* **Styling & Layout**: CSS3 (Vanilla grids, flexbox, variables, keyframe animations)
+* **Interactive Logic**: Vanilla JavaScript (ES6+, IntersectionObserver API, HTML5 Canvas API)
+* **Integrations**: Formspree (Contact Form endpoint)
+* **Fonts & Icons**: Google Fonts (Outfit, JetBrains Mono), Devicons CDN, Credly Badge API
 
 ---
 
-## 📦 How to Run Locally
+## 📁 File Structure
 
-Since the website uses standard vanilla web technologies, running it locally is straightforward.
+```text
+├── index.html            # Core HTML layout, navbar, sections, and form structure.
+├── style.css             # Main stylesheet containing theme tokens, utility classes, and media queries.
+├── script.js             # Typewriter loops, particle animation loop, active section tracker, and form submit.
+├── 404.html              # Custom 404 error page.
+├── Osama_Ahmed_CV.pdf    # Downloadable PDF resume.
+├── vercel.json           # Vercel deployment configuration.
+└── icons/                # Local SVG assets (platforms, icons, etc.)
+```
 
-### Method 1: Simple Open
-Simply double-click the `index.html` file to open it in your browser. (Note: Some SVG resources or local file access might require an HTTP server depending on browser CORS policies).
+---
 
-### Method 2: Local HTTP Server (Recommended)
-You can serve the directory using a simple server. For example:
+## 💻 Local Setup & Installation
 
-Using Python:
+To run this project locally, simply clone the repository and open `index.html` in your web browser. You can also run a simple local development server:
+
+### Option A: VS Code Live Server Extension
+Open the directory in VS Code, right-click `index.html`, and select **Open with Live Server**.
+
+### Option B: Python Local Server
+Run the following command in your terminal from the project root:
 ```bash
 python -m http.server 8000
 ```
-Or using Node.js:
-```bash
-npx serve
-```
-Open `http://localhost:8000` (or the port specified by serve) in your browser.
+Then navigate to `http://localhost:8000` in your browser.
 
 ---
 
-## 📁 Project Structure
-```text
-├── 404.html               # Custom 404 error page matching website theme
-├── Osama_Ahmed_CV.pdf     # Resume PDF download
-├── favicon.svg            # Site favicon
-├── index.html             # Core landing page markup
-├── og-image.png           # Open Graph social sharing image
-├── script.js              # Site interaction, particles, and typewriter scripts
-├── style.css              # Custom design system and layout styling
-└── vercel.json            # Vercel configuration
-```
+## 📄 License & Intellectual Property
 
----
-
-*Made with ❤️ by [Osama Ahmed](https://github.com/Osama2214)*
+This project is created by **Osama Ahmed** as a personal developer portfolio. Feel free to explore the code for reference and learning purposes.

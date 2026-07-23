@@ -198,10 +198,10 @@ window.addEventListener('resize', () => {
 // ── TYPEWRITER ───────────────────────────────
 const titles = [
   'Backend Developer',
-  '.NET Learner',
+  '.NET & PHP Developer',
   'App Builder',
-  'IT Student',
   'Problem Solver',
+  'IT Student',
 ];
 
 let tIdx = 0, cIdx = 0, deleting = false;
@@ -427,3 +427,32 @@ if (contactForm) {
 
 console.log('%c 🚀 Osama Ahmed Portfolio ', 'background:#7c3aed;color:#fff;font-size:16px;padding:8px 16px;border-radius:8px;font-weight:bold;');
 console.log('%c Built with ❤️ from Egypt ', 'color:#a78bfa;font-size:13px;');
+
+// ── PROJECTS SHOW MORE / LESS ──────────────────
+const projectsToggleBtn = document.getElementById('projects-toggle-btn');
+const projectsToggleText = document.getElementById('projects-toggle-text');
+const projectsToggleIcon = document.getElementById('projects-toggle-icon');
+const hiddenProjects = document.querySelectorAll('.project-card.more-project');
+
+if (projectsToggleBtn && hiddenProjects.length > 0) {
+  projectsToggleBtn.addEventListener('click', () => {
+    const isShowingMore = projectsToggleBtn.classList.contains('showing-more');
+    if (isShowingMore) {
+      // Show Less logic
+      hiddenProjects.forEach(el => {
+        el.classList.add('hide-project');
+      });
+      projectsToggleBtn.classList.remove('showing-more');
+      projectsToggleText.textContent = 'Show More';
+      if (projectsToggleIcon) projectsToggleIcon.style.transform = 'rotate(0deg)';
+    } else {
+      // Show More logic
+      hiddenProjects.forEach(el => {
+        el.classList.remove('hide-project');
+      });
+      projectsToggleBtn.classList.add('showing-more');
+      projectsToggleText.textContent = 'Show Less';
+      if (projectsToggleIcon) projectsToggleIcon.style.transform = 'rotate(180deg)';
+    }
+  });
+}

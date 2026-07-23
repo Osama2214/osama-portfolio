@@ -711,10 +711,8 @@ nav.scrolled {
    ABOUT
    ───────────────────────────────────────────── */
 .about-grid {
-  display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 64px;
-  align-items: start;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .about-para {
@@ -791,123 +789,7 @@ a.info-item:active {
   text-align: right;
 }
 
-/* ── ABOUT GLOW CARD ── */
-.about-glow-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 2px;
-  position: relative;
-  overflow: hidden;
-}
 
-.about-glow-card::before {
-  content: '';
-  position: absolute;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: conic-gradient(
-    from 0deg, transparent 0deg, var(--p) 60deg, transparent 120deg
-  );
-  animation: rotate-glow 6s linear infinite;
-  opacity: 0.3;
-}
-
-@keyframes rotate-glow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.agc-inner {
-  background: var(--card);
-  border-radius: 22px;
-  padding: 40px 32px;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-.agc-avatar {
-  width: 100px; height: 100px;
-  margin: 0 auto 20px;
-  position: relative;
-}
-
-.avatar-ring {
-  position: absolute; inset: -4px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--p), var(--accent));
-  animation: spin-ring 8s linear infinite;
-}
-
-@keyframes spin-ring {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.avatar-initials {
-  position: relative;
-  width: 100%; height: 100%;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1a0b40, #0a1628);
-  border: 3px solid var(--card);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--p-light);
-  z-index: 1;
-}
-
-.agc-name {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-
-.agc-role {
-  font-size: 14px;
-  color: var(--muted);
-  margin-bottom: 24px;
-}
-
-.agc-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin-bottom: 28px;
-}
-
-.agc-tag {
-  background: rgba(124,58,237,0.12);
-  color: var(--p-light);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(124,58,237,0.2);
-}
-
-.agc-btn {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--p), #5b21b6);
-  color: #fff;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 10px 28px;
-  border-radius: 20px;
-  transition: all 0.2s;
-  box-shadow: 0 4px 20px var(--p-glow);
-}
-
-.agc-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(124,58,237,0.4);
-}
 
 /* ─────────────────────────────────────────────
    SKILLS
@@ -1978,7 +1860,7 @@ a.cert-card-link:hover {
   /* Buttons previously hugged their own content and wrapped onto separate
      lines at inconsistent widths — stack them full-width for a cleaner,
      more native mobile look. */
-  .hero-actions { flex-direction: column; width: 100%; gap: 10px; }
+  .hero-actions { display: flex; flex-direction: column; width: 100%; gap: 10px; }
   .hero-actions .btn {
     width: 100%;
     justify-content: center;
@@ -2560,4 +2442,39 @@ a.cert-card-link:hover {
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* ── PROJECTS TOGGLE (SHOW MORE / LESS) ── */
+.project-card.more-project {
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease, border-color 0.4s ease;
+  overflow: hidden;
+}
+
+.project-card.more-project.hide-project {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  transform: translateY(-15px) scale(0.98) !important;
+  pointer-events: none !important;
+}
+
+.projects-toggle-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  position: relative;
+  z-index: 10;
+}
+
+#projects-toggle-btn {
+  gap: 8px;
+  padding: 0 32px;
 }

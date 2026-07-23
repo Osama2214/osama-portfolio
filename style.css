@@ -594,12 +594,12 @@ nav.scrolled {
 .fb-icon { font-size: 16px; }
 
 .badge-1 {
-  top: -20px; right: -20px;
+  top: -20px; right: -12px;
   animation: float-1 4s ease-in-out infinite;
 }
 
 .badge-2 {
-  bottom: 40px; right: -40px;
+  bottom: 80px; right: -35px;
   animation: float-2 5s ease-in-out infinite;
 }
 
@@ -2477,4 +2477,16 @@ a.cert-card-link:hover {
 #projects-toggle-btn {
   gap: 8px;
   padding: 0 32px;
+}
+
+/* ── DYNAMIC RESPONSIVE PUSH FOR FLOATING BADGES ── */
+@media (max-width: 1200px) {
+  .badge-1 { right: -5px !important; }
+  .badge-2 { right: -20px !important; bottom: 80px !important; }
+}
+
+@media (max-width: 480px) {
+  .badge-1 { right: -5px !important; top: -15px !important; }
+  .badge-2 { right: -12px !important; bottom: 70px !important; }
+  .badge-3 { left: 5px !important; bottom: -15px !important; }
 }

@@ -249,22 +249,29 @@ if (!prefersReducedMotion && !isTouchDevice) {
 
   // Toggle button handler
   const matrixToggleBtn = document.getElementById('matrixToggle');
-  if (matrixToggleBtn) {
-    matrixToggleBtn.addEventListener('click', () => {
-      isMatrixActive = !isMatrixActive;
-      document.body.classList.toggle('matrix-mode');
+  const mobileMatrixToggleBtn = document.getElementById('mobileMatrixToggle');
 
-      const toggleText = matrixToggleBtn.querySelector('.hacker-label');
-      if (isMatrixActive) {
-        initMatrix();
-        activateHackerExtras();
-        if (toggleText) toggleText.textContent = 'Space Mode';
-      } else {
-        deactivateHackerExtras();
-        if (toggleText) toggleText.textContent = 'Hacker Mode';
-      }
-    });
+  function toggleHackerMode() {
+    isMatrixActive = !isMatrixActive;
+    document.body.classList.toggle('matrix-mode');
+
+    const desktopLabel = matrixToggleBtn && matrixToggleBtn.querySelector('.hacker-label');
+    const mobileLabel  = mobileMatrixToggleBtn && mobileMatrixToggleBtn.querySelector('.mobile-hacker-label');
+
+    if (isMatrixActive) {
+      initMatrix();
+      activateHackerExtras();
+      if (desktopLabel) desktopLabel.textContent = 'Space Mode';
+      if (mobileLabel)  mobileLabel.textContent  = 'Space Mode';
+    } else {
+      deactivateHackerExtras();
+      if (desktopLabel) desktopLabel.textContent = 'Hacker Mode';
+      if (mobileLabel)  mobileLabel.textContent  = 'Hacker Mode';
+    }
   }
+
+  if (matrixToggleBtn)       matrixToggleBtn.addEventListener('click', toggleHackerMode);
+  if (mobileMatrixToggleBtn) mobileMatrixToggleBtn.addEventListener('click', toggleHackerMode);
 
   draw();
 })();
@@ -958,20 +965,21 @@ if (closeConsoleBtn && consoleOutput) {
 
     switch (cmd) {
       case 'help':
+        const mob = window.innerWidth < 768;
         printLine('Available Commands:', 'banner');
-        printLine('  about      - A short biography about me');
-        printLine('  skills     - Visual display of my core technical stack');
-        printLine('  projects   - Interactive list of my built projects');
-        printLine('  experience - Detailed educational & scholarship history');
-        printLine('  contact    - Channels to reach out or connect with me');
-        printLine('  cv         - Simulates and opens my resume PDF');
-        printLine('  coffee     - Energize the terminal developer');
-        printLine('  theme      - Cycle console colors (purple, green, cyan, amber)');
-        printLine('  social     - Quick links to GitHub & LinkedIn');
-        printLine('  clear      - Wipes the console history clean');
-        printLine('  hack       - Initiate terminal hack sequence');
-        printLine('  guess      - Play a number guessing game');
-        printLine('  secret     - [LOCKED] You need root access first...');
+        printLine(mob ? '  about      - Bio'                        : '  about      - A short biography about me');
+        printLine(mob ? '  skills     - Tech stack'                 : '  skills     - Visual display of my core technical stack');
+        printLine(mob ? '  projects   - My projects'                : '  projects   - Interactive list of my built projects');
+        printLine(mob ? '  experience - Education history'          : '  experience - Detailed educational & scholarship history');
+        printLine(mob ? '  contact    - Reach out'                  : '  contact    - Channels to reach out or connect with me');
+        printLine(mob ? '  cv         - Open resume'                : '  cv         - Simulates and opens my resume PDF');
+        printLine(mob ? '  coffee     - Energize'                   : '  coffee     - Energize the terminal developer');
+        printLine(mob ? '  theme      - Change colors'              : '  theme      - Cycle console colors (purple, green, cyan, amber)');
+        printLine(mob ? '  social     - GitHub & LinkedIn'          : '  social     - Quick links to GitHub & LinkedIn');
+        printLine(mob ? '  clear      - Clear console'              : '  clear      - Wipes the console history clean');
+        printLine(mob ? '  hack       - Hack sequence'              : '  hack       - Initiate terminal hack sequence');
+        printLine(mob ? '  guess      - Number game'                : '  guess      - Play a number guessing game');
+        printLine(mob ? '  secret     - [LOCKED]'                   : '  secret     - [LOCKED] You need root access first...');
         break;
 
       case 'about':
@@ -1109,6 +1117,8 @@ if (closeConsoleBtn && consoleOutput) {
           printLine('  HINT: Only a system administrator can unlock this.', 'loading');
           await new Promise(r => setTimeout(r, 400));
           printLine('  HINT: Try running a privileged command... maybe "sudo" something?', 'loading');
+          await new Promise(r => setTimeout(r, 400));
+          printLine('  HINT: The right action might get someone... employed.', 'loading');
         }
         break;
 
@@ -1363,14 +1373,15 @@ if (closeConsoleBtn && consoleOutput) {
     const existing = document.getElementById('easterToast');
     if (existing) existing.remove();
 
+    const isMobile = window.innerWidth < 768;
+
     const toast = document.createElement('div');
     toast.id = 'easterToast';
     toast.innerHTML = `<span class="toast-msg">${message}</span>`;
     toast.style.cssText = `
       position: fixed;
-      bottom: 28px;
-      left: 28px;
-      transform: translateX(-120%);
+      ${isMobile ? 'top: 70px; left: 16px; right: 16px;' : 'bottom: 28px; left: 28px;'}
+      transform: ${isMobile ? 'translateY(-120%)' : 'translateX(-120%)'};
       background: rgba(5, 8, 18, 0.95);
       border: 1px solid rgba(124, 58, 237, 0.45);
       color: #c4b5fd;
@@ -1387,20 +1398,20 @@ if (closeConsoleBtn && consoleOutput) {
       opacity: 0;
       transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
       pointer-events: none;
-      white-space: nowrap;
+      ${isMobile ? '' : 'white-space: nowrap;'}
     `;
     document.body.appendChild(toast);
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         toast.style.opacity = '1';
-        toast.style.transform = 'translateX(0)';
+        toast.style.transform = 'translate(0, 0)';
       });
     });
 
     setTimeout(() => {
       toast.style.opacity = '0';
-      toast.style.transform = 'translateX(-120%)';
+      toast.style.transform = isMobile ? 'translateY(-120%)' : 'translateX(-120%)';
       setTimeout(() => toast.remove(), 400);
     }, duration);
   }
@@ -1540,7 +1551,7 @@ if (closeConsoleBtn && consoleOutput) {
         };
       }
       hud.style.display = 'flex';
-      showToast('Developer Mode Enabled — HUD Active!');
+      if (window.innerWidth > 768) showToast('Developer Mode Enabled — HUD Active!');
       startFpsMeter();
     } else {
       if (hud) hud.style.display = 'none';

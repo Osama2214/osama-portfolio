@@ -60,10 +60,23 @@
       </ul>
       
       <div class="nav-right">
-        <button class="matrix-toggle-btn" id="matrixToggle" title="Toggle Hacker Mode">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hacker-icon"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-          <span>Hacker Mode</span>
-        </button>
+        <div class="dev-tools-dropdown" id="devToolsDropdown">
+          <button class="dev-tools-btn" id="devToolsBtn" title="Developer Tools">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            <span>Dev Tools</span>
+            <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dev-tools-menu" id="devToolsMenu">
+            <button class="dev-tools-item" id="terminalToggle">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              Terminal
+            </button>
+            <button class="dev-tools-item" id="matrixToggle">
+              <span class="hacker-icon" style="font-size:13px;line-height:1;">☠</span>
+              <span class="hacker-label">Hacker Mode</span>
+            </button>
+          </div>
+        </div>
 
         <a href="https://github.com/Osama2214" target="_blank" class="nav-cta" id="nav-cta-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -81,6 +94,7 @@
       <a href="#projects" class="nav-mobile-link">Projects</a>
       <a href="#education" class="nav-mobile-link">Education</a>
       <a href="#contact" class="nav-mobile-link">Contact</a>
+      <a href="#" class="nav-mobile-link" id="mobileTerminalToggle">Terminal Console</a>
     </div>
   </nav>
 
@@ -91,7 +105,7 @@
         <span class="badge-dot"></span>
         Available for Internships
       </div>
-      <h1 class="hero-name reveal-up" data-delay="100">
+      <h1 class="hero-name reveal-up" data-delay="100" data-text="Osama Ahmed">
         <span class="name-first">Osama</span>
         <span class="name-last">Ahmed</span>
       </h1>
@@ -655,37 +669,103 @@
         <div class="edu-timeline reveal-left">
           <h3 class="edu-col-title">
             <svg class="edu-title-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-            Education
+            Interactive Journey
           </h3>
-          <div class="timeline">
-            <!-- DEPI Training -->
-            <div class="tl-item">
-              <div class="tl-dot"></div>
-              <div class="tl-content">
-                <div class="tl-year">2026 – Present (6 Months)</div>
-                <h4 class="tl-title">Full Stack .NET Trainee (200+ Hours)</h4>
-                <p class="tl-place">Digital Egypt Pioneers Initiative (DEPI)</p>
-                <p class="tl-desc">Recipient of the Ministry of Communications and Information Technology (MCIT) prestigious scholarship. A comprehensive 6-month program covering advanced backend development (C#, ASP.NET Core, Entity Framework, SQL Server), architecture design, along with specialized tracks for Freelancing, Business English, and Agile soft skills.</p>
+          
+          <div class="interactive-timeline">
+            <!-- 2023 -->
+            <div class="it-item node-2023" data-year="2023">
+              <div class="it-dot-wrapper">
+                <span class="it-pulse"></span>
+                <span class="it-dot"></span>
+              </div>
+              <div class="it-card">
+                <div class="it-header">
+                  <span class="it-year-badge year-2023">2023</span>
+                  <h4 class="it-title">First Steps into Code</h4>
+                </div>
+                <ul class="it-milestones">
+                  <li>Started HTML5 &amp; CSS3 Fundamentals</li>
+                  <li>Built First Web Pages &amp; UI Prototypes</li>
+                  <li>Discovered Passion for Software Development</li>
+                </ul>
               </div>
             </div>
-            <!-- NTI Training -->
-            <div class="tl-item">
-              <div class="tl-dot"></div>
-              <div class="tl-content">
-                <div class="tl-year">2026 – Present (120 Hours)</div>
-                <h4 class="tl-title">Full Stack PHP Trainee</h4>
-                <p class="tl-place">National Telecommunication Institute (NTI)</p>
-                <p class="tl-desc">Selected for the National Telecommunication Institute (NTI) 'Digital Egypt Youth' intensive scholarship. A rigorous 120-hour practical bootcamp (6 hours daily, Sun–Thu) focused on Full Stack PHP development, Object-Oriented Programming (OOP), MVC architecture (Laravel), database design (MySQL), front-end responsiveness (Bootstrap), and hands-on capstone projects.</p>
+
+            <!-- 2024 -->
+            <div class="it-item node-2024" data-year="2024">
+              <div class="it-dot-wrapper">
+                <span class="it-pulse"></span>
+                <span class="it-dot"></span>
+              </div>
+              <div class="it-card">
+                <div class="it-header">
+                  <span class="it-year-badge year-2024">2024</span>
+                  <h4 class="it-title">University &amp; OOP Foundations</h4>
+                </div>
+                <ul class="it-milestones">
+                  <li>Joined B.Sc. in IT at EELU University</li>
+                  <li>Mastered C# &amp; Object-Oriented Programming (OOP)</li>
+                  <li>Built Desktop Productivity &amp; System Apps</li>
+                </ul>
               </div>
             </div>
-            <!-- EELU University -->
-            <div class="tl-item">
-              <div class="tl-dot"></div>
-              <div class="tl-content">
-                <div class="tl-year">2024 – 2028 (Expected)</div>
-                <h4 class="tl-title">B.Sc. in Information Technology</h4>
-                <p class="tl-place">Egyptian E-Learning University (EELU)</p>
-                <p class="tl-desc">3rd Year Student — Focusing on software engineering and backend development</p>
+
+            <!-- 2025 -->
+            <div class="it-item node-2025" data-year="2025">
+              <div class="it-dot-wrapper">
+                <span class="it-pulse"></span>
+                <span class="it-dot"></span>
+              </div>
+              <div class="it-card">
+                <div class="it-header">
+                  <span class="it-year-badge year-2025">2025</span>
+                  <h4 class="it-title">Munjez &amp; Web Development</h4>
+                </div>
+                <ul class="it-milestones">
+                  <li>Built &amp; Shipped Munjez App Solo (Windows &amp; Linux)</li>
+                  <li>Earned SmartCode CS &amp; Programming Fundamentals Cert</li>
+                  <li>Mastered Full Stack PHP, Laravel &amp; MySQL</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- 2026 -->
+            <div class="it-item node-2026" data-year="2026">
+              <div class="it-dot-wrapper">
+                <span class="it-pulse"></span>
+                <span class="it-dot"></span>
+              </div>
+              <div class="it-card">
+                <div class="it-header">
+                  <span class="it-year-badge year-2026">2026</span>
+                  <h4 class="it-title">Scholarships &amp; Professional Growth</h4>
+                </div>
+                <ul class="it-milestones">
+                  <li>Full Stack .NET Trainee at DEPI (MCIT 200+ Hours)</li>
+                  <li>Full Stack PHP Trainee at NTI Bootcamp (120 Hours)</li>
+                  <li>Cisco Certified — CCNA: Introduction to Networks</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Future -->
+            <div class="it-item node-future" id="futureNode" data-year="Future">
+              <div class="it-dot-wrapper">
+                <span class="it-pulse pulse-gold"></span>
+                <span class="it-dot dot-gold">?</span>
+              </div>
+              <div class="it-card card-future" id="futureCard">
+                <div class="it-header">
+                  <span class="it-year-badge year-future">Future</span>
+                  <h4 class="it-title">???</h4>
+                </div>
+                <p class="future-hint-text">Click to reveal the next chapter...</p>
+                <div class="future-hidden-content" id="futureHiddenContent">
+                  <h4 class="future-company-title">Maybe Your Company?</h4>
+                  <p class="future-company-desc">Osama is ready to bring high energy, clean backend code, and dedication to your team!</p>
+                  <a href="#contact" class="future-cta-btn">Let's Work Together →</a>
+                </div>
               </div>
             </div>
           </div>
@@ -868,7 +948,25 @@
       </div>
     </div>
   </footer>
-
+  <!-- ── TERMINAL CONSOLE ── -->
+  <div class="terminal-panel" id="terminalPanel">
+    <div class="terminal-header">
+      <span class="terminal-title">Developer Console — Osama Ahmed</span>
+      <button class="terminal-close-btn" id="terminalCloseBtn">&times;</button>
+    </div>
+    <div class="terminal-output-container" id="terminalOutput">
+      <div class="terminal-line banner">Osama Portfolio Terminal v3.0</div>
+      <div class="terminal-line banner">Type "help" to get started.</div>
+      <div class="terminal-line banner">-----------------------------------------</div>
+    </div>
+    <div class="terminal-input-line">
+      <span class="terminal-prompt">&gt;</span>
+      <div class="terminal-input-wrapper">
+        <input type="text" id="terminalInput" autocomplete="off" spellcheck="false" aria-label="Terminal Input" />
+        <span id="terminalInputGhost" class="terminal-input-ghost"></span>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js" defer></script>
 </body>

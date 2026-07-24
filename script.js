@@ -1786,6 +1786,8 @@ if (closeConsoleBtn && consoleOutput) {
   let osTheme       = 'site-purple';
   let audioCtx      = null;
   let musicNodes    = {};
+  let ambientAudio  = null;
+  let ambientFadeTimer = null;
   let isBooting     = false;
   let isShuttingDown= false;
 
@@ -2022,12 +2024,14 @@ if (closeConsoleBtn && consoleOutput) {
 
   function minimizeWindow(appId) {
     const state = openWindows[appId];
-    if (!state || state.el.classList.contains('pos-win-minimized')) return;
+    if (!state || state.el.classList.contains('pos-win-minimized') || state.el.classList.contains('pos-win-minimizing')) return;
     const el = state.el;
     state.minimized = true;
     el.classList.remove('pos-win-focused');
+    el.classList.add('pos-win-minimizing');
     state.taskbarBtn && state.taskbarBtn.classList.remove('pos-app-active');
     genieAnimate(el, state.taskbarBtn, 'out', () => {
+      el.classList.remove('pos-win-minimizing');
       el.classList.add('pos-win-minimized');
     });
   }
@@ -2036,7 +2040,7 @@ if (closeConsoleBtn && consoleOutput) {
     const state = openWindows[appId];
     if (!state) return;
     const el = state.el;
-    el.classList.remove('pos-win-minimized');
+    el.classList.remove('pos-win-minimized', 'pos-win-minimizing');
     state.minimized = false;
     genieAnimate(el, state.taskbarBtn, 'in');
     focusWindow(el);
@@ -2071,20 +2075,33 @@ if (closeConsoleBtn && consoleOutput) {
 
     win.style.transformOrigin = '50% 50%';
 
-    function onTransitionEnd(e) {
-      if (e.target !== win || e.propertyName !== 'transform') return;
+    let done = false;
+    let fallbackTimer = null;
+
+    function finishAnimation() {
+      if (done) return;
+      done = true;
       win.removeEventListener('transitionend', onTransitionEnd);
+      if (fallbackTimer) clearTimeout(fallbackTimer);
       win.style.transition = '';
       if (direction === 'in') { win.style.transform = ''; win.style.opacity = ''; }
       onDone && onDone();
     }
 
+    function onTransitionEnd(e) {
+      if (e.target !== win || e.propertyName !== 'transform') return;
+      finishAnimation();
+    }
+
     if (direction === 'out') {
-      win.style.transition = 'transform 0.36s cubic-bezier(0.55,0,0.85,0.35), opacity 0.3s ease 0.05s';
+      win.style.transition = 'transform 0.34s cubic-bezier(0.55,0,0.85,0.35), opacity 0.22s ease 0.12s';
       win.addEventListener('transitionend', onTransitionEnd);
+      fallbackTimer = setTimeout(finishAnimation, 430);
       requestAnimationFrame(() => {
-        win.style.transform = shrunk;
-        win.style.opacity = '0';
+        requestAnimationFrame(() => {
+          win.style.transform = shrunk;
+          win.style.opacity = '0';
+        });
       });
     } else {
       win.style.transition = 'none';
@@ -2093,6 +2110,7 @@ if (closeConsoleBtn && consoleOutput) {
       void win.offsetWidth; // force reflow before animating back
       win.style.transition = 'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease';
       win.addEventListener('transitionend', onTransitionEnd);
+      fallbackTimer = setTimeout(finishAnimation, 500);
       requestAnimationFrame(() => {
         win.style.transform = 'translate(0,0) scale(1)';
         win.style.opacity = '1';
@@ -2179,7 +2197,7 @@ if (closeConsoleBtn && consoleOutput) {
     const btn = document.createElement('button');
     btn.className = 'pos-taskbar-app pos-app-running';
     btn.title = title;
-    btn.innerHTML = `${icon}<span>${title}</span>`;
+    btn.innerHTML = `<span class="pos-taskbar-icon">${icon}</span><span class="pos-taskbar-label">${title}</span>`;
     btn.addEventListener('click', () => toggleMinimize(appId));
     return btn;
   }
@@ -2600,7 +2618,7 @@ if (closeConsoleBtn && consoleOutput) {
       mainContent.appendChild(back);
 
       const techTags = (p.tech || []).map(t =>
-        `<span style="display:inline-flex;align-items:center;padding:2px 8px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);border-radius:4px;font-size:11px;color:var(--pos-accent);font-family:'JetBrains Mono',monospace">${t}</span>`
+        `<span style="display:inline-flex;align-items:center;padding:2px 8px;background:var(--pos-control-bg);border:1px solid var(--pos-border);border-radius:4px;font-size:11px;color:var(--pos-accent);font-family:'JetBrains Mono',monospace">${t}</span>`
       ).join('');
 
       const detail = document.createElement('div');
@@ -2612,7 +2630,7 @@ if (closeConsoleBtn && consoleOutput) {
             <h3 style="margin:0;font-size:16px;color:var(--pos-text)">${p.name}</h3>
             <span style="font-size:11px;color:var(--pos-text-2)">${p.type || ''}</span>
           </div>
-          ${p.badge ? `<span style="margin-left:auto;padding:2px 8px;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);border-radius:12px;font-size:10px;font-weight:600;color:var(--pos-accent);white-space:nowrap">${p.badge}</span>` : ''}
+          ${p.badge ? `<span style="margin-left:auto;padding:2px 8px;background:var(--pos-control-bg-h);border:1px solid var(--pos-border);border-radius:12px;font-size:10px;font-weight:600;color:var(--pos-accent);white-space:nowrap">${p.badge}</span>` : ''}
         </div>
         <p style="margin:0 0 14px">${p.desc}</p>
         ${techTags ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">${techTags}</div>` : ''}
@@ -2729,6 +2747,8 @@ if (closeConsoleBtn && consoleOutput) {
   // ── APP: Settings ─────────────────────────────────────────────
   function buildSettings(body) {
     body.style.overflow = 'auto';
+    const animLabels = { high: 'High', medium: 'Medium', low: 'Low' };
+    const themeLabels = { 'site-purple': 'Site Purple', 'cyan-blue': 'Cyan Blue', 'deep-violet': 'Deep Violet' };
     body.innerHTML = `
       <div class="pos-settings">
         <div class="pos-settings-section-title">System</div>
@@ -2760,11 +2780,16 @@ if (closeConsoleBtn && consoleOutput) {
             <div class="pos-setting-row-label">Animations</div>
             <div class="pos-setting-row-sub">UI animation quality</div>
           </div>
-          <select class="pos-select" id="posAnimSelect">
-            <option value="high"   ${animationsLevel==='high'   ? 'selected':''}>High</option>
-            <option value="medium" ${animationsLevel==='medium' ? 'selected':''}>Medium</option>
-            <option value="low"    ${animationsLevel==='low'    ? 'selected':''}>Low</option>
-          </select>
+          <div class="pos-custom-select" id="posAnimSelect" data-value="${animationsLevel}">
+            <button class="pos-custom-select-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span>${animLabels[animationsLevel]}</span>
+            </button>
+            <div class="pos-custom-select-menu" role="listbox">
+              <button class="pos-custom-option ${animationsLevel==='high' ? 'pos-option-active' : ''}" type="button" data-value="high" role="option">High</button>
+              <button class="pos-custom-option ${animationsLevel==='medium' ? 'pos-option-active' : ''}" type="button" data-value="medium" role="option">Medium</button>
+              <button class="pos-custom-option ${animationsLevel==='low' ? 'pos-option-active' : ''}" type="button" data-value="low" role="option">Low</button>
+            </div>
+          </div>
         </div>
 
         <div class="pos-setting-row">
@@ -2772,11 +2797,16 @@ if (closeConsoleBtn && consoleOutput) {
             <div class="pos-setting-row-label">Theme</div>
             <div class="pos-setting-row-sub">Desktop color scheme</div>
           </div>
-          <select class="pos-select" id="posThemeSelect">
-            <option value="site-purple" ${osTheme==='site-purple' ? 'selected':''}>Site Purple</option>
-            <option value="cyan-blue"   ${osTheme==='cyan-blue'   ? 'selected':''}>Cyan Blue</option>
-            <option value="deep-violet" ${osTheme==='deep-violet' ? 'selected':''}>Deep Violet</option>
-          </select>
+          <div class="pos-custom-select" id="posThemeSelect" data-value="${osTheme}">
+            <button class="pos-custom-select-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span>${themeLabels[osTheme]}</span>
+            </button>
+            <div class="pos-custom-select-menu" role="listbox">
+              <button class="pos-custom-option ${osTheme==='site-purple' ? 'pos-option-active' : ''}" type="button" data-value="site-purple" role="option">Site Purple</button>
+              <button class="pos-custom-option ${osTheme==='cyan-blue' ? 'pos-option-active' : ''}" type="button" data-value="cyan-blue" role="option">Cyan Blue</button>
+              <button class="pos-custom-option ${osTheme==='deep-violet' ? 'pos-option-active' : ''}" type="button" data-value="deep-violet" role="option">Deep Violet</button>
+            </div>
+          </div>
         </div>
 
         <div class="pos-settings-divider"></div>
@@ -2803,34 +2833,121 @@ if (closeConsoleBtn && consoleOutput) {
     });
 
     // Music toggle
-    body.querySelector('#posMusicToggle').addEventListener('change', function () {
+    body.querySelector('#posMusicToggle').addEventListener('change', async function () {
       musicEnabled = this.checked;
-      if (musicEnabled) startAmbientMusic();
-      else stopAmbientMusic();
+      if (musicEnabled) {
+        const started = await startAmbientMusic();
+        if (!started) {
+          musicEnabled = false;
+          this.checked = false;
+        }
+      } else {
+        stopAmbientMusic();
+      }
     });
 
-    // Animations
-    body.querySelector('#posAnimSelect').addEventListener('change', function () {
-      animationsLevel = this.value;
+    setupSettingsSelect(body.querySelector('#posAnimSelect'), (value) => {
+      animationsLevel = value;
       document.documentElement.style.setProperty('--pos-win-anim', animationsLevel === 'low' ? 'none' : '');
     });
 
-    // Theme
-    body.querySelector('#posThemeSelect').addEventListener('change', function () {
-      applyOsTheme(this.value);
+    setupSettingsSelect(body.querySelector('#posThemeSelect'), (value) => {
+      applyOsTheme(value);
     });
 
     // Shutdown
     body.querySelector('#posSettingsShutdown').addEventListener('click', () => triggerShutdown());
   }
 
+  function setupSettingsSelect(selectEl, onChange) {
+    if (!selectEl) return;
+
+    const trigger = selectEl.querySelector('.pos-custom-select-btn');
+    const options = selectEl.querySelectorAll('.pos-custom-option');
+    const settingsPanel = selectEl.closest('.pos-settings');
+
+    function closeSelect() {
+      selectEl.classList.remove('pos-select-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.pos-custom-select.pos-select-open').forEach(el => {
+        if (el !== selectEl) {
+          el.classList.remove('pos-select-open');
+          const btn = el.querySelector('.pos-custom-select-btn');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      const isOpen = selectEl.classList.toggle('pos-select-open');
+      trigger.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    options.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const value = option.dataset.value;
+        selectEl.dataset.value = value;
+        trigger.querySelector('span').textContent = option.textContent;
+        options.forEach(o => o.classList.toggle('pos-option-active', o === option));
+        closeSelect();
+        onChange(value);
+      });
+    });
+
+    if (settingsPanel) settingsPanel.addEventListener('click', closeSelect);
+  }
+
   // OS Theme
   function applyOsTheme(theme) {
     osTheme = theme;
     const themes = {
-      'site-purple': { accent: '#a78bfa', accent2: '#06b6d4', glow: 'rgba(124,58,237,0.4)',   dim: 'rgba(124,58,237,0.15)' },
-      'cyan-blue':   { accent: '#06b6d4', accent2: '#7c3aed', glow: 'rgba(6,182,212,0.35)',   dim: 'rgba(6,182,212,0.15)' },
-      'deep-violet': { accent: '#7c3aed', accent2: '#a78bfa', glow: 'rgba(124,58,237,0.5)',   dim: 'rgba(124,58,237,0.2)' },
+      'site-purple': {
+        accent: '#a78bfa',
+        accent2: '#06b6d4',
+        glow: 'rgba(124,58,237,0.4)',
+        dim: 'rgba(124,58,237,0.15)',
+        bg: '#050812',
+        surface: '#080d1a',
+        surface2: '#0c1223',
+        header: '#080d1a',
+        topbar: 'rgba(3,6,16,0.92)',
+        dock: 'rgba(10,14,26,0.7)',
+        control: 'rgba(124,58,237,0.08)',
+        controlH: 'rgba(124,58,237,0.18)',
+        desktop: 'radial-gradient(ellipse at 15% 15%, rgba(124,58,237,0.12) 0%, transparent 45%), radial-gradient(ellipse at 85% 85%, rgba(6,182,212,0.07) 0%, transparent 45%), radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.05) 0%, transparent 50%), linear-gradient(160deg, #050812 0%, #03060f 100%)'
+      },
+      'cyan-blue': {
+        accent: '#22d3ee',
+        accent2: '#38bdf8',
+        glow: 'rgba(34,211,238,0.34)',
+        dim: 'rgba(34,211,238,0.14)',
+        bg: '#031018',
+        surface: '#061722',
+        surface2: '#082132',
+        header: '#061724',
+        topbar: 'rgba(2,16,24,0.92)',
+        dock: 'rgba(4,24,34,0.72)',
+        control: 'rgba(34,211,238,0.08)',
+        controlH: 'rgba(34,211,238,0.18)',
+        desktop: 'radial-gradient(ellipse at 18% 18%, rgba(34,211,238,0.13) 0%, transparent 44%), radial-gradient(ellipse at 88% 82%, rgba(56,189,248,0.11) 0%, transparent 46%), radial-gradient(ellipse at 50% 100%, rgba(14,165,233,0.08) 0%, transparent 52%), linear-gradient(160deg, #031018 0%, #020812 100%)'
+      },
+      'deep-violet': {
+        accent: '#8b5cf6',
+        accent2: '#c084fc',
+        glow: 'rgba(139,92,246,0.45)',
+        dim: 'rgba(139,92,246,0.18)',
+        bg: '#080516',
+        surface: '#100a23',
+        surface2: '#17102f',
+        header: '#100a23',
+        topbar: 'rgba(8,5,18,0.93)',
+        dock: 'rgba(16,10,35,0.72)',
+        control: 'rgba(139,92,246,0.1)',
+        controlH: 'rgba(139,92,246,0.22)',
+        desktop: 'radial-gradient(ellipse at 16% 16%, rgba(139,92,246,0.17) 0%, transparent 44%), radial-gradient(ellipse at 86% 78%, rgba(192,132,252,0.11) 0%, transparent 45%), radial-gradient(ellipse at 50% 100%, rgba(91,33,182,0.10) 0%, transparent 52%), linear-gradient(160deg, #080516 0%, #03020a 100%)'
+      },
     };
     const t = themes[theme] || themes['site-purple'];
     const r = document.documentElement;
@@ -2838,6 +2955,15 @@ if (closeConsoleBtn && consoleOutput) {
     r.style.setProperty('--pos-accent-2',   t.accent2);
     r.style.setProperty('--pos-accent-glow', t.glow);
     r.style.setProperty('--pos-accent-dim',  t.dim);
+    r.style.setProperty('--pos-bg',          t.bg);
+    r.style.setProperty('--pos-surface',     t.surface);
+    r.style.setProperty('--pos-surface-2',   t.surface2);
+    r.style.setProperty('--pos-win-header',  t.header);
+    r.style.setProperty('--pos-topbar-bg',   t.topbar);
+    r.style.setProperty('--pos-dock-bg',     t.dock);
+    r.style.setProperty('--pos-control-bg',  t.control);
+    r.style.setProperty('--pos-control-bg-h', t.controlH);
+    r.style.setProperty('--pos-desktop-bg',  t.desktop);
     r.style.setProperty('--pos-border',     `rgba(${hexToRgb(t.accent)},0.18)`);
     r.style.setProperty('--pos-border-2',   `rgba(${hexToRgb(t.accent)},0.08)`);
   }
@@ -2976,7 +3102,23 @@ if (closeConsoleBtn && consoleOutput) {
 
     // Restore theme defaults
     const r = document.documentElement;
-    ['--pos-accent','--pos-accent-2','--pos-accent-glow','--pos-accent-dim','--pos-border','--pos-border-2'].forEach(v => r.style.removeProperty(v));
+    [
+      '--pos-accent',
+      '--pos-accent-2',
+      '--pos-accent-glow',
+      '--pos-accent-dim',
+      '--pos-bg',
+      '--pos-surface',
+      '--pos-surface-2',
+      '--pos-win-header',
+      '--pos-topbar-bg',
+      '--pos-dock-bg',
+      '--pos-control-bg',
+      '--pos-control-bg-h',
+      '--pos-desktop-bg',
+      '--pos-border',
+      '--pos-border-2'
+    ].forEach(v => r.style.removeProperty(v));
 
     // Fade out
     osRoot.style.transition = 'opacity 0.5s ease';
@@ -2995,13 +3137,17 @@ if (closeConsoleBtn && consoleOutput) {
   // ═════════════════════════════════════════
   // AMBIENT MUSIC (Web Audio API)
   // ═════════════════════════════════════════
-  function startAmbientMusic() {
+  async function startAmbientMusic() {
     try {
-      if (audioCtx) return;
+      if (audioCtx) {
+        if (audioCtx.state === 'suspended') await audioCtx.resume();
+        return audioCtx.state === 'running';
+      }
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') await audioCtx.resume();
       const masterGain = audioCtx.createGain();
       masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-      masterGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 2);
+      masterGain.gain.linearRampToValueAtTime(0.16, audioCtx.currentTime + 0.8);
       masterGain.connect(audioCtx.destination);
 
       // Ambient pad — slow oscillating chord
@@ -3013,15 +3159,15 @@ if (closeConsoleBtn && consoleOutput) {
         const lfo  = audioCtx.createOscillator();
         const lfoG = audioCtx.createGain();
 
-        osc.type      = 'sine';
+        osc.type      = i % 2 ? 'triangle' : 'sine';
         osc.frequency.value = freq;
         lfo.type      = 'sine';
-        lfo.frequency.value = 0.05 + i * 0.02;
-        lfoG.gain.value = 0.3;
+        lfo.frequency.value = 0.08 + i * 0.025;
+        lfoG.gain.value = 0.12;
 
         lfo.connect(lfoG);
-        lfoG.connect(gain.gain);
-        gain.gain.value = 0.5;
+        lfoG.connect(osc.frequency);
+        gain.gain.value = 0.18;
         osc.connect(gain);
         gain.connect(masterGain);
 
@@ -3030,20 +3176,24 @@ if (closeConsoleBtn && consoleOutput) {
         oscs.push(osc, lfo);
       });
 
-      // Sub-bass pulse
+      // Low-mid pulse so laptop speakers can actually reproduce it.
       const subOsc  = audioCtx.createOscillator();
       const subGain = audioCtx.createGain();
       subOsc.type = 'triangle';
-      subOsc.frequency.value = 65.41; // C2
-      subGain.gain.value = 0.4;
+      subOsc.frequency.value = 174.61; // F3
+      subGain.gain.value = 0.16;
       subOsc.connect(subGain);
       subGain.connect(masterGain);
       subOsc.start();
       oscs.push(subOsc);
 
       musicNodes = { ctx: audioCtx, master: masterGain, oscs };
+      return audioCtx.state === 'running';
     } catch (err) {
       console.warn('Audio not available:', err);
+      audioCtx = null;
+      musicNodes = {};
+      return false;
     }
   }
 
@@ -3058,6 +3208,57 @@ if (closeConsoleBtn && consoleOutput) {
         musicNodes = {};
       }, 600);
     } catch(e) {}
+  }
+
+  async function startAmbientMusic() {
+    try {
+      if (!ambientAudio) {
+        ambientAudio = new Audio('audio/ambient.mp3');
+        ambientAudio.loop = true;
+        ambientAudio.preload = 'auto';
+      }
+
+      if (ambientFadeTimer) {
+        clearInterval(ambientFadeTimer);
+        ambientFadeTimer = null;
+      }
+
+      ambientAudio.volume = 0;
+      await ambientAudio.play();
+
+      const targetVolume = 0.12;
+      ambientFadeTimer = setInterval(() => {
+        ambientAudio.volume = Math.min(targetVolume, ambientAudio.volume + 0.045);
+        if (ambientAudio.volume >= targetVolume) {
+          clearInterval(ambientFadeTimer);
+          ambientFadeTimer = null;
+        }
+      }, 40);
+
+      return true;
+    } catch (err) {
+      console.warn('Ambient audio file could not play:', err);
+      return false;
+    }
+  }
+
+  function stopAmbientMusic() {
+    if (!ambientAudio) return;
+
+    if (ambientFadeTimer) {
+      clearInterval(ambientFadeTimer);
+      ambientFadeTimer = null;
+    }
+
+    ambientFadeTimer = setInterval(() => {
+      ambientAudio.volume = Math.max(0, ambientAudio.volume - 0.06);
+      if (ambientAudio.volume <= 0) {
+        clearInterval(ambientFadeTimer);
+        ambientFadeTimer = null;
+        ambientAudio.pause();
+        ambientAudio.currentTime = 0;
+      }
+    }, 35);
   }
 
   // ── Utility ──────────────────────────────────────────────────

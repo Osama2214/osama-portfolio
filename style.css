@@ -3762,13 +3762,22 @@ body.coffee-overdrive * {
   --pos-bg:          #050812;            /* exact --bg      */
   --pos-surface:     #080d1a;            /* exact --bg-2    */
   --pos-surface-2:   #0c1223;            /* exact --surface */
+  --pos-desktop-bg:
+    radial-gradient(ellipse at 15% 15%, rgba(124,58,237,0.12) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 85%, rgba(6,182,212,0.07) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.05) 0%, transparent 50%),
+    linear-gradient(160deg, #050812 0%, #03060f 100%);
+  --pos-topbar-bg:   rgba(3,6,16,0.92);
+  --pos-dock-bg:     rgba(10,14,26,0.7);
+  --pos-control-bg:  rgba(124,58,237,0.08);
+  --pos-control-bg-h: rgba(124,58,237,0.18);
   --pos-border:      rgba(124,58,237,0.22);
   --pos-border-2:    rgba(124,58,237,0.09);
   --pos-text:        #e2e8f0;            /* exact --text    */
   --pos-text-2:      #94a3b8;            /* exact --text-2  */
   --pos-win-header:  #080d1a;
   --pos-r:           14px;
-  --pos-shadow:      0 24px 80px rgba(0,0,0,0.85), 0 0 40px rgba(124,58,237,0.12);
+  --pos-shadow:      0 24px 80px rgba(0,0,0,0.85), 0 0 40px var(--pos-accent-dim);
   --pos-topbar-h:    40px;
 }
 
@@ -3854,11 +3863,11 @@ body.coffee-overdrive * {
 .pos-boot-logo-icon {
   width: 72px; height: 72px;
   border-radius: 18px;
-  background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.08));
+  background: linear-gradient(135deg, var(--pos-control-bg-h), color-mix(in srgb, var(--pos-accent-2) 12%, transparent));
   border: 1px solid var(--pos-border);
   display: flex; align-items: center; justify-content: center;
   color: var(--pos-accent);
-  box-shadow: 0 0 30px rgba(124,58,237,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 0 30px var(--pos-accent-dim), inset 0 1px 0 rgba(255,255,255,0.05);
   animation: posIconGlow 3s ease-in-out infinite;
 }
 
@@ -3941,18 +3950,14 @@ body.coffee-overdrive * {
   inset: 0;
   display: flex;
   flex-direction: column;
-  background:
-    radial-gradient(ellipse at 15% 15%, rgba(124,58,237,0.12) 0%, transparent 45%),
-    radial-gradient(ellipse at 85% 85%, rgba(6,182,212,0.07) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.05) 0%, transparent 50%),
-    linear-gradient(160deg, #050812 0%, #03060f 100%);
+  background: var(--pos-desktop-bg);
   overflow: hidden;
 }
 
 /* ── Topbar ── */
 .pos-topbar {
   height: var(--pos-topbar-h);
-  background: rgba(3,6,16,0.92);
+  background: var(--pos-topbar-bg);
   border-bottom: 1px solid var(--pos-border);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -3973,7 +3978,7 @@ body.coffee-overdrive * {
   align-items: center;
   gap: 6px;
   padding: 4px 12px;
-  background: rgba(124,58,237,0.08);
+  background: var(--pos-control-bg);
   border: 1px solid var(--pos-border);
   border-radius: 5px;
   color: var(--pos-accent);
@@ -3984,7 +3989,7 @@ body.coffee-overdrive * {
   transition: all 0.2s ease;
   white-space: nowrap;
 }
-.pos-start-btn:hover { background: rgba(124,58,237,0.18); box-shadow: 0 0 14px rgba(124,58,237,0.3); }
+.pos-start-btn:hover { background: var(--pos-control-bg-h); box-shadow: 0 0 14px var(--pos-accent-glow); }
 
 .pos-clock {
   font-family: 'JetBrains Mono', monospace;
@@ -4023,7 +4028,7 @@ body.coffee-overdrive * {
   align-items: flex-end;
   gap: 10px;
   padding: 8px 10px;
-  background: rgba(10,14,26,0.7);
+  background: var(--pos-dock-bg);
   border: 1px solid var(--pos-border);
   border-radius: 18px;
   backdrop-filter: blur(24px);
@@ -4048,19 +4053,42 @@ body.coffee-overdrive * {
   width: 46px;
   height: 46px;
   padding: 0;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
+  background: transparent;
+  border: none;
+  border-radius: 14px;
   color: var(--pos-text-2);
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
+  outline: none;
+}
+.pos-taskbar-app::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  top: -14px;
+  bottom: -18px;
+}
+.pos-taskbar-icon {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  pointer-events: none;
   transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), background 0.2s ease, border-color 0.2s ease;
 }
-.pos-taskbar-app span { display: none; }
-.pos-taskbar-app:hover { background: rgba(255,255,255,0.09); transform: translateY(-9px) scale(1.12); }
-.pos-taskbar-app:active { transform: translateY(-4px) scale(1.04); }
-.pos-taskbar-app.pos-app-active { background: rgba(124,58,237,0.16); border-color: rgba(124,58,237,0.4); color: var(--pos-accent); }
+.pos-taskbar-label { display: none; }
+.pos-taskbar-app:hover .pos-taskbar-icon { background: var(--pos-control-bg); border-color: var(--pos-border); }
+.pos-taskbar-app:hover .pos-taskbar-icon { transform: translateY(-9px) scale(1.12); }
+.pos-taskbar-app:active .pos-taskbar-icon { transform: translateY(-4px) scale(1.04); }
+.pos-taskbar-app.pos-app-active { color: var(--pos-accent); }
+.pos-taskbar-app.pos-app-active .pos-taskbar-icon { background: var(--pos-control-bg-h); border-color: var(--pos-border); }
+.pos-taskbar-app:focus-visible .pos-taskbar-icon { box-shadow: 0 0 0 2px var(--pos-border); }
 .pos-taskbar-app::after {
   content: '';
   position: absolute;
@@ -4080,7 +4108,8 @@ body.coffee-overdrive * {
   .pos-dock-wrap { bottom: 8px; }
   .pos-dock { gap: 6px; padding: 6px 8px; border-radius: 14px; }
   .pos-taskbar-app { width: 40px; height: 40px; font-size: 19px; border-radius: 10px; }
-  .pos-taskbar-app:hover { transform: translateY(-6px) scale(1.08); }
+  .pos-taskbar-icon { width: 40px; height: 40px; border-radius: 10px; }
+  .pos-taskbar-app:hover .pos-taskbar-icon { transform: translateY(-6px) scale(1.08); }
 }
 
 /* ── Desktop Icons ── */
@@ -4109,12 +4138,12 @@ body.coffee-overdrive * {
   user-select: none;
 }
 .pos-icon:hover {
-  background: rgba(124,58,237,0.1);
-  border-color: rgba(124,58,237,0.35);
-  box-shadow: 0 0 18px rgba(124,58,237,0.18);
+  background: var(--pos-control-bg);
+  border-color: var(--pos-border);
+  box-shadow: 0 0 18px var(--pos-accent-dim);
 }
 .pos-icon:active { transform: scale(0.94); }
-.pos-icon-emoji { font-size: 28px; line-height: 1; filter: drop-shadow(0 2px 10px rgba(124,58,237,0.5)); }
+.pos-icon-emoji { font-size: 28px; line-height: 1; filter: drop-shadow(0 2px 10px var(--pos-accent-glow)); }
 .pos-icon-label {
   font-size: 11px;
   color: var(--pos-text);
@@ -4142,8 +4171,11 @@ body.coffee-overdrive * {
   transition: box-shadow 0.2s ease;
 }
 .pos-window.pos-win-focused {
-  box-shadow: var(--pos-shadow), 0 0 0 1px rgba(124,58,237,0.35);
-  border-color: rgba(124,58,237,0.45);
+  box-shadow: var(--pos-shadow), 0 0 0 1px var(--pos-border);
+  border-color: var(--pos-border);
+}
+.pos-window.pos-win-minimizing {
+  pointer-events: none;
 }
 .pos-window.pos-win-minimized { display: none; }
 
@@ -4187,31 +4219,76 @@ body.coffee-overdrive * {
 .pos-win-controls {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   flex-shrink: 0;
+  padding: 0 1px;
 }
 
 .pos-win-btn {
-  width: 14px; height: 14px;
-  border-radius: 50%;
+  width: 26px; height: 24px;
+  border-radius: 8px;
   border: none;
+  background: transparent;
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 8px;
-  font-weight: 700;
+  display: grid;
+  place-items: center;
+  font-size: 0;
   color: transparent;
-  transition: all 0.15s ease;
+  line-height: 1;
+  position: relative;
+  transition: transform 0.15s ease;
   flex-shrink: 0;
 }
-.pos-win-controls:hover .pos-win-btn { color: rgba(0,0,0,0.7); }
 
-.pos-win-close    { background: #ff5f57; }
-.pos-win-minimize { background: #febc2e; }
-.pos-win-maximize { background: #28c840; }
+.pos-win-btn::before {
+  content: '';
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 1px 4px rgba(0,0,0,0.22);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
 
-.pos-win-close:hover    { background: #ff3b30; transform: scale(1.15); }
-.pos-win-minimize:hover { background: #f5a623; transform: scale(1.15); }
-.pos-win-maximize:hover { background: #1eac34; transform: scale(1.15); }
+.pos-win-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  opacity: 0;
+  transform: translate(-50%, calc(-50% - 1.5px));
+  transition: opacity 0.12s ease;
+}
+.pos-win-controls:hover .pos-win-btn::after { opacity: 1; }
+
+.pos-win-close::before    { background: #ff5f57; }
+.pos-win-minimize::before { background: #febc2e; }
+.pos-win-maximize::before { background: #28c840; }
+
+.pos-win-minimize::after {
+  width: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(0,0,0,0.68);
+}
+.pos-win-maximize::after {
+  width: 6px;
+  height: 6px;
+  border: 1.7px solid rgba(0,0,0,0.68);
+  border-radius: 1.5px;
+}
+.pos-win-close::after {
+  width: 7px;
+  height: 7px;
+  background:
+    linear-gradient(45deg, transparent 42%, rgba(0,0,0,0.68) 42%, rgba(0,0,0,0.68) 58%, transparent 58%),
+    linear-gradient(-45deg, transparent 42%, rgba(0,0,0,0.68) 42%, rgba(0,0,0,0.68) 58%, transparent 58%);
+}
+
+.pos-win-btn:hover { transform: scale(1.08); }
+.pos-win-btn:hover::before { filter: brightness(1.08); }
+.pos-win-btn:active { transform: scale(0.96); }
 
 .pos-win-body {
   flex: 1;
@@ -4237,8 +4314,8 @@ body.coffee-overdrive * {
   position: absolute;
   right: 4px; bottom: 4px;
   width: 8px; height: 8px;
-  border-right: 2px solid rgba(124,58,237,0.35);
-  border-bottom: 2px solid rgba(124,58,237,0.35);
+  border-right: 2px solid var(--pos-border);
+  border-bottom: 2px solid var(--pos-border);
   border-radius: 0 0 2px 0;
 }
 
@@ -4370,8 +4447,8 @@ body.coffee-overdrive * {
   transition: all 0.15s ease;
   border: 1px solid transparent;
 }
-.pos-sidebar-item:hover { background: rgba(124,58,237,0.08); color: var(--pos-text); }
-.pos-sidebar-item.pos-item-active { background: rgba(124,58,237,0.15); color: var(--pos-accent); border-color: rgba(124,58,237,0.25); }
+.pos-sidebar-item:hover { background: var(--pos-control-bg); color: var(--pos-text); }
+.pos-sidebar-item.pos-item-active { background: var(--pos-control-bg-h); color: var(--pos-accent); border-color: var(--pos-border); }
 
 .pos-explorer-main {
   flex: 1;
@@ -4411,8 +4488,8 @@ body.coffee-overdrive * {
   color: var(--pos-text);
 }
 .pos-file-item:hover {
-  background: rgba(124,58,237,0.1);
-  border-color: rgba(124,58,237,0.3);
+  background: var(--pos-control-bg);
+  border-color: var(--pos-border);
 }
 .pos-file-item-icon { font-size: 26px; }
 .pos-file-item-name { font-size: 11px; color: var(--pos-text); word-break: break-word; }
@@ -4434,7 +4511,7 @@ body.coffee-overdrive * {
   cursor: pointer;
 }
 .pos-file-detail-link.pos-link-primary {
-  background: rgba(124,58,237,0.12);
+  background: var(--pos-control-bg);
   border: 1px solid var(--pos-accent);
   color: var(--pos-accent);
 }
@@ -4498,7 +4575,7 @@ body.coffee-overdrive * {
   text-decoration: none;
   transition: all 0.15s ease;
 }
-.pos-toolbar-btn:hover { background: rgba(124,58,237,0.12); color: var(--pos-accent); border-color: rgba(124,58,237,0.3); }
+.pos-toolbar-btn:hover { background: var(--pos-control-bg); color: var(--pos-accent); border-color: var(--pos-border); }
 
 .pos-resume-iframe-wrap {
   flex: 1;
@@ -4569,7 +4646,7 @@ body.coffee-overdrive * {
   transition: all 0.15s ease;
   font-size: 14px;
 }
-.pos-browser-nav-btn:hover { background: rgba(124,58,237,0.12); color: var(--pos-accent); }
+.pos-browser-nav-btn:hover { background: var(--pos-control-bg); color: var(--pos-accent); border-color: var(--pos-border); }
 
 /* ══════════════════════
    APP: SETTINGS
@@ -4591,6 +4668,7 @@ body.coffee-overdrive * {
 }
 
 .pos-setting-row {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -4630,7 +4708,7 @@ body.coffee-overdrive * {
   background: rgba(255,255,255,0.4);
   transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
 }
-.pos-toggle input:checked + .pos-toggle-track { background: rgba(124,58,237,0.3); border-color: rgba(124,58,237,0.6); }
+.pos-toggle input:checked + .pos-toggle-track { background: var(--pos-control-bg-h); border-color: var(--pos-border); }
 .pos-toggle input:checked + .pos-toggle-track::after { background: var(--pos-accent); transform: translateX(20px); box-shadow: 0 0 8px var(--pos-accent-glow); }
 
 /* Select */
@@ -4648,6 +4726,107 @@ body.coffee-overdrive * {
 }
 .pos-select:focus { border-color: var(--pos-accent); }
 .pos-select option { background: #080d1a; }
+
+.pos-custom-select {
+  position: relative;
+  min-width: 112px;
+  flex-shrink: 0;
+}
+
+.pos-custom-select-btn {
+  width: 100%;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px 6px 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 7px;
+  color: var(--pos-text);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.pos-custom-select-btn::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  opacity: 0.75;
+  transition: transform 0.18s ease;
+  flex-shrink: 0;
+}
+
+.pos-custom-select-btn:hover,
+.pos-select-open .pos-custom-select-btn {
+  background: var(--pos-control-bg);
+  border-color: var(--pos-border);
+  box-shadow: 0 0 0 1px var(--pos-border-2);
+}
+
+.pos-select-open .pos-custom-select-btn::after {
+  transform: translateY(2px) rotate(225deg);
+}
+
+.pos-custom-select-menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  width: 100%;
+  padding: 5px;
+  background: color-mix(in srgb, var(--pos-surface) 96%, #000 4%);
+  border: 1px solid var(--pos-border);
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+  pointer-events: none;
+  z-index: 40;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.pos-select-open .pos-custom-select-menu {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.pos-custom-option {
+  width: 100%;
+  display: block;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--pos-text-2);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease;
+}
+
+.pos-custom-option:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--pos-text);
+}
+
+.pos-custom-option.pos-option-active {
+  background: var(--pos-control-bg-h);
+  color: var(--pos-accent);
+}
 
 /* Settings Divider */
 .pos-settings-divider { height: 1px; background: var(--pos-border-2); margin: 4px 0; }
@@ -4687,16 +4866,16 @@ body.coffee-overdrive * {
   align-items: center;
   gap: 14px;
   padding: 14px;
-  background: rgba(124,58,237,0.07);
-  border: 1px solid rgba(124,58,237,0.2);
+  background: var(--pos-control-bg);
+  border: 1px solid var(--pos-border);
   border-radius: 10px;
   margin-bottom: 4px;
 }
 .pos-contact-avatar {
   width: 44px; height: 44px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.1));
-  border: 2px solid rgba(124,58,237,0.4);
+  background: linear-gradient(135deg, var(--pos-control-bg-h), color-mix(in srgb, var(--pos-accent-2) 16%, transparent));
+  border: 2px solid var(--pos-border);
   display: flex; align-items: center; justify-content: center;
   font-size: 20px;
   flex-shrink: 0;
@@ -4717,8 +4896,8 @@ body.coffee-overdrive * {
   cursor: pointer;
 }
 .pos-contact-link:hover {
-  background: rgba(124,58,237,0.08);
-  border-color: rgba(124,58,237,0.3);
+  background: var(--pos-control-bg);
+  border-color: var(--pos-border);
   transform: translateX(4px);
 }
 .pos-contact-link-icon {
@@ -4818,8 +4997,8 @@ body.coffee-overdrive * {
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 @keyframes posIconGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(124,58,237,0.2), inset 0 1px 0 rgba(255,255,255,0.05); }
-  50%       { box-shadow: 0 0 40px rgba(124,58,237,0.45), 0 0 60px rgba(6,182,212,0.1), inset 0 1px 0 rgba(255,255,255,0.05); }
+  0%, 100% { box-shadow: 0 0 20px var(--pos-accent-dim), inset 0 1px 0 rgba(255,255,255,0.05); }
+  50%       { box-shadow: 0 0 40px var(--pos-accent-glow), 0 0 60px color-mix(in srgb, var(--pos-accent-2) 16%, transparent), inset 0 1px 0 rgba(255,255,255,0.05); }
 }
 @keyframes posBlink {
   0%, 100% { opacity: 1; }

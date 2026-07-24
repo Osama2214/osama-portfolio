@@ -989,7 +989,7 @@ if (closeConsoleBtn && consoleOutput) {
         loadingLine.remove();
 
         const aboutLine = printLine('');
-        await typeText(aboutLine, "Hi,\nI'm Osama Ahmed.\n\nBackend Developer.\n\nPassionate about Laravel,\nPHP,\nJava\nand building scalable web apps.\n", 15);
+        await typeText(aboutLine, "Hi,\nI'm Osama Ahmed.\n\nBackend Developer & 3rd-year IT student at EELU.\n\nBuilt Munjez — a full offline desktop productivity app — solo.\nCurrently mastering ASP.NET Core & PHP/Laravel.\nAvailable for Internships ✅\n", 15);
         break;
 
       case 'skills':
@@ -999,9 +999,9 @@ if (closeConsoleBtn && consoleOutput) {
         break;
 
       case 'projects':
-        printLine('1. Munjez (Productivity Desktop App)');
-        printLine('2. Laundry Management System (Laravel Capstone)');
-        printLine('3. Portfolio (Interactive Website)');
+        printLine('1. Munjez            (Productivity Desktop App)');
+        printLine('2. Munjez Website    (Marketing & Landing Page)');
+        printLine('3. Osama Café        (Coffee Shop Landing Page)');
         printLine('');
         printLine('Choose project number [1-3]:', 'info');
         activeSubMode = 'projects';
@@ -1192,20 +1192,23 @@ if (closeConsoleBtn && consoleOutput) {
       printLine('Munjez — Productivity Desktop App', 'banner');
       printLine('Status: Free & Shipped (Windows, Linux, Android)');
       printLine('Tech Stack: React, TypeScript, Tauri, Rust, Vite, Firebase');
-      printLine('Features: Smart Task Management, 4-view Calendar, Pomodoro Focus Timer, Habit Streak Tracker, White Noise Mixer.');
+      printLine('Features: Smart Tasks, 4-view Calendar (Hijri), Pomodoro, Habit Tracker, Stopwatch, White Noise Mixer.');
       printHTML('Website: <a href="https://munjez-website.vercel.app" target="_blank" style="color:var(--term-accent)">https://munjez-website.vercel.app</a>');
+      printHTML('GitHub:  <a href="https://github.com/Osama2214/munjez-releases" target="_blank" style="color:var(--term-accent)">github.com/Osama2214/munjez-releases</a>');
     } else if (choice === '2') {
-      printLine('Laundry Management System', 'banner');
-      printLine('Status: Completed (NTI Scholarship Capstone)');
-      printLine('Tech Stack: PHP, Laravel, MySQL, OOP, MVC, Bootstrap');
-      printLine('Features: Customer orders tracking, service pricing, billing invoice generation, payment processing, role-based auth.');
-      printHTML('Source Code: <a href="https://github.com/Osama2214/NTI-Task-2" target="_blank" style="color:var(--term-accent)">https://github.com/Osama2214/NTI-Task-2</a>');
-    } else if (choice === '3') {
-      printLine('Osama Ahmed Portfolio', 'banner');
+      printLine('Munjez Website — Marketing & Landing Page', 'banner');
       printLine('Status: Live');
-      printLine('Tech Stack: HTML5, CSS3, JavaScript, Vercel');
-      printLine('Features: Interactive console terminal, Hacker mode (matrix), glassmorphism styles, scroll triggers, custom caching, SEO optimized.');
-      printHTML('Live Site: <a href="https://osama-portfolio-six.vercel.app/" target="_blank" style="color:var(--term-accent)">https://osama-portfolio-six.vercel.app/</a>');
+      printLine('Tech Stack: HTML, CSS, JavaScript, Vercel');
+      printLine('Features: Bilingual (Arabic & English), full changelog, download links, privacy policy.');
+      printHTML('Live Site: <a href="https://munjez-website.vercel.app" target="_blank" style="color:var(--term-accent)">https://munjez-website.vercel.app</a>');
+      printHTML('GitHub:   <a href="https://github.com/Osama2214/munjez-website" target="_blank" style="color:var(--term-accent)">github.com/Osama2214/munjez-website</a>');
+    } else if (choice === '3') {
+      printLine('Osama Café — Specialty Coffee Shop & Roastery Web', 'banner');
+      printLine('Status: Live');
+      printLine('Tech Stack: HTML5, CSS3, JavaScript');
+      printLine('Features: Fluid typography, glassmorphism nav, dynamic animations, scroll-triggered hooks, zero-dependency.');
+      printHTML('Live Site: <a href="https://nti-task-2.vercel.app/" target="_blank" style="color:var(--term-accent)">https://nti-task-2.vercel.app/</a>');
+      printHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Task-2" target="_blank" style="color:var(--term-accent)">github.com/Osama2214/NTI-Task-2</a>');
     } else {
       printLine('Invalid selection. Exited project selector.', 'error');
     }
@@ -1740,4 +1743,1326 @@ if (closeConsoleBtn && consoleOutput) {
 
 
 
-})();
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   PORTFOLIO OS — v1.0.0
+══════════════════════════════════════════════════════════════ */
+(function PortfolioOS() {
+  'use strict';
+
+  // ── DOM References ──────────────────────────────────────────
+  const osRoot         = document.getElementById('portfolioOS');
+  const bootScreen     = document.getElementById('posBootScreen');
+  const desktop        = document.getElementById('posDesktop');
+  const windowsCont    = document.getElementById('posWindowsContainer');
+  const taskbarApps    = document.getElementById('posTaskbarApps');
+  const clockEl        = document.getElementById('posClock');
+  const launchBtn      = document.getElementById('launchOsBtn');
+  const shutdownBtnTop = document.getElementById('posShutdownBtn');
+  const shutdownScreen = document.getElementById('posShutdownScreen');
+  const shutdownText   = document.getElementById('posShutdownText');
+  const shutdownBarWrap= document.getElementById('posShutdownBarWrap');
+  const shutdownBar    = document.getElementById('posShutdownBar');
+  const iconsGrid      = document.getElementById('posIconsGrid');
+
+  // Boot status text
+  const bootStatusEl = document.getElementById('posBootStatus');
+  const BOOT_STAGES  = [
+    'Booting Portfolio OS...',
+    'Loading Kernel...',
+    'Initializing Desktop Environment...',
+  ];
+
+  if (!osRoot || !launchBtn) return;
+
+  // ── State ───────────────────────────────────────────────────
+  let zTop          = 10;
+  let openWindows   = {};          // appId → { el, taskbarBtn, minimized }
+  let clockInterval = null;
+  let musicEnabled  = false;
+  let particlesEnabled = true;
+  let animationsLevel  = 'high';
+  let osTheme       = 'site-purple';
+  let audioCtx      = null;
+  let musicNodes    = {};
+  let isBooting     = false;
+  let isShuttingDown= false;
+
+  // ── App Definitions ─────────────────────────────────────────
+  const APP_META = {
+    terminal : { title: 'Terminal',  icon: '🖥️',  w: 680, h: 440, x: 140, y: 60  },
+    projects : { title: 'Projects',  icon: '📂',  w: 720, h: 480, x: 160, y: 70  },
+    resume   : { title: 'Resume',    icon: '📄',  w: 680, h: 500, x: 180, y: 50  },
+    browser  : { title: 'Browser',   icon: '🌐',  w: 780, h: 520, x: 120, y: 40  },
+    settings : { title: 'Settings',  icon: '⚙️',  w: 400, h: 470, x: 300, y: 80  },
+    contact  : { title: 'Contact',   icon: '📧',  w: 420, h: 400, x: 320, y: 100 },
+    trash    : { title: 'Trash',     icon: '🗑️',  w: 380, h: 300, x: 350, y: 120 },
+  };
+
+  // Project data — matches the real projects on the site
+  const PROJECTS = [
+    {
+      id: 'munjez',
+      name: 'Munjez',
+      icon: '🖥️',
+      badge: 'Featured',
+      type: 'Productivity Desktop App',
+      desc: 'A full-featured offline productivity app — Tasks, Calendar (Hijri), Pomodoro, Habits, Stopwatch & White Noise. Built solo, runs natively on Windows, Linux & Android. No account, no internet required.',
+      tech: ['React', 'TypeScript', 'Tauri', 'Rust', 'Vite', 'Firebase'],
+      live: 'https://munjez-website.vercel.app',
+      github: 'https://github.com/Osama2214/munjez-releases',
+    },
+    {
+      id: 'munjez-website',
+      name: 'Munjez Website',
+      icon: '🌐',
+      badge: 'Open Source',
+      type: 'Marketing & Landing Page',
+      desc: 'The official marketing website for Munjez — bilingual (Arabic & English), full changelog, download links, and privacy policy. Built as a static site with pure HTML, CSS & JS.',
+      tech: ['HTML', 'CSS', 'JavaScript', 'Vercel'],
+      live: 'https://munjez-website.vercel.app',
+      github: 'https://github.com/Osama2214/munjez-website',
+    },
+    {
+      id: 'osama-cafe',
+      name: 'Osama Café',
+      icon: '☕',
+      badge: 'Open Source',
+      type: 'Specialty Coffee Shop & Roastery Web',
+      desc: 'A premium, highly interactive coffee shop landing page. Custom fluid typography, sticky glassmorphism nav, dynamic animations, scroll-triggered hooks, and a zero-dependency responsive architecture.',
+      tech: ['HTML5', 'CSS3', 'JavaScript'],
+      live: 'https://nti-task-2.vercel.app/',
+      github: 'https://github.com/Osama2214/NTI-Task-2',
+    },
+  ];
+
+  // ── Launch Button ────────────────────────────────────────────
+  launchBtn.addEventListener('click', () => {
+    if (!isBooting) startOS();
+  });
+
+  // ESC to exit during boot only
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isBooting) exitOS();
+  });
+
+  // ── Boot Sequence ────────────────────────────────────────────
+  function startOS() {
+    isBooting = true;
+    document.body.style.overflow = 'hidden';
+    osRoot.classList.remove('pos-hidden');
+    bootScreen.classList.remove('pos-hidden');
+    desktop.classList.add('pos-hidden');
+    shutdownScreen.classList.add('pos-hidden');
+
+    // Reset status text
+    if (bootStatusEl) bootStatusEl.textContent = BOOT_STAGES[0];
+
+    // Cycle through stages with fade transitions
+    cycleBootText(0);
+  }
+
+  async function cycleBootText(idx) {
+    const delays = [1500, 1200, 1000];
+    if (idx >= BOOT_STAGES.length) {
+      await sleep(300);
+      showDesktop();
+      return;
+    }
+    if (bootStatusEl) {
+      bootStatusEl.classList.remove('pos-status-fade');
+      bootStatusEl.textContent = BOOT_STAGES[idx];
+    }
+    await sleep(delays[idx]);
+    if (bootStatusEl) bootStatusEl.classList.add('pos-status-fade');
+    await sleep(280);
+    cycleBootText(idx + 1);
+  }
+
+  function showDesktop() {
+    bootScreen.classList.add('pos-hidden');
+    desktop.classList.remove('pos-hidden');
+    isBooting = false;
+    startClock();
+    if (musicEnabled) startAmbientMusic();
+  }
+
+  // ── Clock ────────────────────────────────────────────────────
+  function startClock() {
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      clockEl.textContent = `${h}:${m}  ${days[now.getDay()]}`;
+    }
+    updateClock();
+    clockInterval = setInterval(updateClock, 10000);
+  }
+
+  // ── Desktop Icon Click ───────────────────────────────────────
+  iconsGrid.addEventListener('click', (e) => {
+    const icon = e.target.closest('.pos-icon');
+    if (!icon) return;
+    const appId = icon.dataset.app;
+    if (appId) openApp(appId);
+  });
+
+  // Double-click to reopen
+  iconsGrid.addEventListener('dblclick', (e) => {
+    const icon = e.target.closest('.pos-icon');
+    if (!icon) return;
+    const appId = icon.dataset.app;
+    if (appId && openWindows[appId]) focusWindow(openWindows[appId].el);
+  });
+
+  // ── App Launcher ─────────────────────────────────────────────
+  function openApp(appId) {
+    // If already open, restore + focus
+    if (openWindows[appId]) {
+      const state = openWindows[appId];
+      if (state.el.classList.contains('pos-win-minimized')) {
+        restoreWindow(appId);
+      } else {
+        focusWindow(state.el);
+      }
+      return;
+    }
+
+    const meta = APP_META[appId];
+    if (!meta) return;
+
+    // Stagger offset if multiple windows
+    const offset = Object.keys(openWindows).length * 22;
+    const winEl = createWindow(appId, meta, offset);
+    windowsCont.appendChild(winEl);
+
+    // Build app content
+    const body = winEl.querySelector('.pos-win-body');
+    buildAppContent(appId, body);
+
+    // Taskbar
+    const taskBtn = createTaskbarBtn(meta.icon, meta.title, appId);
+    taskbarApps.appendChild(taskBtn);
+
+    openWindows[appId] = { el: winEl, taskbarBtn: taskBtn, minimized: false };
+    focusWindow(winEl);
+
+    makeWindowDraggable(winEl);
+    makeWindowResizable(winEl);
+
+    // Release the one-shot entrance animation once it finishes so it stops
+    // pinning `transform` — otherwise it would fight with the genie
+    // minimize/restore animation later.
+    setTimeout(() => { winEl.style.animation = 'none'; }, 260);
+  }
+
+  // ── Window Factory ───────────────────────────────────────────
+  function createWindow(appId, meta, offset) {
+    const el = document.createElement('div');
+    el.className = 'pos-window';
+    el.dataset.appId = appId;
+
+    // Position
+    const maxX = window.innerWidth  - meta.w - 40;
+    const maxY = window.innerHeight - meta.h - 80;
+    const x = Math.min(meta.x + offset, Math.max(120, maxX));
+    const y = Math.min(meta.y + offset, Math.max(50,  maxY));
+    el.style.cssText = `width:${meta.w}px;height:${meta.h}px;left:${x}px;top:${y}px`;
+
+    el.innerHTML = `
+      <div class="pos-win-header" data-win-handle>
+        <div class="pos-win-title">
+          <span class="pos-win-icon">${meta.icon}</span>
+          <span>${meta.title}</span>
+        </div>
+        <div class="pos-win-controls">
+          <button class="pos-win-btn pos-win-minimize" title="Minimize">─</button>
+          <button class="pos-win-btn pos-win-maximize" title="Maximize">□</button>
+          <button class="pos-win-btn pos-win-close" title="Close">✕</button>
+        </div>
+      </div>
+      <div class="pos-win-body"></div>
+      <div class="pos-win-resize"></div>
+    `;
+
+    // Control buttons
+    el.querySelector('.pos-win-close').addEventListener('click', () => closeWindow(appId));
+    el.querySelector('.pos-win-minimize').addEventListener('click', () => minimizeWindow(appId));
+    el.querySelector('.pos-win-maximize').addEventListener('click', () => maximizeWindow(appId));
+
+    // Focus on click
+    el.addEventListener('mousedown', () => focusWindow(el), true);
+
+    return el;
+  }
+
+  // ── Window Controls ──────────────────────────────────────────
+  function focusWindow(el) {
+    // Unfocus all
+    document.querySelectorAll('.pos-window').forEach(w => w.classList.remove('pos-win-focused'));
+    document.querySelectorAll('.pos-taskbar-app').forEach(b => b.classList.remove('pos-app-active'));
+
+    el.classList.add('pos-win-focused');
+    el.style.zIndex = ++zTop;
+
+    const appId = el.dataset.appId;
+    const state = openWindows[appId];
+    if (state && state.taskbarBtn) state.taskbarBtn.classList.add('pos-app-active');
+  }
+
+  function closeWindow(appId) {
+    const state = openWindows[appId];
+    if (!state) return;
+    state.el.remove();
+    state.taskbarBtn && state.taskbarBtn.remove();
+    delete openWindows[appId];
+  }
+
+  function minimizeWindow(appId) {
+    const state = openWindows[appId];
+    if (!state || state.el.classList.contains('pos-win-minimized')) return;
+    const el = state.el;
+    state.minimized = true;
+    el.classList.remove('pos-win-focused');
+    state.taskbarBtn && state.taskbarBtn.classList.remove('pos-app-active');
+    genieAnimate(el, state.taskbarBtn, 'out', () => {
+      el.classList.add('pos-win-minimized');
+    });
+  }
+
+  function restoreWindow(appId) {
+    const state = openWindows[appId];
+    if (!state) return;
+    const el = state.el;
+    el.classList.remove('pos-win-minimized');
+    state.minimized = false;
+    genieAnimate(el, state.taskbarBtn, 'in');
+    focusWindow(el);
+  }
+
+  function toggleMinimize(appId) {
+    const state = openWindows[appId];
+    if (!state) return;
+    if (state.el.classList.contains('pos-win-minimized')) {
+      restoreWindow(appId);
+    } else if (state.el.classList.contains('pos-win-focused')) {
+      minimizeWindow(appId);
+    } else {
+      focusWindow(state.el);
+    }
+  }
+
+  // ── Genie-style minimize/restore animation ──────────────────
+  // Approximates the macOS "genie effect" by animating a scale + translate
+  // from the window's own rect toward its dock icon's rect (and back).
+  function genieAnimate(win, btn, direction, onDone) {
+    if (!btn) { onDone && onDone(); return; }
+
+    const winRect = win.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+
+    const dx = (btnRect.left + btnRect.width  / 2) - (winRect.left + winRect.width  / 2);
+    const dy = (btnRect.top  + btnRect.height / 2) - (winRect.top  + winRect.height / 2);
+    const sx = Math.max(0.04, btnRect.width  / winRect.width);
+    const sy = Math.max(0.04, btnRect.height / winRect.height);
+    const shrunk = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+
+    win.style.transformOrigin = '50% 50%';
+
+    function onTransitionEnd(e) {
+      if (e.target !== win || e.propertyName !== 'transform') return;
+      win.removeEventListener('transitionend', onTransitionEnd);
+      win.style.transition = '';
+      if (direction === 'in') { win.style.transform = ''; win.style.opacity = ''; }
+      onDone && onDone();
+    }
+
+    if (direction === 'out') {
+      win.style.transition = 'transform 0.36s cubic-bezier(0.55,0,0.85,0.35), opacity 0.3s ease 0.05s';
+      win.addEventListener('transitionend', onTransitionEnd);
+      requestAnimationFrame(() => {
+        win.style.transform = shrunk;
+        win.style.opacity = '0';
+      });
+    } else {
+      win.style.transition = 'none';
+      win.style.transform = shrunk;
+      win.style.opacity = '0';
+      void win.offsetWidth; // force reflow before animating back
+      win.style.transition = 'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease';
+      win.addEventListener('transitionend', onTransitionEnd);
+      requestAnimationFrame(() => {
+        win.style.transform = 'translate(0,0) scale(1)';
+        win.style.opacity = '1';
+      });
+    }
+  }
+
+  function maximizeWindow(appId) {
+    const state = openWindows[appId];
+    if (!state) return;
+    const el = state.el;
+    const wasMax = el.classList.contains('pos-win-maximized');
+    if (!wasMax) {
+      // Save previous size/pos
+      el.dataset.prevStyle = el.getAttribute('style');
+      el.classList.add('pos-win-maximized');
+    } else {
+      el.classList.remove('pos-win-maximized');
+      if (el.dataset.prevStyle) el.setAttribute('style', el.dataset.prevStyle);
+    }
+  }
+
+  // ── Draggable ────────────────────────────────────────────────
+  function makeWindowDraggable(win) {
+    const header = win.querySelector('[data-win-handle]');
+    let startX, startY, startL, startT, dragging = false;
+
+    header.addEventListener('mousedown', (e) => {
+      if (e.target.closest('.pos-win-controls')) return;
+      if (win.classList.contains('pos-win-maximized')) return;
+      dragging = true;
+      startX = e.clientX; startY = e.clientY;
+      startL = parseInt(win.style.left) || 0;
+      startT = parseInt(win.style.top)  || 0;
+      header.classList.add('pos-dragging');
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const topbarH = 40;
+      const newLeft = Math.max(0, startL + dx);
+      const newTop  = Math.max(topbarH, startT + dy);
+      win.style.left = newLeft + 'px';
+      win.style.top  = newTop  + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (dragging) {
+        dragging = false;
+        header.classList.remove('pos-dragging');
+      }
+    });
+  }
+
+  // ── Resizable ────────────────────────────────────────────────
+  function makeWindowResizable(win) {
+    const handle = win.querySelector('.pos-win-resize');
+    let resizing = false, startX, startY, startW, startH;
+
+    handle.addEventListener('mousedown', (e) => {
+      if (win.classList.contains('pos-win-maximized')) return;
+      resizing = true;
+      startX = e.clientX; startY = e.clientY;
+      startW = win.offsetWidth; startH = win.offsetHeight;
+      e.preventDefault(); e.stopPropagation();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!resizing) return;
+      const newW = Math.max(320, startW + (e.clientX - startX));
+      const newH = Math.max(200, startH + (e.clientY - startY));
+      win.style.width  = newW + 'px';
+      win.style.height = newH + 'px';
+    });
+
+    document.addEventListener('mouseup', () => { resizing = false; });
+  }
+
+  // ── Taskbar Button ───────────────────────────────────────────
+  function createTaskbarBtn(icon, title, appId) {
+    const btn = document.createElement('button');
+    btn.className = 'pos-taskbar-app pos-app-running';
+    btn.title = title;
+    btn.innerHTML = `${icon}<span>${title}</span>`;
+    btn.addEventListener('click', () => toggleMinimize(appId));
+    return btn;
+  }
+
+  // ═════════════════════════════════════════
+  // APP CONTENT BUILDERS
+  // ═════════════════════════════════════════
+
+  function buildAppContent(appId, body) {
+    body.style.overflow = 'hidden';
+    body.style.display  = 'flex';
+    body.style.flexDirection = 'column';
+
+    switch (appId) {
+      case 'terminal': buildTerminal(body); break;
+      case 'projects': buildProjects(body); break;
+      case 'resume':   buildResume(body);   break;
+      case 'browser':  buildBrowser(body);  break;
+      case 'settings': buildSettings(body); break;
+      case 'contact':  buildContact(body);  break;
+      case 'trash':    buildTrash(body);    break;
+    }
+  }
+
+  // ── APP: Terminal ────────────────────────────────────────────
+  function buildTerminal(body) {
+    body.innerHTML = `
+      <div class="pos-terminal" style="height:100%">
+        <div style="display:flex;align-items:center;padding:8px 16px;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(255,255,255,0.05);border-top:2px solid var(--pos-accent);flex-shrink:0">
+          <span style="flex:1;text-align:center;font-size:11.5px;color:rgba(255,255,255,0.35)">Terminal — Portfolio OS</span>
+        </div>
+        <div class="pos-term-output" id="posTermOut"></div>
+        <div class="pos-term-input-row">
+          <span class="pos-term-prompt-sym">root@portfolio:~$</span>
+          <div class="pos-term-input-wrapper">
+            <input type="text" class="pos-term-input" id="posTermIn" autocomplete="off" spellcheck="false" placeholder="type 'help'..." />
+            <span id="posTermInGhost" class="pos-term-input-ghost"></span>
+          </div>
+        </div>
+      </div>`;
+
+    const out = body.querySelector('#posTermOut');
+    const inp = body.querySelector('#posTermIn');
+    const ghost = body.querySelector('#posTermInGhost');
+
+    const cmdHistory = [];
+    let histIdx = 0;
+    let typing = false;
+    let activeSubMode = null; // 'projects', 'contact', or 'guess'
+    let guessTarget = 0;
+    let guessAttempts = 0;
+    let accessGranted = false;
+
+    function tLine(text, cls = 'pos-t-output') {
+      const d = document.createElement('div');
+      d.className = `pos-term-line ${cls}`;
+      d.textContent = text;
+      out.appendChild(d);
+      out.scrollTop = out.scrollHeight;
+      return d;
+    }
+    function tHTML(html, cls = 'pos-t-output') {
+      const d = document.createElement('div');
+      d.className = `pos-term-line ${cls}`;
+      d.innerHTML = html;
+      out.appendChild(d);
+      out.scrollTop = out.scrollHeight;
+      return d;
+    }
+    function typeOut(text, cls, speed = 18) {
+      return new Promise(resolve => {
+        const d = document.createElement('div');
+        d.className = `pos-term-line ${cls}`;
+        out.appendChild(d);
+        let i = 0;
+        const t = setInterval(() => {
+          d.textContent += text[i++];
+          out.scrollTop = out.scrollHeight;
+          if (i >= text.length) { clearInterval(t); resolve(); }
+        }, speed);
+      });
+    }
+    function progressBar(label, blocks = 14, speed = 60) {
+      return new Promise(resolve => {
+        const d = document.createElement('div');
+        d.className = 'pos-term-line pos-t-loading';
+        out.appendChild(d);
+        let i = 0;
+        const t = setInterval(() => {
+          const filled = '█'.repeat(i);
+          const empty  = '░'.repeat(blocks - i);
+          d.textContent = `${label} [${filled}${empty}] ${Math.round(i/blocks*100)}%`;
+          out.scrollTop = out.scrollHeight;
+          if (++i > blocks) { clearInterval(t); resolve(); }
+        }, speed);
+      });
+    }
+
+    // Banner — same style as main site terminal
+    tLine('Portfolio OS — Terminal v1.0', 'pos-t-banner');
+    tLine('Osama Ahmed · Backend Dev & IT Student at EELU', 'pos-t-banner');
+    tLine('─────────────────────────────────────────────', 'pos-t-banner');
+    tLine("Type 'help' to list commands.", 'pos-t-info');
+    tLine('', '');
+
+    const CMDS = ['help','about','skills','projects','experience','contact','cv','coffee','social','clear','hack','guess','secret','sudo'];
+
+    // Ghost autocomplete helper (same behavior as the outside terminal)
+    function updateGhostText() {
+      const val = inp.value;
+      if (val && activeSubMode === null) {
+        const match = CMDS.find(c => c.startsWith(val.toLowerCase()));
+        ghost.textContent = match ? val + match.slice(val.length) : '';
+      } else {
+        ghost.textContent = '';
+      }
+    }
+    inp.addEventListener('input', updateGhostText);
+
+    async function handleProjectsSelection(choice) {
+      activeSubMode = null;
+      if (choice === '1') {
+        tLine('Munjez — Productivity Desktop App', 'pos-t-banner');
+        tLine('Status: Free & Shipped (Windows, Linux, Android)');
+        tLine('Tech Stack: React, TypeScript, Tauri, Rust, Vite, Firebase');
+        tLine('Features: Smart Tasks, 4-view Calendar (Hijri), Pomodoro, Habit Tracker, Stopwatch, White Noise Mixer.');
+        tHTML('Website: <a href="https://munjez-website.vercel.app" target="_blank" style="color:var(--pos-accent)">munjez-website.vercel.app</a>');
+        tHTML('GitHub:  <a href="https://github.com/Osama2214/munjez-releases" target="_blank" style="color:var(--pos-accent)">github.com/Osama2214/munjez-releases</a>');
+      } else if (choice === '2') {
+        tLine('Munjez Website — Marketing & Landing Page', 'pos-t-banner');
+        tLine('Status: Live');
+        tLine('Tech Stack: HTML, CSS, JavaScript, Vercel');
+        tLine('Features: Bilingual (Arabic & English), full changelog, download links, privacy policy.');
+        tHTML('Live Site: <a href="https://munjez-website.vercel.app" target="_blank" style="color:var(--pos-accent)">munjez-website.vercel.app</a>');
+        tHTML('GitHub:   <a href="https://github.com/Osama2214/munjez-website" target="_blank" style="color:var(--pos-accent)">github.com/Osama2214/munjez-website</a>');
+      } else if (choice === '3') {
+        tLine('Osama Café — Specialty Coffee Shop & Roastery Web', 'pos-t-banner');
+        tLine('Status: Live');
+        tLine('Tech Stack: HTML5, CSS3, JavaScript');
+        tLine('Features: Fluid typography, glassmorphism nav, dynamic animations, scroll-triggered hooks, zero-dependency.');
+        tHTML('Live Site: <a href="https://nti-task-2.vercel.app/" target="_blank" style="color:var(--pos-accent)">nti-task-2.vercel.app</a>');
+        tHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Task-2" target="_blank" style="color:var(--pos-accent)">github.com/Osama2214/NTI-Task-2</a>');
+      } else {
+        tLine('Invalid selection. Exited project selector.', 'pos-t-error');
+      }
+    }
+
+    async function handleContactSelection(choice) {
+      activeSubMode = null;
+      const cleaned = choice.toLowerCase().trim();
+      if (cleaned === 'github') {
+        tLine('Opening GitHub profile...', 'pos-t-success');
+        window.open('https://github.com/Osama2214', '_blank');
+      } else if (cleaned === 'linkedin') {
+        tLine('Opening LinkedIn profile...', 'pos-t-success');
+        window.open('https://www.linkedin.com/in/osama-ahmed-67127222a', '_blank');
+      } else if (cleaned === 'email') {
+        tLine('Opening mail client...', 'pos-t-success');
+        window.open('mailto:osamaahmed.dev00@gmail.com', '_blank');
+      } else {
+        tLine('Unknown contact keyword. Exited contact selector.', 'pos-t-error');
+      }
+    }
+
+    function handleGuessInput(raw) {
+      const num = parseInt(raw.trim());
+      if (isNaN(num) || num < 1 || num > 100) {
+        tLine('Please enter a valid number between 1 and 100.', 'pos-t-error');
+        return;
+      }
+      guessAttempts++;
+      if (num === guessTarget) {
+        tLine(`[WIN] Correct! Guessed in ${guessAttempts} attempt${guessAttempts > 1 ? 's' : ''}.`, 'pos-t-success');
+        tLine('Type "guess" to play again anytime.', 'pos-t-info');
+        activeSubMode = null;
+      } else if (num < guessTarget) {
+        tLine('[^] Too low!  Go higher.', 'pos-t-loading');
+      } else {
+        tLine('[v] Too high! Go lower.', 'pos-t-loading');
+      }
+    }
+
+    async function handle(raw) {
+      if (typing) return;
+      const trimmedRaw = raw.trim();
+      tHTML(`<span style="color:var(--pos-accent)">root@portfolio:~$ </span>${raw}`, 'pos-t-prompt');
+      if (trimmedRaw) { cmdHistory.unshift(raw); }
+      histIdx = 0;
+
+      if (!trimmedRaw) return;
+      typing = true;
+      inp.disabled = true;
+
+      // Sub-modes first (mirrors the outside terminal)
+      if (activeSubMode === 'projects') { await handleProjectsSelection(trimmedRaw); typing = false; inp.disabled = false; inp.focus(); tLine('', ''); return; }
+      if (activeSubMode === 'contact')  { await handleContactSelection(trimmedRaw);  typing = false; inp.disabled = false; inp.focus(); tLine('', ''); return; }
+      if (activeSubMode === 'guess')    { handleGuessInput(trimmedRaw);              typing = false; inp.disabled = false; inp.focus(); tLine('', ''); return; }
+
+      const args = trimmedRaw.split(' ');
+      const cmd = args[0].toLowerCase();
+
+      switch (cmd) {
+        case 'help':
+          tLine('Available commands:', 'pos-t-info');
+          CMDS.forEach(c => tHTML(`  <span style="color:var(--pos-accent)">${c.padEnd(12)}</span><span style="color:var(--pos-text-2)">— ${getCmdDesc(c)}</span>`));
+          break;
+        case 'about':
+          await typeOut("Hi, I'm Osama Ahmed.", 'pos-t-success', 22);
+          await typeOut('Backend Developer & 3rd-year IT student at EELU.', 'pos-t-output', 18);
+          await typeOut('Built Munjez — a full offline desktop productivity app — solo.', 'pos-t-output', 16);
+          await typeOut('Currently mastering ASP.NET Core & PHP/Laravel.', 'pos-t-output', 18);
+          await typeOut('Available for Internships ✅', 'pos-t-info', 22);
+          break;
+        case 'skills':
+          tLine('Loading technical stack visualizer...', 'pos-t-loading');
+          await progressBar('PHP           ', 10); await sleep(50);
+          await progressBar('Laravel       ', 8);  await sleep(50);
+          await progressBar('SQL & Database', 8);  await sleep(50);
+          await progressBar('Java          ', 6);  await sleep(50);
+          await progressBar('HTML & CSS    ', 6);  await sleep(50);
+          await progressBar('React         ', 3);
+          break;
+        case 'projects':
+          tLine('1. Munjez            (Productivity Desktop App)');
+          tLine('2. Munjez Website    (Marketing & Landing Page)');
+          tLine('3. Osama Café        (Coffee Shop Landing Page)');
+          tLine('');
+          tLine('Choose project number [1-3]:', 'pos-t-info');
+          activeSubMode = 'projects';
+          break;
+        case 'experience':
+          tLine('Digital Egypt Pioneers Initiative (DEPI) - Trainee (2026-Present)', 'pos-t-banner');
+          tLine('  - Stack: Full Stack .NET (C#, ASP.NET Core, EF, SQL Server)');
+          tLine('  - Coverage: Architecture design, soft skills, agile frameworks.');
+          tLine('');
+          tLine('National Telecommunication Institute (NTI) - Trainee (2026-Present)', 'pos-t-banner');
+          tLine('  - Stack: Full Stack PHP (OOP, Laravel MVC, MySQL, Bootstrap)');
+          tLine('  - Coverage: Daily bootcamp style project shipping.');
+          tLine('');
+          tLine('Egyptian E-Learning University (EELU) - B.Sc. IT (2024-2028 Expected)', 'pos-t-banner');
+          tLine('  - 3rd Year student focusing on software engineering foundations.');
+          break;
+        case 'contact':
+          tLine('Contact Channels:', 'pos-t-banner');
+          tLine('  [email]    - osamaahmed.dev00@gmail.com');
+          tLine('  [linkedin] - Osama Ahmed');
+          tLine('  [github]   - @Osama2214');
+          tLine('');
+          tLine('Type target keyword (e.g. github, linkedin, email) to open:', 'pos-t-info');
+          activeSubMode = 'contact';
+          break;
+        case 'cv':
+          tLine('Downloading CV...', 'pos-t-loading');
+          await progressBar('Osama_Ahmed_CV.pdf', 10, 80);
+          tLine('Done ✔', 'pos-t-success');
+          window.open('/Osama_Ahmed_CV.pdf', '_blank');
+          break;
+        case 'social':
+          tHTML('LinkedIn: <a href="https://www.linkedin.com/in/osama-ahmed-67127222a" target="_blank" style="color:var(--pos-accent)">Osama Ahmed</a>');
+          tHTML('GitHub: <a href="https://github.com/Osama2214" target="_blank" style="color:var(--pos-accent)">@Osama2214</a>');
+          break;
+        case 'coffee':
+          tLine('Grinding Beans...', 'pos-t-loading');
+          await progressBar('Grinding', 6, 50);
+          tLine('Brewing...', 'pos-t-loading');
+          await progressBar('Extraction', 10, 80);
+          tLine('    (  )   (  )', 'pos-t-output');
+          tLine('     )  )   )  )', 'pos-t-output');
+          tLine('    (__(___(___)', 'pos-t-output');
+          tLine('    |          | ]', 'pos-t-output');
+          tLine('    |          |', 'pos-t-output');
+          tLine('    |__________|', 'pos-t-output');
+          tLine('☕ Developer Energy +100', 'pos-t-success');
+          break;
+        case 'hack':
+          tLine('Initiating hack sequence...', 'pos-t-loading');
+          await sleep(300);
+          tLine('Bypassing firewall...', 'pos-t-loading');
+          await sleep(250);
+          tLine('Injecting payload...', 'pos-t-loading');
+          await sleep(300);
+          tLine('Decrypting database...', 'pos-t-loading');
+          await sleep(400);
+          tLine('[ERROR 403] Target is Osama Ahmed. Hack Aborted.', 'pos-t-error');
+          tLine('[REASON]   Developer too good to be hacked.', 'pos-t-error');
+          break;
+        case 'guess':
+          guessTarget = Math.floor(Math.random() * 100) + 1;
+          guessAttempts = 0;
+          tLine('[GAME] Number Guessing — started!', 'pos-t-banner');
+          tLine("I'm thinking of a number between 1 and 100.");
+          tLine('Type your guess and press Enter:');
+          activeSubMode = 'guess';
+          break;
+        case 'secret':
+          if (accessGranted) {
+            tLine('[UNLOCKED] Decryption Successful. Secret Document Unlocked:', 'pos-t-success');
+            tLine('  - Access Level   : Recruiter Mode (Activated)');
+            tLine('  - Special Code   : CHIEF_DEVELOPER_OSAMA_2026');
+            tLine('  - Objective      : Hire Osama Ahmed or schedule an interview!');
+            tLine('  - Hidden Feature : Try typing "coffee" to fuel up.');
+          } else {
+            tLine('[DENIED] Access restricted. Insufficient privileges.', 'pos-t-error');
+            await sleep(350);
+            tLine('  HINT: Only a system administrator can unlock this.', 'pos-t-loading');
+            await sleep(350);
+            tLine('  HINT: Try running a privileged command... maybe "sudo" something?', 'pos-t-loading');
+            await sleep(350);
+            tLine('  HINT: The right action might get someone... employed.', 'pos-t-loading');
+          }
+          break;
+        case 'sudo':
+          if (args.slice(1).join(' ').toLowerCase() === 'hire osama') {
+            accessGranted = true;
+            tLine('Access Granted.', 'pos-t-success');
+            tLine('Welcome Recruiter.', 'pos-t-success');
+          } else {
+            tLine('Access Denied', 'pos-t-error');
+          }
+          break;
+        case 'clear':
+          out.innerHTML = '';
+          tLine('Portfolio OS Terminal v1.0', 'pos-t-banner');
+          tLine('──────────────────────────', 'pos-t-banner');
+          break;
+        default:
+          tHTML(`<span style="color:#ef4444">bash: ${cmd}: command not found</span>  (try 'help')`);
+      }
+
+      tLine('', '');
+      typing = false;
+      inp.disabled = false;
+      inp.focus();
+      ghost.textContent = '';
+    }
+
+    function getCmdDesc(c) {
+      const d = {
+        help:'list commands', about:'a short biography about me', skills:'visual display of my core technical stack',
+        projects:'interactive list of my built projects', experience:'educational & scholarship history',
+        contact:'channels to reach out or connect with me', cv:'simulates and opens my resume PDF',
+        coffee:'energize the terminal developer', social:'quick links to GitHub & LinkedIn',
+        clear:'wipes the console history clean', hack:'initiate terminal hack sequence',
+        guess:'play a number guessing game', secret:'[LOCKED] you need root access first...',
+        sudo:'privileged command'
+      };
+      return d[c] || '';
+    }
+
+    inp.addEventListener('keydown', (e) => {
+      if (typing) { e.preventDefault(); return; }
+
+      if (e.key === 'Enter') { handle(inp.value); inp.value = ''; ghost.textContent = ''; }
+      if (e.key === 'ArrowUp')   { histIdx = Math.min(histIdx+1, cmdHistory.length-1); inp.value = cmdHistory[histIdx] || ''; updateGhostText(); }
+      if (e.key === 'ArrowDown') { histIdx = Math.max(histIdx-1, 0);                   inp.value = cmdHistory[histIdx] || ''; updateGhostText(); }
+
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        if (activeSubMode !== null) return;
+        const val = inp.value;
+        if (val) {
+          const match = CMDS.find(c => c.startsWith(val.toLowerCase()));
+          if (match) { inp.value = match; updateGhostText(); }
+        }
+      }
+    });
+
+    // Auto-focus when window becomes active
+    body.closest('.pos-window').addEventListener('mousedown', () => inp.focus(), true);
+    setTimeout(() => inp.focus(), 100);
+  }
+
+  // ── APP: Projects ─────────────────────────────────────────────
+  function buildProjects(body) {
+    body.style.overflow = 'hidden';
+    body.innerHTML = `
+      <div class="pos-explorer" style="height:100%;overflow:hidden">
+        <div class="pos-explorer-sidebar">
+          <div class="pos-explorer-sidebar-title">Favorites</div>
+          <div class="pos-sidebar-item pos-item-active" data-folder="projects">📂 Projects</div>
+          <div class="pos-explorer-sidebar-title" style="margin-top:12px">Quick</div>
+          <div class="pos-sidebar-item" data-folder="readme">📄 README</div>
+          <div class="pos-sidebar-item" data-folder="about">👤 About</div>
+        </div>
+        <div class="pos-explorer-main" id="posExplorerMain">
+          <div class="pos-explorer-path" id="posExplorerPath">📂 Projects/</div>
+          <div id="posExplorerContent"></div>
+        </div>
+      </div>`;
+
+    const mainContent = body.querySelector('#posExplorerContent');
+    const pathEl      = body.querySelector('#posExplorerPath');
+    const sidebar     = body.querySelector('.pos-explorer-sidebar');
+
+    function showRoot() {
+      pathEl.textContent = '📂 Projects/';
+      mainContent.innerHTML = '';
+      const grid = document.createElement('div');
+      grid.className = 'pos-file-grid';
+      PROJECTS.forEach(p => {
+        const item = document.createElement('button');
+        item.className = 'pos-file-item';
+        item.innerHTML = `<span class="pos-file-item-icon">${p.icon}</span><span class="pos-file-item-name">${p.name}</span>`;
+        item.addEventListener('click', () => showProject(p));
+        grid.appendChild(item);
+      });
+      mainContent.appendChild(grid);
+    }
+
+    function showProject(p) {
+      pathEl.textContent = `📂 Projects / ${p.name}/`;
+      mainContent.innerHTML = '';
+
+      const back = document.createElement('button');
+      back.className = 'pos-back-btn';
+      back.innerHTML = '← Back';
+      back.addEventListener('click', showRoot);
+      mainContent.appendChild(back);
+
+      const techTags = (p.tech || []).map(t =>
+        `<span style="display:inline-flex;align-items:center;padding:2px 8px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);border-radius:4px;font-size:11px;color:var(--pos-accent);font-family:'JetBrains Mono',monospace">${t}</span>`
+      ).join('');
+
+      const detail = document.createElement('div');
+      detail.className = 'pos-file-detail';
+      detail.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:28px">${p.icon}</span>
+          <div>
+            <h3 style="margin:0;font-size:16px;color:var(--pos-text)">${p.name}</h3>
+            <span style="font-size:11px;color:var(--pos-text-2)">${p.type || ''}</span>
+          </div>
+          ${p.badge ? `<span style="margin-left:auto;padding:2px 8px;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);border-radius:12px;font-size:10px;font-weight:600;color:var(--pos-accent);white-space:nowrap">${p.badge}</span>` : ''}
+        </div>
+        <p style="margin:0 0 14px">${p.desc}</p>
+        ${techTags ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">${techTags}</div>` : ''}
+        <div class="pos-file-detail-links">
+          ${p.live ? `<a href="${p.live}" target="_blank" class="pos-file-detail-link pos-link-primary">🌐 Live Demo</a>` : ''}
+          ${p.github ? `<a href="${p.github}" target="_blank" class="pos-file-detail-link pos-link-secondary">🐙 GitHub</a>` : ''}
+        </div>`;
+      mainContent.appendChild(detail);
+    }
+
+    function showReadme() {
+      pathEl.textContent = '📄 README.md';
+      mainContent.innerHTML = '';
+      const back = document.createElement('button');
+      back.className = 'pos-back-btn';
+      back.innerHTML = '← Back';
+      back.addEventListener('click', () => { showRoot(); sidebar.querySelector('[data-folder="projects"]').click(); });
+      mainContent.appendChild(back);
+      const d = document.createElement('div');
+      d.className = 'pos-file-detail';
+      d.innerHTML = `
+        <h3>📄 README.md</h3>
+        <p style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:1.9;color:var(--pos-text)">
+          <strong style="color:var(--pos-accent)"># Osama Ahmed — Portfolio</strong><br><br>
+          Backend Developer & 3rd-year IT student at EELU 🇪🇬<br>
+          Currently mastering ASP.NET Core & PHP/Laravel<br><br>
+          <strong style="color:var(--pos-accent)">## Projects</strong><br>
+          - Munjez (React · TypeScript · Tauri · Rust)<br>
+          - Munjez Website (HTML · CSS · JS)<br>
+          - Osama Café (HTML5 · CSS3 · JS)<br><br>
+          <strong style="color:var(--pos-accent)">## Contact</strong><br>
+          osamaahmed.dev00@gmail.com
+        </p>`;
+      mainContent.appendChild(d);
+    }
+
+    function showAbout() {
+      pathEl.textContent = '👤 About Osama';
+      mainContent.innerHTML = '';
+      const back = document.createElement('button');
+      back.className = 'pos-back-btn';
+      back.innerHTML = '← Back';
+      back.addEventListener('click', showRoot);
+      mainContent.appendChild(back);
+      const d = document.createElement('div');
+      d.className = 'pos-file-detail';
+      d.innerHTML = `
+        <h3>👤 Osama Ahmed</h3>
+        <p>3rd-year IT student at EELU, Egypt. Passionate about building real software from scratch.
+        Built Munjez — a full offline productivity desktop app — solo. Currently mastering
+        <strong>ASP.NET Core</strong> & <strong>PHP/Laravel</strong>, seeking an internship to grow.</p>
+        <div class="pos-file-detail-links">
+          <a href="https://github.com/Osama2214" target="_blank" class="pos-file-detail-link pos-link-secondary">🐙 GitHub</a>
+          <a href="https://www.linkedin.com/in/osama-ahmed-67127222a" target="_blank" class="pos-file-detail-link pos-link-secondary">💼 LinkedIn</a>
+        </div>`;
+      mainContent.appendChild(d);
+    }
+
+    sidebar.addEventListener('click', (e) => {
+      const item = e.target.closest('.pos-sidebar-item');
+      if (!item) return;
+      sidebar.querySelectorAll('.pos-sidebar-item').forEach(s => s.classList.remove('pos-item-active'));
+      item.classList.add('pos-item-active');
+      const folder = item.dataset.folder;
+      if (folder === 'projects') showRoot();
+      if (folder === 'readme')   showReadme();
+      if (folder === 'about')    showAbout();
+    });
+
+    showRoot();
+  }
+
+  // ── APP: Resume ───────────────────────────────────────────────
+  function buildResume(body) {
+    body.innerHTML = `
+      <div class="pos-resume" style="height:100%">
+        <div class="pos-resume-toolbar">
+          <span class="pos-resume-toolbar-title">📄 Osama_Ahmed_CV.pdf</span>
+          <div class="pos-resume-toolbar-actions">
+            <a href="/Osama_Ahmed_CV.pdf" target="_blank" class="pos-toolbar-btn">↗ Open in Tab</a>
+            <a href="/Osama_Ahmed_CV.pdf" download class="pos-toolbar-btn">⬇ Download</a>
+          </div>
+        </div>
+        <div class="pos-resume-iframe-wrap">
+          <iframe src="/Osama_Ahmed_CV.pdf" title="Osama Ahmed CV"></iframe>
+        </div>
+      </div>`;
+  }
+
+  // ── APP: Browser ──────────────────────────────────────────────
+  function buildBrowser(body) {
+    const pageURL = window.location.href;
+    body.innerHTML = `
+      <div class="pos-browser" style="height:100%">
+        <div class="pos-browser-bar">
+          <button class="pos-browser-nav-btn" id="posBrowserReload" title="Reload">↺</button>
+          <div class="pos-browser-url">
+            <span class="pos-browser-url-lock">🔒</span>
+            <span>${pageURL}</span>
+          </div>
+          <a href="${pageURL}" target="_blank" class="pos-browser-nav-btn" title="Open in new tab">↗</a>
+        </div>
+        <div class="pos-browser-iframe-wrap">
+          <iframe id="posBrowserIframe" src="${pageURL}" title="Portfolio Browser" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+        </div>
+      </div>`;
+
+    const iframe = body.querySelector('#posBrowserIframe');
+    body.querySelector('#posBrowserReload').addEventListener('click', () => {
+      iframe.src = iframe.src;
+    });
+  }
+
+  // ── APP: Settings ─────────────────────────────────────────────
+  function buildSettings(body) {
+    body.style.overflow = 'auto';
+    body.innerHTML = `
+      <div class="pos-settings">
+        <div class="pos-settings-section-title">System</div>
+
+        <div class="pos-setting-row">
+          <div class="pos-setting-row-info">
+            <div class="pos-setting-row-label">Particles</div>
+            <div class="pos-setting-row-sub">Background particle animation</div>
+          </div>
+          <label class="pos-toggle">
+            <input type="checkbox" id="posParticlesToggle" ${particlesEnabled ? 'checked' : ''} />
+            <span class="pos-toggle-track"></span>
+          </label>
+        </div>
+
+        <div class="pos-setting-row">
+          <div class="pos-setting-row-info">
+            <div class="pos-setting-row-label">Ambient Music</div>
+            <div class="pos-setting-row-sub">Background OS ambiance</div>
+          </div>
+          <label class="pos-toggle">
+            <input type="checkbox" id="posMusicToggle" ${musicEnabled ? 'checked' : ''} />
+            <span class="pos-toggle-track"></span>
+          </label>
+        </div>
+
+        <div class="pos-setting-row">
+          <div class="pos-setting-row-info">
+            <div class="pos-setting-row-label">Animations</div>
+            <div class="pos-setting-row-sub">UI animation quality</div>
+          </div>
+          <select class="pos-select" id="posAnimSelect">
+            <option value="high"   ${animationsLevel==='high'   ? 'selected':''}>High</option>
+            <option value="medium" ${animationsLevel==='medium' ? 'selected':''}>Medium</option>
+            <option value="low"    ${animationsLevel==='low'    ? 'selected':''}>Low</option>
+          </select>
+        </div>
+
+        <div class="pos-setting-row">
+          <div class="pos-setting-row-info">
+            <div class="pos-setting-row-label">Theme</div>
+            <div class="pos-setting-row-sub">Desktop color scheme</div>
+          </div>
+          <select class="pos-select" id="posThemeSelect">
+            <option value="site-purple" ${osTheme==='site-purple' ? 'selected':''}>Site Purple</option>
+            <option value="cyan-blue"   ${osTheme==='cyan-blue'   ? 'selected':''}>Cyan Blue</option>
+            <option value="deep-violet" ${osTheme==='deep-violet' ? 'selected':''}>Deep Violet</option>
+          </select>
+        </div>
+
+        <div class="pos-settings-divider"></div>
+        <div class="pos-settings-section-title">About</div>
+        <div class="pos-setting-row">
+          <div class="pos-setting-row-info">
+            <div class="pos-setting-row-label">Portfolio OS</div>
+            <div class="pos-setting-row-sub">Version 1.0.0 — Built by Osama Ahmed</div>
+          </div>
+        </div>
+
+        <div class="pos-settings-divider"></div>
+        <button class="pos-settings-shutdown" id="posSettingsShutdown">
+          ⏻  Shutdown Portfolio OS
+        </button>
+      </div>`;
+
+    // Particles toggle
+    body.querySelector('#posParticlesToggle').addEventListener('change', function () {
+      particlesEnabled = this.checked;
+      // Try to pause/resume the main site's canvas
+      const canvas = document.getElementById('particles');
+      if (canvas) canvas.style.opacity = particlesEnabled ? '1' : '0';
+    });
+
+    // Music toggle
+    body.querySelector('#posMusicToggle').addEventListener('change', function () {
+      musicEnabled = this.checked;
+      if (musicEnabled) startAmbientMusic();
+      else stopAmbientMusic();
+    });
+
+    // Animations
+    body.querySelector('#posAnimSelect').addEventListener('change', function () {
+      animationsLevel = this.value;
+      document.documentElement.style.setProperty('--pos-win-anim', animationsLevel === 'low' ? 'none' : '');
+    });
+
+    // Theme
+    body.querySelector('#posThemeSelect').addEventListener('change', function () {
+      applyOsTheme(this.value);
+    });
+
+    // Shutdown
+    body.querySelector('#posSettingsShutdown').addEventListener('click', () => triggerShutdown());
+  }
+
+  // OS Theme
+  function applyOsTheme(theme) {
+    osTheme = theme;
+    const themes = {
+      'site-purple': { accent: '#a78bfa', accent2: '#06b6d4', glow: 'rgba(124,58,237,0.4)',   dim: 'rgba(124,58,237,0.15)' },
+      'cyan-blue':   { accent: '#06b6d4', accent2: '#7c3aed', glow: 'rgba(6,182,212,0.35)',   dim: 'rgba(6,182,212,0.15)' },
+      'deep-violet': { accent: '#7c3aed', accent2: '#a78bfa', glow: 'rgba(124,58,237,0.5)',   dim: 'rgba(124,58,237,0.2)' },
+    };
+    const t = themes[theme] || themes['site-purple'];
+    const r = document.documentElement;
+    r.style.setProperty('--pos-accent',     t.accent);
+    r.style.setProperty('--pos-accent-2',   t.accent2);
+    r.style.setProperty('--pos-accent-glow', t.glow);
+    r.style.setProperty('--pos-accent-dim',  t.dim);
+    r.style.setProperty('--pos-border',     `rgba(${hexToRgb(t.accent)},0.18)`);
+    r.style.setProperty('--pos-border-2',   `rgba(${hexToRgb(t.accent)},0.08)`);
+  }
+
+  function hexToRgb(hex) {
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    return `${r},${g},${b}`;
+  }
+
+  // ── APP: Contact ──────────────────────────────────────────────
+  function buildContact(body) {
+    body.style.overflow = 'auto';
+    body.innerHTML = `
+      <div class="pos-contact">
+        <div class="pos-contact-header">
+          <div class="pos-contact-avatar">👨‍💻</div>
+          <div>
+            <div class="pos-contact-name">Osama Ahmed</div>
+            <div class="pos-contact-title-text">Backend Dev & IT Student at EELU</div>
+          </div>
+        </div>
+
+        <a href="https://github.com/Osama2214" target="_blank" class="pos-contact-link">
+          <div class="pos-contact-link-icon" style="background:rgba(255,255,255,0.04)">🐙</div>
+          <div>
+            <div class="pos-contact-link-text">GitHub</div>
+            <div class="pos-contact-link-sub">github.com/Osama2214</div>
+          </div>
+          <span class="pos-contact-link-arrow">→</span>
+        </a>
+
+        <a href="https://www.linkedin.com/in/osama-ahmed-67127222a" target="_blank" class="pos-contact-link">
+          <div class="pos-contact-link-icon" style="background:rgba(10,102,194,0.15)">💼</div>
+          <div>
+            <div class="pos-contact-link-text">LinkedIn</div>
+            <div class="pos-contact-link-sub">linkedin.com/in/osama-ahmed-67127222a</div>
+          </div>
+          <span class="pos-contact-link-arrow">→</span>
+        </a>
+
+        <a href="mailto:osamaahmed.dev00@gmail.com" class="pos-contact-link">
+          <div class="pos-contact-link-icon" style="background:rgba(239,68,68,0.1)">📧</div>
+          <div>
+            <div class="pos-contact-link-text">Email</div>
+            <div class="pos-contact-link-sub">osamaahmed.dev00@gmail.com</div>
+          </div>
+          <span class="pos-contact-link-arrow">→</span>
+        </a>
+      </div>`;
+  }
+
+  // ── APP: Trash ─────────────────────────────────────────────────
+  function buildTrash(body) {
+    body.style.overflow = 'hidden';
+    body.innerHTML = `
+      <div class="pos-trash">
+        <div class="pos-trash-icon" id="posTrashIcon">🗑️</div>
+        <div class="pos-trash-text">Trash is empty</div>
+        <div class="pos-trash-sub">Nothing to delete here... yet.<br>Your regrets are safe 😏</div>
+        <button class="pos-trash-empty-btn" id="posEmptyTrash">🗑 Empty Trash</button>
+      </div>`;
+
+    body.querySelector('#posEmptyTrash').addEventListener('click', () => {
+      const icon = body.querySelector('#posTrashIcon');
+      icon.style.transform = 'scale(1.3) rotate(-10deg)';
+      setTimeout(() => {
+        icon.style.transform = '';
+        icon.textContent = '✨';
+        body.querySelector('.pos-trash-text').textContent = 'Trash emptied!';
+        body.querySelector('.pos-trash-sub').textContent  = 'All your regrets are gone. Fresh start!';
+      }, 300);
+    });
+  }
+
+  // ═════════════════════════════════════════
+  // SHUTDOWN
+  // ═════════════════════════════════════════
+  function triggerShutdown() {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+
+    // Close settings window if open
+    shutdownScreen.classList.remove('pos-hidden');
+
+    // Progress bar for shutdown
+    shutdownBarWrap.classList.remove('pos-hidden');
+    const sBar = shutdownBarWrap.querySelector('.pos-boot-bar');
+    let pct = 0;
+    const t = setInterval(() => {
+      pct += 2;
+      sBar.style.width = pct + '%';
+      if (pct >= 100) {
+        clearInterval(t);
+        // Show thank you
+        body_shutdownText();
+      }
+    }, 40);
+  }
+
+  function body_shutdownText() {
+    const spinner = shutdownScreen.querySelector('.pos-shutdown-spinner');
+    spinner.style.display = 'none';
+    shutdownBarWrap.classList.add('pos-hidden');
+    shutdownText.textContent = 'Thank You. 👋';
+    shutdownText.style.fontSize = '22px';
+
+    setTimeout(() => exitOS(), 1800);
+  }
+
+  function exitOS() {
+    stopAmbientMusic();
+    clearInterval(clockInterval);
+    isShuttingDown = false;
+    isBooting = false;
+
+    // Reset state
+    Object.keys(openWindows).forEach(id => {
+      openWindows[id].el.remove();
+      openWindows[id].taskbarBtn && openWindows[id].taskbarBtn.remove();
+    });
+    openWindows = {};
+    taskbarApps.innerHTML = '';
+
+    // Reset boot status
+    if (bootStatusEl) {
+      bootStatusEl.classList.remove('pos-status-fade');
+      bootStatusEl.textContent = BOOT_STAGES[0];
+    }
+    shutdownText.textContent = 'Shutting Down...';
+    shutdownText.style.fontSize = '';
+    if (shutdownScreen.querySelector('.pos-shutdown-spinner')) {
+      shutdownScreen.querySelector('.pos-shutdown-spinner').style.display = '';
+    }
+
+    // Restore theme defaults
+    const r = document.documentElement;
+    ['--pos-accent','--pos-accent-2','--pos-accent-glow','--pos-accent-dim','--pos-border','--pos-border-2'].forEach(v => r.style.removeProperty(v));
+
+    // Fade out
+    osRoot.style.transition = 'opacity 0.5s ease';
+    osRoot.style.opacity = '0';
+    setTimeout(() => {
+      osRoot.classList.add('pos-hidden');
+      osRoot.style.opacity = '';
+      osRoot.style.transition = '';
+      document.body.style.overflow = '';
+    }, 500);
+  }
+
+  // Shutdown buttons
+  shutdownBtnTop.addEventListener('click', () => triggerShutdown());
+
+  // ═════════════════════════════════════════
+  // AMBIENT MUSIC (Web Audio API)
+  // ═════════════════════════════════════════
+  function startAmbientMusic() {
+    try {
+      if (audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 2);
+      masterGain.connect(audioCtx.destination);
+
+      // Ambient pad — slow oscillating chord
+      const freqs = [130.81, 164.81, 196.00, 261.63]; // C3, E3, G3, C4
+      const oscs  = [];
+      freqs.forEach((freq, i) => {
+        const osc  = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const lfo  = audioCtx.createOscillator();
+        const lfoG = audioCtx.createGain();
+
+        osc.type      = 'sine';
+        osc.frequency.value = freq;
+        lfo.type      = 'sine';
+        lfo.frequency.value = 0.05 + i * 0.02;
+        lfoG.gain.value = 0.3;
+
+        lfo.connect(lfoG);
+        lfoG.connect(gain.gain);
+        gain.gain.value = 0.5;
+        osc.connect(gain);
+        gain.connect(masterGain);
+
+        osc.start();
+        lfo.start();
+        oscs.push(osc, lfo);
+      });
+
+      // Sub-bass pulse
+      const subOsc  = audioCtx.createOscillator();
+      const subGain = audioCtx.createGain();
+      subOsc.type = 'triangle';
+      subOsc.frequency.value = 65.41; // C2
+      subGain.gain.value = 0.4;
+      subOsc.connect(subGain);
+      subGain.connect(masterGain);
+      subOsc.start();
+      oscs.push(subOsc);
+
+      musicNodes = { ctx: audioCtx, master: masterGain, oscs };
+    } catch (err) {
+      console.warn('Audio not available:', err);
+    }
+  }
+
+  function stopAmbientMusic() {
+    if (!audioCtx) return;
+    try {
+      musicNodes.master && musicNodes.master.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+      setTimeout(() => {
+        musicNodes.oscs && musicNodes.oscs.forEach(o => { try { o.stop(); } catch(e){} });
+        audioCtx.close();
+        audioCtx = null;
+        musicNodes = {};
+      }, 600);
+    } catch(e) {}
+  }
+
+  // ── Utility ──────────────────────────────────────────────────
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+})();

@@ -5,12 +5,15 @@
 // ── MOUSE GLOW ──────────────────────────────
 const mouseGlow = document.getElementById('mouseGlow');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouchDevice = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
-if (!prefersReducedMotion) {
+if (!prefersReducedMotion && !isTouchDevice) {
   document.addEventListener('mousemove', (e) => {
     mouseGlow.style.setProperty('--mx', e.clientX + 'px');
     mouseGlow.style.setProperty('--my', e.clientY + 'px');
   });
+} else if (mouseGlow) {
+  mouseGlow.style.display = 'none';
 }
 
 // ── PARTICLE CANVAS ──────────────────────────
@@ -35,31 +38,44 @@ if (!prefersReducedMotion) {
     }
   }
 
+  let N = window.innerWidth < 768 ? 28 : 80;
+  let CONNECT_DIST = window.innerWidth < 768 ? 85 : 120;
+  let CELL_SIZE = CONNECT_DIST;
+  const particles = [];
+
+  function initParticles() {
+    particles.length = 0;
+    for (let i = 0; i < N; i++) {
+      particles.push({
+        x:  Math.random() * canvas.width,
+        y:  Math.random() * canvas.height,
+        r:  Math.random() * 1.5 + 0.3,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        a:  Math.random(),
+      });
+    }
+  }
+
   function resize() {
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
+    
+    const targetN = window.innerWidth < 768 ? 28 : 80;
+    if (targetN !== N) {
+      N = targetN;
+      CONNECT_DIST = window.innerWidth < 768 ? 85 : 120;
+      CELL_SIZE = CONNECT_DIST;
+      initParticles();
+    }
+    
     if (isMatrixActive) {
       initMatrix();
     }
   }
   resize();
+  initParticles();
   window.addEventListener('resize', resize);
-
-  const N = 80;
-  const CONNECT_DIST = 120;   // max distance to draw a connecting line
-  const CELL_SIZE     = CONNECT_DIST; // grid cell = connection radius, so only 3x3 neighbor cells need checking
-  const particles = [];
-
-  for (let i = 0; i < N; i++) {
-    particles.push({
-      x:  Math.random() * canvas.width,
-      y:  Math.random() * canvas.height,
-      r:  Math.random() * 1.5 + 0.3,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      a:  Math.random(),
-    });
-  }
 
   function buildGrid() {
     const grid = new Map();
@@ -171,18 +187,34 @@ if (!prefersReducedMotion) {
 // ── NAVBAR SCROLL ────────────────────────────
 const navbar = document.getElementById('navbar');
 const scrollIndicator = document.querySelector('.scroll-indicator');
+let isScrolled = false;
+let isFaded = false;
+
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 20) {
-    navbar.classList.add('scrolled');
+  const sy = window.scrollY;
+  if (sy > 20) {
+    if (!isScrolled) {
+      navbar.classList.add('scrolled');
+      isScrolled = true;
+    }
   } else {
-    navbar.classList.remove('scrolled');
+    if (isScrolled) {
+      navbar.classList.remove('scrolled');
+      isScrolled = false;
+    }
   }
   
   if (scrollIndicator) {
-    if (window.scrollY > 50) {
-      scrollIndicator.classList.add('fade-out');
+    if (sy > 50) {
+      if (!isFaded) {
+        scrollIndicator.classList.add('fade-out');
+        isFaded = true;
+      }
     } else {
-      scrollIndicator.classList.remove('fade-out');
+      if (isFaded) {
+        scrollIndicator.classList.remove('fade-out');
+        isFaded = false;
+      }
     }
   }
 }, { passive: true });
@@ -225,15 +257,23 @@ function movePillTo(link) {
   navPill.style.opacity = '1';
 }
 
+const navLinksMap = {};
+navLinks.forEach(link => {
+  const href = link.getAttribute('href');
+  if (href && href.startsWith('#')) {
+    navLinksMap[href.slice(1)] = link;
+  }
+});
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
+      const active = navLinksMap[entry.target.id];
       navLinks.forEach(l => l.classList.remove('active'));
-      const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
       if (active) {
         active.classList.add('active');
         movePillTo(active);
-      } else {
+      } else if (navPill) {
         // No matching nav link (e.g. hero/home section) — hide the pill
         navPill.style.opacity = '0';
       }
@@ -370,8 +410,12 @@ langFills.forEach(el => scrollObserver.observe(el));
 
 // ── TILT EFFECT on Project Cards ─────────────
 document.querySelectorAll('.project-card').forEach(card => {
+  let rect = null;
+  card.addEventListener('mouseenter', () => {
+    rect = card.getBoundingClientRect();
+  });
   card.addEventListener('mousemove', (e) => {
-    const rect   = card.getBoundingClientRect();
+    if (!rect) return;
     const x      = e.clientX - rect.left;
     const y      = e.clientY - rect.top;
     const cx     = rect.width  / 2;
@@ -387,6 +431,7 @@ document.querySelectorAll('.project-card').forEach(card => {
   });
 
   card.addEventListener('mouseleave', () => {
+    rect = null;
     card.style.transform = '';
     card.style.transition = 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
   });
@@ -404,12 +449,19 @@ skillGroups.forEach(g => {
 
 // ── CURSOR GLOW on CARDS ─────────────────────
 document.querySelectorAll('.project-card, .cert-card, .contact-card').forEach(el => {
+  let rect = null;
+  el.addEventListener('mouseenter', () => {
+    rect = el.getBoundingClientRect();
+  });
   el.addEventListener('mousemove', (e) => {
-    const rect = el.getBoundingClientRect();
+    if (!rect) return;
     const x    = e.clientX - rect.left;
     const y    = e.clientY - rect.top;
     el.style.setProperty('--cx', x + 'px');
     el.style.setProperty('--cy', y + 'px');
+  });
+  el.addEventListener('mouseleave', () => {
+    rect = null;
   });
 });
 

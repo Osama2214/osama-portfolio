@@ -178,42 +178,57 @@
     // ── MOUSE GLOW ──────────────────────────────
     const mouseGlow = document.getElementById('mouseGlow');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouchDevice = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
-    if (!prefersReducedMotion) {
+    if (!prefersReducedMotion && !isTouchDevice) {
       document.addEventListener('mousemove', (e) => {
         mouseGlow.style.setProperty('--mx', e.clientX + 'px');
         mouseGlow.style.setProperty('--my', e.clientY + 'px');
       });
+    } else if (mouseGlow) {
+      mouseGlow.style.display = 'none';
     }
 
-    // ── PARTICLE CANVAS (spatial-grid version, same as script.js) ──
+    // ── PARTICLE CANVAS (same effect as the main site) ──
     (function () {
       if (prefersReducedMotion) return;
       const canvas = document.getElementById('particles');
       const ctx = canvas.getContext('2d');
 
+      let N = window.innerWidth < 768 ? 28 : 80;
+      let CONNECT_DIST = window.innerWidth < 768 ? 85 : 120;
+      let CELL_SIZE = CONNECT_DIST;
+      const particles = [];
+
+      function initParticles() {
+        particles.length = 0;
+        for (let i = 0; i < N; i++) {
+          particles.push({
+            x:  Math.random() * canvas.width,
+            y:  Math.random() * canvas.height,
+            r:  Math.random() * 1.5 + 0.3,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.3,
+            a:  Math.random(),
+          });
+        }
+      }
+
       function resize() {
         canvas.width  = window.innerWidth;
         canvas.height = window.innerHeight;
+
+        const targetN = window.innerWidth < 768 ? 28 : 80;
+        if (targetN !== N) {
+          N = targetN;
+          CONNECT_DIST = window.innerWidth < 768 ? 85 : 120;
+          CELL_SIZE = CONNECT_DIST;
+          initParticles();
+        }
       }
       resize();
+      initParticles();
       window.addEventListener('resize', resize);
-
-      const N = 80;
-      const CONNECT_DIST = 120;
-      const CELL_SIZE = CONNECT_DIST;
-      const particles = [];
-
-      for (let i = 0; i < N; i++) {
-        particles.push({
-          x:  Math.random() * canvas.width,
-          y:  Math.random() * canvas.height,
-          r:  Math.random() * 1.5 + 0.3,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          a:  Math.random(),
-        });
-      }
 
       function buildGrid() {
         const grid = new Map();

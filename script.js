@@ -19,9 +19,28 @@ if (!prefersReducedMotion) {
   const canvas = document.getElementById('particles');
   const ctx = canvas.getContext('2d');
 
+  let isMatrixActive = false;
+  const charArr = "01010101010101010101111111111111C#PHPDEVNETMVCAPIHTMLCSSJS";
+  let columns = [];
+  const fontSize = 14;
+
+  function initMatrix() {
+    columns = [];
+    const numColumns = Math.floor(canvas.width / fontSize) + 1;
+    for (let i = 0; i < numColumns; i++) {
+      columns.push({
+        y: Math.random() * -canvas.height,
+        speed: Math.random() * 2 + 1.5
+      });
+    }
+  }
+
   function resize() {
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
+    if (isMatrixActive) {
+      initMatrix();
+    }
   }
   resize();
   window.addEventListener('resize', resize);
@@ -42,9 +61,6 @@ if (!prefersReducedMotion) {
     });
   }
 
-  // Bucket particles into a grid keyed by "cellX,cellY" so we only ever
-  // compare each particle against neighbors in its own + surrounding 8 cells,
-  // instead of every other particle on the canvas (O(n) avg instead of O(n²)).
   function buildGrid() {
     const grid = new Map();
     for (let i = 0; i < particles.length; i++) {
@@ -60,55 +76,93 @@ if (!prefersReducedMotion) {
   }
 
   function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (isMatrixActive) {
+      ctx.fillStyle = 'rgba(5, 8, 18, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const grid = buildGrid();
+      ctx.font = fontSize + 'px monospace';
 
-    // Connections — only check the 3x3 neighborhood of grid cells around each particle
-    for (let i = 0; i < particles.length; i++) {
-      const p  = particles[i];
-      const cx = Math.floor(p.x / CELL_SIZE);
-      const cy = Math.floor(p.y / CELL_SIZE);
+      for (let i = 0; i < columns.length; i++) {
+        const char = charArr[Math.floor(Math.random() * charArr.length)];
+        const x = i * fontSize;
+        const y = columns[i].y;
 
-      for (let ox = -1; ox <= 1; ox++) {
-        for (let oy = -1; oy <= 1; oy++) {
-          const bucket = grid.get((cx + ox) + ',' + (cy + oy));
-          if (!bucket) continue;
+        // Highlight head character in white, trails in matrix green
+        ctx.fillStyle = Math.random() > 0.98 ? '#ffffff' : '#10b981';
+        ctx.fillText(char, x, y);
 
-          for (const j of bucket) {
-            if (j <= i) continue; // each pair checked exactly once (i < j)
-            const q = particles[j];
-            const dx = p.x - q.x;
-            const dy = p.y - q.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < CONNECT_DIST) {
-              const alpha = (1 - dist / CONNECT_DIST) * 0.15;
-              ctx.beginPath();
-              ctx.strokeStyle = `rgba(124, 58, 237, ${alpha})`;
-              ctx.lineWidth = 0.5;
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(q.x, q.y);
-              ctx.stroke();
+        columns[i].y += columns[i].speed;
+
+        if (columns[i].y > canvas.height && Math.random() > 0.975) {
+          columns[i].y = 0;
+        }
+      }
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const grid = buildGrid();
+
+      for (let i = 0; i < particles.length; i++) {
+        const p  = particles[i];
+        const cx = Math.floor(p.x / CELL_SIZE);
+        const cy = Math.floor(p.y / CELL_SIZE);
+
+        for (let ox = -1; ox <= 1; ox++) {
+          for (let oy = -1; oy <= 1; oy++) {
+            const bucket = grid.get((cx + ox) + ',' + (cy + oy));
+            if (!bucket) continue;
+
+            for (const j of bucket) {
+              if (j <= i) continue;
+              const q = particles[j];
+              const dx = p.x - q.x;
+              const dy = p.y - q.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < CONNECT_DIST) {
+                const alpha = (1 - dist / CONNECT_DIST) * 0.15;
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(124, 58, 237, ${alpha})`;
+                ctx.lineWidth = 0.5;
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(q.x, q.y);
+                ctx.stroke();
+              }
             }
           }
         }
       }
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(167, 139, 250, ${p.a * 0.6})`;
+        ctx.fill();
+      });
     }
 
-    // Dots
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(167, 139, 250, ${p.a * 0.6})`;
-      ctx.fill();
-    });
-
     requestAnimationFrame(draw);
+  }
+
+  // Toggle button handler
+  const matrixToggleBtn = document.getElementById('matrixToggle');
+  if (matrixToggleBtn) {
+    matrixToggleBtn.addEventListener('click', () => {
+      isMatrixActive = !isMatrixActive;
+      document.body.classList.toggle('matrix-mode');
+      
+      const toggleText = matrixToggleBtn.querySelector('span');
+      if (isMatrixActive) {
+        initMatrix();
+        if (toggleText) toggleText.textContent = 'Space Mode';
+      } else {
+        if (toggleText) toggleText.textContent = 'Hacker Mode';
+      }
+    });
   }
 
   draw();
@@ -454,5 +508,63 @@ if (projectsToggleBtn && hiddenProjects.length > 0) {
       projectsToggleText.textContent = 'Show Less';
       if (projectsToggleIcon) projectsToggleIcon.style.transform = 'rotate(180deg)';
     }
+  });
+}
+
+// ── INTERACTIVE IDE RUN CODE ──────────────────
+const runCodeBtn = document.getElementById('run-code-btn');
+const closeConsoleBtn = document.getElementById('close-console-btn');
+const consoleOutput = document.getElementById('consoleOutput');
+const consoleLines = document.querySelectorAll('#consoleBody .console-line');
+
+// HTML templates for states
+const runHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Run</span>`;
+const stopHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg><span>Stop</span>`;
+
+function openTerminal() {
+  runCodeBtn.classList.add('stop-state');
+  runCodeBtn.innerHTML = stopHTML;
+  consoleOutput.classList.add('open');
+  consoleLines.forEach(line => line.classList.remove('visible'));
+  consoleLines.forEach((line, index) => {
+    let delay = 150 + index * 180;
+    if (index === 1) {
+      delay = 450;
+    } else if (index > 1) {
+      delay = 450 + (index - 1) * 200;
+    }
+    setTimeout(() => {
+      // Only show if the terminal is still open
+      if (consoleOutput.classList.contains('open')) {
+        line.classList.add('visible');
+      }
+    }, delay);
+  });
+}
+
+function closeTerminal() {
+  runCodeBtn.classList.remove('stop-state');
+  runCodeBtn.innerHTML = runHTML;
+  consoleOutput.classList.remove('open');
+  consoleLines.forEach(line => line.classList.remove('visible'));
+}
+
+if (runCodeBtn && consoleOutput) {
+  runCodeBtn.addEventListener('click', () => {
+    const isActive = runCodeBtn.classList.contains('stop-state');
+    if (isActive) {
+      closeTerminal();
+    } else {
+      // Rotate effect on click
+      runCodeBtn.classList.add('running');
+      setTimeout(() => runCodeBtn.classList.remove('running'), 600);
+      openTerminal();
+    }
+  });
+}
+
+if (closeConsoleBtn && consoleOutput) {
+  closeConsoleBtn.addEventListener('click', () => {
+    closeTerminal();
   });
 }

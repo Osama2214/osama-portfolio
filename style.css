@@ -209,6 +209,13 @@ nav.scrolled {
   box-shadow: 0 6px 24px var(--p-glow);
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -558,6 +565,7 @@ nav.scrolled {
   font-family: 'JetBrains Mono', monospace;
   font-size: 13.5px;
   line-height: 1.8;
+  text-align: left;
 }
 
 .code-line { display: block; }
@@ -599,12 +607,12 @@ nav.scrolled {
 }
 
 .badge-2 {
-  bottom: 80px; right: -35px;
+  bottom: -20px; left: -12px; right: auto; top: auto;
   animation: float-2 5s ease-in-out infinite;
 }
 
 .badge-3 {
-  bottom: -20px; left: 10px;
+  bottom: -20px; right: -12px;
   animation: float-3 4.5s ease-in-out infinite;
 }
 
@@ -1818,7 +1826,7 @@ a.cert-card-link:hover {
   .contact-grid { grid-template-columns: 1fr; }
   .contact-quicklinks { grid-template-columns: repeat(2, 1fr); }
 
-  .badge-2 { right: -20px; }
+  .badge-2 { left: -12px; bottom: -20px; right: auto; top: auto; }
 }
 
 @media (max-width: 768px) {
@@ -2473,11 +2481,357 @@ a.cert-card-link:hover {
 /* ── DYNAMIC RESPONSIVE PUSH FOR FLOATING BADGES ── */
 @media (max-width: 1200px) {
   .badge-1 { right: -5px !important; }
-  .badge-2 { right: -20px !important; bottom: 80px !important; }
+  .badge-2 { left: -5px !important; bottom: -20px !important; top: auto !important; right: auto !important; }
+  .badge-3 { right: -5px !important; }
 }
 
 @media (max-width: 480px) {
-  .badge-1 { right: -5px !important; top: -15px !important; }
-  .badge-2 { right: -12px !important; bottom: 70px !important; }
-  .badge-3 { left: 5px !important; bottom: -15px !important; }
+  /* Badges are hidden under 768px via display: none to prevent clutter/clipping */
+}
+
+/* ── INTERACTIVE IDE RUN BUTTON ── */
+.code-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.code-run-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #34d399;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-left: auto; /* Push it to the right */
+  user-select: none;
+}
+
+.code-run-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.code-run-btn:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #34d399;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.2);
+}
+
+.code-run-btn.stop-state {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+.code-run-btn.stop-state:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
+}
+
+.code-run-btn.running svg {
+  animation: run-spin 0.6s linear;
+}
+
+@keyframes run-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ── INTERACTIVE TERMINAL CONSOLE OUTPUT ── */
+.console-output {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  background: #060913;
+  border-top: 1px solid var(--border);
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+}
+
+.console-output.open {
+  max-height: 260px;
+  opacity: 1;
+}
+
+.console-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #090e1a;
+  padding: 6px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.console-close-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0 4px;
+}
+
+.console-close-btn:hover {
+  color: #f87171;
+}
+
+.console-body {
+  padding: 14px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-2);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.console-line {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  margin-bottom: 2px;
+}
+
+.console-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.console-line.prompt {
+  color: var(--text);
+}
+
+.console-line.compilation {
+  color: #a78bfa; /* Purple compiler status */
+}
+
+.console-line.divider {
+  color: rgba(255, 255, 255, 0.08);
+}
+
+.console-line.info-title {
+  color: #f59e0b; /* Yellow label */
+}
+
+.console-line.text-success {
+  color: #34d399;
+}
+
+/* ── HACKER MATRIX MODE TOGGLE ── */
+.matrix-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-right: 12px;
+}
+
+.matrix-toggle-btn:hover {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: var(--p);
+  color: var(--p-light);
+  box-shadow: 0 0 12px var(--p-glow);
+}
+
+.matrix-toggle-btn svg {
+  transition: transform 0.3s;
+}
+
+.matrix-toggle-btn:active svg {
+  transform: scale(0.9);
+}
+
+/* Color Palette Changes in Hacker Mode */
+body.matrix-mode {
+  --p: #10b981;
+  --p-h: #059669;
+  --p-light: #34d399;
+  --p-glow: rgba(16, 185, 129, 0.25);
+  --border-h: rgba(16, 185, 129, 0.4);
+  --accent: #10b981;
+}
+
+/* Override hardcoded purple borders, backgrounds, and shadows in Hacker Mode */
+body.matrix-mode .skill-group:hover {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15) !important;
+}
+
+body.matrix-mode .learning-group {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.03)) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+body.matrix-mode .learning-pill {
+  border-color: rgba(16, 185, 129, 0.25) !important;
+  background: rgba(16, 185, 129, 0.05) !important;
+}
+
+
+body.matrix-mode .skill-pill:hover {
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  background: rgba(16, 185, 129, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12) !important;
+}
+
+body.matrix-mode .project-card.featured {
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+body.matrix-mode .project-card.featured:hover {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  box-shadow: 0 20px 60px rgba(16, 185, 129, 0.18) !important;
+}
+
+body.matrix-mode .project-card:hover {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+body.matrix-mode .tech-tag {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: var(--p-light) !important;
+}
+
+body.matrix-mode .cs-icon {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: var(--p-light) !important;
+}
+
+body.matrix-mode .cert-card:hover,
+body.matrix-mode a.cert-card-link:hover {
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15) !important;
+}
+
+body.matrix-mode .cert-verify-btn {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+body.matrix-mode .cert-verify-btn:hover {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+body.matrix-mode .cert-year {
+  background: rgba(16, 185, 129, 0.1) !important;
+}
+
+body.matrix-mode .contact-card:hover {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12) !important;
+}
+
+body.matrix-mode .email-icon {
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+
+body.matrix-mode .cta-card {
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+body.matrix-mode .cta-glow {
+  background: conic-gradient(
+    from 180deg, transparent 0deg, rgba(16, 185, 129, 0.2) 90deg, transparent 180deg
+  ) !important;
+}
+
+body.matrix-mode .btn-primary {
+  background: linear-gradient(135deg, var(--p), #065f46) !important;
+}
+
+body.matrix-mode .btn-primary:hover {
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.45) !important;
+}
+
+body.matrix-mode .hero::before {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.08), transparent 70%) !important;
+}
+
+body.matrix-mode .hero::after {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.05), transparent 70%) !important;
+}
+
+body.matrix-mode .footer-gradient-line {
+  background: linear-gradient(to right, transparent, rgba(16, 185, 129, 0.5), rgba(52, 211, 153, 0.7), rgba(16, 185, 129, 0.5), transparent) !important;
+}
+
+body.matrix-mode .mouse-glow {
+  background: radial-gradient(
+    700px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(16, 185, 129, 0.07), transparent 40%
+  ) !important;
+}
+
+body.matrix-mode .nav-pill {
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+
+
+
+
+
+
+
+
+
+/* Highlight the toggle button in matrix mode */
+body.matrix-mode .matrix-toggle-btn {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: var(--p);
+  color: var(--p-light);
+  box-shadow: 0 0 12px var(--p-glow);
+}
+
+/* CRT Scanlines / Glitch filter when matrix mode is active */
+body.matrix-mode::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+  z-index: 99999;
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.2;
+  animation: crt-flicker 0.15s infinite;
+}
+
+@keyframes crt-flicker {
+  0% { opacity: 0.18; }
+  50% { opacity: 0.22; }
+  100% { opacity: 0.18; }
+}
+
+@media (max-width: 1150px) {
+  .matrix-toggle-btn {
+    padding: 6px;
+    margin-right: 8px;
+  }
+  .matrix-toggle-btn span {
+    display: none;
+  }
 }

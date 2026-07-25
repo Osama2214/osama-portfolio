@@ -376,10 +376,10 @@ const observer = new IntersectionObserver((entries) => {
 sections.forEach(s => observer.observe(s));
 
 // Keep pill aligned on resize
-window.addEventListener('resize', () => {
-  const current = document.querySelector('.nav-link.active');
-  if (current) movePillTo(current);
-});
+  window.addEventListener('resize', () => {
+    const current = document.querySelector('.nav-link.active');
+    if (current) movePillTo(current);
+  });
 
 // ── TYPEWRITER ───────────────────────────────
 const titles = [
@@ -1741,6 +1741,10 @@ if (closeConsoleBtn && consoleOutput) {
     }, 10000);
   };
 
+  /* ── 7. Expose shared helpers for other modules (e.g. Portfolio OS Settings) ── */
+  window.easterShowToast = showToast;
+  window.easterStartKonamiMatrix = startKonamiMatrix;
+
 
 
 })();
@@ -1782,14 +1786,26 @@ if (closeConsoleBtn && consoleOutput) {
   let clockInterval = null;
   let musicEnabled  = false;
   let particlesEnabled = true;
-  let animationsLevel  = 'high';
   let osTheme       = 'site-purple';
   let audioCtx      = null;
   let musicNodes    = {};
   let ambientAudio  = null;
   let ambientFadeTimer = null;
+  let startupAudio  = null;
+  let shutdownAudio = null;
+  let desktopIconsReady = false;
+  let didDragDesktopIcon = false;
+  let brandIconObserver = null;
   let isBooting     = false;
   let isShuttingDown= false;
+  const DESKTOP_ICON_POS_KEY = 'portfolio-os-icon-positions-v2';
+  const DESKTOP_GRID = { x: 22, y: 24, col: 86, row: 74 };
+  const POS_ICONS = {
+    github: '<svg class="pos-brand-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.5 11.5 0 0 1 12 5.4c1.02.01 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.82.58A12.01 12.01 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>',
+    linkedin: '<svg class="pos-brand-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.23 0z"/></svg>',
+    external: '<svg class="pos-action-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>',
+    download: '<svg class="pos-action-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>'
+  };
 
   // ── App Definitions ─────────────────────────────────────────
   const APP_META = {
@@ -1852,8 +1868,11 @@ if (closeConsoleBtn && consoleOutput) {
   // ── Boot Sequence ────────────────────────────────────────────
   function startOS() {
     isBooting = true;
+    document.documentElement.classList.add('pos-os-active');
+    document.body.classList.add('pos-os-active');
     document.body.style.overflow = 'hidden';
     osRoot.classList.remove('pos-hidden');
+    setupOsBrandIcons();
     bootScreen.classList.remove('pos-hidden');
     desktop.classList.add('pos-hidden');
     shutdownScreen.classList.add('pos-hidden');
@@ -1886,7 +1905,9 @@ if (closeConsoleBtn && consoleOutput) {
     bootScreen.classList.add('pos-hidden');
     desktop.classList.remove('pos-hidden');
     isBooting = false;
+    initDesktopIconLayout();
     startClock();
+    playStartupSound();
     if (musicEnabled) startAmbientMusic();
   }
 
@@ -1904,7 +1925,50 @@ if (closeConsoleBtn && consoleOutput) {
   }
 
   // ── Desktop Icon Click ───────────────────────────────────────
+  function setupOsBrandIcons() {
+    decorateOsBrandLinks(osRoot);
+    if (brandIconObserver) return;
+    brandIconObserver = new MutationObserver((mutations) => {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeType === Node.ELEMENT_NODE) decorateOsBrandLinks(node);
+        });
+      });
+    });
+    brandIconObserver.observe(osRoot, { childList: true, subtree: true });
+  }
+
+  function decorateOsBrandLinks(root) {
+    if (!root || !root.querySelectorAll) return;
+    root.querySelectorAll('a.pos-file-detail-link, a.pos-contact-link').forEach(link => {
+      if (link.dataset.brandIconReady === 'true') return;
+      const label = link.textContent.toLowerCase();
+      let icon = '';
+      let text = '';
+      if (label.includes('github')) {
+        icon = POS_ICONS.github;
+        text = 'GitHub';
+      } else if (label.includes('linkedin')) {
+        icon = POS_ICONS.linkedin;
+        text = 'LinkedIn';
+      } else {
+        return;
+      }
+      link.dataset.brandIconReady = 'true';
+      const contactIcon = link.querySelector('.pos-contact-link-icon');
+      if (contactIcon) {
+        contactIcon.innerHTML = icon;
+      } else {
+        link.innerHTML = `${icon}<span>${text}</span>`;
+      }
+    });
+  }
+
   iconsGrid.addEventListener('click', (e) => {
+    if (didDragDesktopIcon) {
+      didDragDesktopIcon = false;
+      return;
+    }
     const icon = e.target.closest('.pos-icon');
     if (!icon) return;
     const appId = icon.dataset.app;
@@ -1920,6 +1984,127 @@ if (closeConsoleBtn && consoleOutput) {
   });
 
   // ── App Launcher ─────────────────────────────────────────────
+  function initDesktopIconLayout() {
+    const icons = Array.from(iconsGrid.querySelectorAll('.pos-icon'));
+    const saved = getSavedDesktopIconPositions();
+
+    icons.forEach((icon, index) => {
+      const appId = icon.dataset.app;
+      const pos = saved[appId] || getDefaultIconPosition(index);
+      setDesktopIconPosition(icon, pos.x, pos.y);
+      if (!icon.dataset.dragReady) {
+        makeDesktopIconDraggable(icon);
+        icon.dataset.dragReady = 'true';
+      }
+    });
+
+    desktopIconsReady = true;
+  }
+
+  function getDefaultIconPosition(index) {
+    return { x: DESKTOP_GRID.x, y: DESKTOP_GRID.y + index * DESKTOP_GRID.row };
+  }
+
+  function getSavedDesktopIconPositions() {
+    try {
+      return JSON.parse(localStorage.getItem(DESKTOP_ICON_POS_KEY) || '{}') || {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function saveDesktopIconPositions() {
+    const positions = {};
+    iconsGrid.querySelectorAll('.pos-icon').forEach(icon => {
+      positions[icon.dataset.app] = {
+        x: parseFloat(icon.style.left) || 0,
+        y: parseFloat(icon.style.top) || 0
+      };
+    });
+    localStorage.setItem(DESKTOP_ICON_POS_KEY, JSON.stringify(positions));
+  }
+
+  function clampDesktopIconPosition(x, y, icon) {
+    const maxX = Math.max(0, iconsGrid.clientWidth - icon.offsetWidth - 8);
+    const maxY = Math.max(0, iconsGrid.clientHeight - icon.offsetHeight - 8);
+    return {
+      x: Math.min(Math.max(8, x), maxX),
+      y: Math.min(Math.max(8, y), maxY)
+    };
+  }
+
+  function snapDesktopIconPosition(x, y, icon) {
+    const rawCol = Math.round((x - DESKTOP_GRID.x) / DESKTOP_GRID.col);
+    const rawRow = Math.round((y - DESKTOP_GRID.y) / DESKTOP_GRID.row);
+    const snappedX = DESKTOP_GRID.x + Math.max(0, rawCol) * DESKTOP_GRID.col;
+    const snappedY = DESKTOP_GRID.y + Math.max(0, rawRow) * DESKTOP_GRID.row;
+    return clampDesktopIconPosition(snappedX, snappedY, icon);
+  }
+
+  function setDesktopIconPosition(icon, x, y) {
+    const pos = clampDesktopIconPosition(x, y, icon);
+    icon.style.left = pos.x + 'px';
+    icon.style.top = pos.y + 'px';
+  }
+
+  function setDesktopIconSnappedPosition(icon, x, y) {
+    const pos = snapDesktopIconPosition(x, y, icon);
+    icon.style.left = pos.x + 'px';
+    icon.style.top = pos.y + 'px';
+  }
+
+  function makeDesktopIconDraggable(icon) {
+    let dragging = false;
+    let pointerId = null;
+    let startX = 0, startY = 0, startLeft = 0, startTop = 0;
+
+    icon.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0) return;
+      dragging = true;
+      pointerId = e.pointerId;
+      didDragDesktopIcon = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      startLeft = parseFloat(icon.style.left) || 0;
+      startTop = parseFloat(icon.style.top) || 0;
+      icon.setPointerCapture(pointerId);
+    });
+
+    icon.addEventListener('pointermove', (e) => {
+      if (!dragging || e.pointerId !== pointerId) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (!didDragDesktopIcon && Math.hypot(dx, dy) < 4) return;
+      didDragDesktopIcon = true;
+      icon.classList.add('pos-icon-dragging');
+      setDesktopIconPosition(icon, startLeft + dx, startTop + dy);
+    });
+
+    icon.addEventListener('pointerup', (e) => {
+      if (!dragging || e.pointerId !== pointerId) return;
+      dragging = false;
+      icon.classList.remove('pos-icon-dragging');
+      try { icon.releasePointerCapture(pointerId); } catch (err) {}
+      if (didDragDesktopIcon) {
+        setDesktopIconSnappedPosition(icon, parseFloat(icon.style.left) || 0, parseFloat(icon.style.top) || 0);
+        saveDesktopIconPositions();
+      }
+    });
+
+    icon.addEventListener('pointercancel', () => {
+      dragging = false;
+      icon.classList.remove('pos-icon-dragging');
+    });
+  }
+
+  window.addEventListener('resize', () => {
+    if (!desktopIconsReady) return;
+    iconsGrid.querySelectorAll('.pos-icon').forEach(icon => {
+      setDesktopIconPosition(icon, parseFloat(icon.style.left) || 0, parseFloat(icon.style.top) || 0);
+    });
+    saveDesktopIconPositions();
+  });
+
   function openApp(appId) {
     // If already open, restore + focus
     if (openWindows[appId]) {
@@ -2718,6 +2903,9 @@ if (closeConsoleBtn && consoleOutput) {
           <iframe src="/Osama_Ahmed_CV.pdf" title="Osama Ahmed CV"></iframe>
         </div>
       </div>`;
+    const toolbarButtons = body.querySelectorAll('.pos-toolbar-btn');
+    if (toolbarButtons[0]) toolbarButtons[0].innerHTML = `${POS_ICONS.external}<span>Open in Tab</span>`;
+    if (toolbarButtons[1]) toolbarButtons[1].innerHTML = `${POS_ICONS.download}<span>Download</span>`;
   }
 
   // ── APP: Browser ──────────────────────────────────────────────
@@ -2747,7 +2935,6 @@ if (closeConsoleBtn && consoleOutput) {
   // ── APP: Settings ─────────────────────────────────────────────
   function buildSettings(body) {
     body.style.overflow = 'auto';
-    const animLabels = { high: 'High', medium: 'Medium', low: 'Low' };
     const themeLabels = { 'site-purple': 'Site Purple', 'cyan-blue': 'Cyan Blue', 'deep-violet': 'Deep Violet' };
     body.innerHTML = `
       <div class="pos-settings">
@@ -2777,23 +2964,6 @@ if (closeConsoleBtn && consoleOutput) {
 
         <div class="pos-setting-row">
           <div class="pos-setting-row-info">
-            <div class="pos-setting-row-label">Animations</div>
-            <div class="pos-setting-row-sub">UI animation quality</div>
-          </div>
-          <div class="pos-custom-select" id="posAnimSelect" data-value="${animationsLevel}">
-            <button class="pos-custom-select-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span>${animLabels[animationsLevel]}</span>
-            </button>
-            <div class="pos-custom-select-menu" role="listbox">
-              <button class="pos-custom-option ${animationsLevel==='high' ? 'pos-option-active' : ''}" type="button" data-value="high" role="option">High</button>
-              <button class="pos-custom-option ${animationsLevel==='medium' ? 'pos-option-active' : ''}" type="button" data-value="medium" role="option">Medium</button>
-              <button class="pos-custom-option ${animationsLevel==='low' ? 'pos-option-active' : ''}" type="button" data-value="low" role="option">Low</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="pos-setting-row">
-          <div class="pos-setting-row-info">
             <div class="pos-setting-row-label">Theme</div>
             <div class="pos-setting-row-sub">Desktop color scheme</div>
           </div>
@@ -2811,10 +2981,10 @@ if (closeConsoleBtn && consoleOutput) {
 
         <div class="pos-settings-divider"></div>
         <div class="pos-settings-section-title">About</div>
-        <div class="pos-setting-row">
+        <div class="pos-setting-row pos-about-row" id="posAboutRow" style="cursor:pointer;user-select:none;">
           <div class="pos-setting-row-info">
             <div class="pos-setting-row-label">Portfolio OS</div>
-            <div class="pos-setting-row-sub">Version 1.0.0 — Built by Osama Ahmed</div>
+            <div class="pos-setting-row-sub" id="posVersionSub">Version 1.0.0 — Built by Osama Ahmed</div>
           </div>
         </div>
 
@@ -2846,17 +3016,87 @@ if (closeConsoleBtn && consoleOutput) {
       }
     });
 
-    setupSettingsSelect(body.querySelector('#posAnimSelect'), (value) => {
-      animationsLevel = value;
-      document.documentElement.style.setProperty('--pos-win-anim', animationsLevel === 'low' ? 'none' : '');
-    });
-
     setupSettingsSelect(body.querySelector('#posThemeSelect'), (value) => {
       applyOsTheme(value);
     });
 
     // Shutdown
     body.querySelector('#posSettingsShutdown').addEventListener('click', () => triggerShutdown());
+
+    // Version easter egg — click 5x to unlock
+    const aboutRow = body.querySelector('#posAboutRow');
+    const versionSub = body.querySelector('#posVersionSub');
+    if (aboutRow && versionSub) {
+      let clicks = 0;
+      let clickTimer;
+      const originalText = versionSub.textContent;
+      const hints = ['Again?', 'Keep going...', 'Almost there...', 'One more...'];
+
+      aboutRow.addEventListener('click', () => {
+        clicks++;
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { clicks = 0; }, 1800);
+
+        aboutRow.animate(
+          [{ transform: 'scale(1)' }, { transform: 'scale(0.98)' }, { transform: 'scale(1)' }],
+          { duration: 220, easing: 'ease-out' }
+        );
+
+        if (clicks < 5) {
+          versionSub.textContent = hints[clicks - 1] || originalText;
+          return;
+        }
+
+        // Unlocked!
+        clicks = 0;
+        versionSub.textContent = 'Version 1.0.0 — Made with ☕, 🔥 and way too little sleep';
+        aboutRow.classList.add('pos-about-unlocked');
+        setTimeout(() => aboutRow.classList.remove('pos-about-unlocked'), 900);
+        setTimeout(() => { versionSub.textContent = originalText; }, 5000);
+
+        if (typeof window.easterShowToast === 'function') {
+          window.easterShowToast('🎉 Achievement Unlocked: Curious Clicker!', 4000);
+        }
+
+        // Confetti burst inside the settings panel
+        const panel = body.querySelector('.pos-settings') || body;
+        const rowRect = aboutRow.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
+        const originX = rowRect.left - panelRect.left + rowRect.width / 2;
+        const originY = rowRect.top - panelRect.top + rowRect.height / 2;
+        const colors = ['#a78bfa', '#7c3aed', '#c4b5fd', '#f472b6', '#38bdf8'];
+
+        for (let i = 0; i < 22; i++) {
+          const bit = document.createElement('span');
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 60 + Math.random() * 90;
+          const dx = Math.cos(angle) * dist;
+          const dy = Math.sin(angle) * dist;
+          const size = 4 + Math.random() * 5;
+          bit.style.cssText = `
+            position: absolute;
+            left: ${originX}px;
+            top: ${originY}px;
+            width: ${size}px;
+            height: ${size}px;
+            background: ${colors[i % colors.length]};
+            border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 1;
+          `;
+          panel.style.position = panel.style.position || 'relative';
+          panel.appendChild(bit);
+          bit.animate(
+            [
+              { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+              { transform: `translate(${dx}px, ${dy}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ],
+            { duration: 700 + Math.random() * 400, easing: 'cubic-bezier(0.2,0.8,0.2,1)' }
+          ).onfinish = () => bit.remove();
+        }
+      });
+    }
   }
 
   function setupSettingsSelect(selectEl, onChange) {
@@ -3046,6 +3286,7 @@ if (closeConsoleBtn && consoleOutput) {
   function triggerShutdown() {
     if (isShuttingDown) return;
     isShuttingDown = true;
+    playShutdownSound();
 
     // Close settings window if open
     shutdownScreen.classList.remove('pos-hidden');
@@ -3127,7 +3368,13 @@ if (closeConsoleBtn && consoleOutput) {
       osRoot.classList.add('pos-hidden');
       osRoot.style.opacity = '';
       osRoot.style.transition = '';
+      document.documentElement.classList.remove('pos-os-active');
+      document.body.classList.remove('pos-os-active');
       document.body.style.overflow = '';
+      if (brandIconObserver) {
+        brandIconObserver.disconnect();
+        brandIconObserver = null;
+      }
     }, 500);
   }
 
@@ -3239,6 +3486,38 @@ if (closeConsoleBtn && consoleOutput) {
     } catch (err) {
       console.warn('Ambient audio file could not play:', err);
       return false;
+    }
+  }
+
+  async function playStartupSound() {
+    try {
+      if (!startupAudio) {
+        startupAudio = new Audio('audio/startup.mp3');
+        startupAudio.preload = 'auto';
+      }
+
+      startupAudio.pause();
+      startupAudio.currentTime = 0;
+      startupAudio.volume = 0.13;
+      await startupAudio.play();
+    } catch (err) {
+      console.warn('Startup sound not available:', err);
+    }
+  }
+
+  async function playShutdownSound() {
+    try {
+      if (!shutdownAudio) {
+        shutdownAudio = new Audio('audio/shutdown.mp3');
+        shutdownAudio.preload = 'auto';
+      }
+
+      shutdownAudio.pause();
+      shutdownAudio.currentTime = 0;
+      shutdownAudio.volume = 0.13;
+      await shutdownAudio.play();
+    } catch (err) {
+      console.warn('Shutdown sound not available:', err);
     }
   }
 

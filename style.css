@@ -61,6 +61,19 @@ body {
   max-width: 100%;
 }
 
+html.pos-os-active,
+body.pos-os-active {
+  overflow: hidden !important;
+  scrollbar-width: none;
+}
+
+html.pos-os-active::-webkit-scrollbar,
+body.pos-os-active::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -3862,13 +3875,27 @@ body.coffee-overdrive * {
 
 .pos-boot-logo-icon {
   width: 72px; height: 72px;
+  position: relative;
   border-radius: 18px;
   background: linear-gradient(135deg, var(--pos-control-bg-h), color-mix(in srgb, var(--pos-accent-2) 12%, transparent));
   border: 1px solid var(--pos-border);
   display: flex; align-items: center; justify-content: center;
   color: var(--pos-accent);
-  box-shadow: 0 0 30px var(--pos-accent-dim), inset 0 1px 0 rgba(255,255,255,0.05);
-  animation: posIconGlow 3s ease-in-out infinite;
+  box-shadow: 0 0 14px var(--pos-accent-dim), inset 0 1px 0 rgba(255,255,255,0.05);
+  animation: posIconBreath 4.8s ease-in-out infinite;
+}
+
+.pos-boot-logo-icon::before {
+  content: '';
+  position: absolute;
+  inset: -48px -46px -56px;
+  border-radius: 48px;
+  background: radial-gradient(circle at 50% 60%, var(--pos-accent-glow) 0%, transparent 72%);
+  opacity: 0;
+  transform: scale(0.72);
+  filter: blur(9px);
+  z-index: -1;
+  animation: posBootGlow 4.8s ease-in-out infinite;
 }
 
 .pos-boot-title {
@@ -3898,13 +3925,32 @@ body.coffee-overdrive * {
 .pos-boot-ring {
   width: 52px;
   height: 52px;
+  position: relative;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, var(--pos-accent), var(--pos-accent-2), rgba(255,255,255,0.06) 65%, rgba(255,255,255,0.06) 100%);
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
-          mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  background:
+    conic-gradient(
+      from 24deg,
+      rgba(255,255,255,0.065) 0deg,
+      rgba(255,255,255,0.065) 88deg,
+      var(--pos-accent-2) 145deg,
+      var(--pos-accent) 252deg,
+      color-mix(in srgb, var(--pos-accent) 55%, transparent) 306deg,
+      rgba(255,255,255,0.065) 360deg
+    );
+  box-shadow: 0 0 18px var(--pos-accent-dim);
   animation: posRingSpin 0.9s linear infinite;
   flex-shrink: 0;
 }
+
+.pos-boot-ring::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.035);
+}
+
 
 .pos-boot-status {
   font-family: 'JetBrains Mono', monospace;
@@ -4115,15 +4161,19 @@ body.coffee-overdrive * {
 /* ── Desktop Icons ── */
 .pos-icons-grid {
   position: absolute;
-  top: calc(var(--pos-topbar-h) + 20px);
-  left: 24px;
-  display: grid;
-  grid-template-columns: 80px;
-  gap: 6px;
+  top: var(--pos-topbar-h);
+  left: 0;
+  right: 0;
+  bottom: 86px;
+  display: block;
   z-index: 1;
+  pointer-events: none;
 }
 
 .pos-icon {
+  position: absolute;
+  width: 80px;
+  min-height: 68px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4133,16 +4183,37 @@ body.coffee-overdrive * {
   border: 1.5px solid transparent;
   border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: left 0.16s ease, top 0.16s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   color: var(--pos-text);
   user-select: none;
+  touch-action: none;
+  pointer-events: auto;
+}
+.pos-icon.pos-icon-dragging {
+  cursor: grabbing;
+  opacity: 0.92;
+  transform: scale(1.04);
+  background: var(--pos-control-bg);
+  border-color: var(--pos-border);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.32), 0 0 20px var(--pos-accent-dim);
+  transition: none;
+  z-index: 5;
+}
+.pos-icon.pos-icon-dragging::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 1px dashed var(--pos-border);
+  border-radius: 12px;
+  pointer-events: none;
 }
 .pos-icon:hover {
   background: var(--pos-control-bg);
   border-color: var(--pos-border);
   box-shadow: 0 0 18px var(--pos-accent-dim);
 }
-.pos-icon:active { transform: scale(0.94); }
+.pos-icon:active { transform: scale(0.96); }
+.pos-icon.pos-icon-dragging:active { transform: scale(1.04); }
 .pos-icon-emoji { font-size: 28px; line-height: 1; filter: drop-shadow(0 2px 10px var(--pos-accent-glow)); }
 .pos-icon-label {
   font-size: 11px;
@@ -4510,6 +4581,31 @@ body.coffee-overdrive * {
   transition: all 0.2s ease;
   cursor: pointer;
 }
+.pos-brand-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  display: inline-block;
+}
+.pos-action-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  display: inline-block;
+}
+.pos-toolbar-btn .pos-action-icon {
+  color: currentColor;
+}
+.pos-file-detail-link .pos-brand-icon,
+.pos-contact-link .pos-brand-icon {
+  color: currentColor;
+}
+a[href*="linkedin.com"] .pos-brand-icon {
+  color: #0a66c2;
+}
+a[href*="github.com"] .pos-brand-icon {
+  color: currentColor;
+}
 .pos-file-detail-link.pos-link-primary {
   background: var(--pos-control-bg);
   border: 1px solid var(--pos-accent);
@@ -4679,6 +4775,16 @@ body.coffee-overdrive * {
   transition: background 0.15s ease;
 }
 .pos-setting-row:hover { background: rgba(255,255,255,0.04); }
+
+.pos-about-row { position: relative; overflow: visible; transition: background 0.2s; }
+.pos-about-unlocked {
+  animation: posAboutGlow 0.9s ease-out;
+}
+@keyframes posAboutGlow {
+  0%   { box-shadow: 0 0 0 0 rgba(167,139,250,0.55); background: rgba(124,58,237,0.12); }
+  70%  { box-shadow: 0 0 24px 6px rgba(167,139,250,0); }
+  100% { box-shadow: 0 0 0 0 rgba(167,139,250,0); background: transparent; }
+}
 .pos-setting-row-info {}
 .pos-setting-row-label { font-size: 13px; font-weight: 500; color: var(--pos-text); }
 .pos-setting-row-sub   { font-size: 11px; color: var(--pos-text-2); margin-top: 2px; }
@@ -4950,7 +5056,7 @@ body.coffee-overdrive * {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 2000;
   animation: posFadeIn 0.4s ease;
 }
 .pos-shutdown-content {
@@ -4996,9 +5102,23 @@ body.coffee-overdrive * {
   from { opacity: 0; transform: scale(0.93) translateY(12px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
-@keyframes posIconGlow {
-  0%, 100% { box-shadow: 0 0 20px var(--pos-accent-dim), inset 0 1px 0 rgba(255,255,255,0.05); }
-  50%       { box-shadow: 0 0 40px var(--pos-accent-glow), 0 0 60px color-mix(in srgb, var(--pos-accent-2) 16%, transparent), inset 0 1px 0 rgba(255,255,255,0.05); }
+@keyframes posIconBreath {
+  0%, 100% {
+    box-shadow: 0 0 10px var(--pos-accent-dim), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  45%, 55% {
+    box-shadow: 0 0 22px var(--pos-accent-glow), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+}
+@keyframes posBootGlow {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  45%, 55% {
+    opacity: 0.42;
+    transform: scale(1);
+  }
 }
 @keyframes posBlink {
   0%, 100% { opacity: 1; }

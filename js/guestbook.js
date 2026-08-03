@@ -1,0 +1,143 @@
+/* ── GUESTBOOK ── live demo talking to the /api/guestbook serverless function ──
+   GET on load to render recent messages, POST to sign it. All user content is
+   HTML-escaped before it ever touches innerHTML. Degrades gracefully when the
+   backend storage hasn't been configured yet. */
+(function () {
+  const form   = document.getElementById('gbForm');
+  const listEl = document.getElementById('gbList');
+  if (!form || !listEl) return;
+
+  const API        = '/api/guestbook';
+  const nameInput  = document.getElementById('gb-name');
+  const msgInput   = document.getElementById('gb-message');
+  const submitBtn  = document.getElementById('gbSubmit');
+  const submitLbl  = document.getElementById('gbSubmitLabel');
+  const statusEl   = document.getElementById('gbStatus');
+  const emptyEl    = document.getElementById('gbEmpty');
+  const countEl    = document.getElementById('gbCount');
+
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+
+  function timeAgo(ts) {
+    const s = Math.floor((Date.now() - ts) / 1000);
+    if (s < 60) return 'just now';
+    const m = Math.floor(s / 60); if (m < 60) return m + 'm ago';
+    const h = Math.floor(m / 60); if (h < 24) return h + 'h ago';
+    const d = Math.floor(h / 24); if (d < 30) return d + 'd ago';
+    return new Date(ts).toLocaleDateString();
+  }
+
+  function initials(name) {
+    const parts = String(name).trim().split(/\s+/).slice(0, 2);
+    return parts.map((w) => w[0] || '').join('').toUpperCase() || '?';
+  }
+
+  function entryHTML(e) {
+    return (
+      '<li class="gb-entry">' +
+        '<div class="gb-avatar">' + esc(initials(e.name)) + '</div>' +
+        '<div class="gb-body">' +
+          '<div class="gb-meta">' +
+            '<span class="gb-name">' + esc(e.name) + '</span>' +
+            '<span class="gb-time">' + esc(timeAgo(e.at)) + '</span>' +
+          '</div>' +
+          '<p class="gb-msg">' + esc(e.message) + '</p>' +
+        '</div>' +
+      '</li>'
+    );
+  }
+
+  function updateCount() {
+    if (countEl) countEl.textContent = String(listEl.children.length);
+  }
+
+  function render(entries) {
+    if (!entries.length) {
+      listEl.innerHTML = '';
+      if (emptyEl) emptyEl.hidden = false;
+      updateCount();
+      return;
+    }
+    if (emptyEl) emptyEl.hidden = true;
+    listEl.innerHTML = entries.map(entryHTML).join('');
+    updateCount();
+  }
+
+  function setStatus(msg, kind) {
+    if (!statusEl) return;
+    statusEl.textContent = msg || '';
+    statusEl.className = 'gb-status' + (kind ? ' gb-status-' + kind : '');
+  }
+
+  function disableForm(reason) {
+    form.classList.add('gb-form-off');
+    if (submitBtn) submitBtn.disabled = true;
+    if (nameInput) nameInput.disabled = true;
+    if (msgInput) msgInput.disabled = true;
+    setStatus(reason, 'muted');
+  }
+
+  async function load() {
+    try {
+      const r = await fetch(API, { headers: { Accept: 'application/json' } });
+      const data = await r.json();
+      if (data && data.configured === false) {
+        if (emptyEl) emptyEl.hidden = true;
+        disableForm('⚙️ The guestbook backend is being set up — check back soon.');
+        return;
+      }
+      render((data && data.entries) || []);
+    } catch (err) {
+      setStatus('Could not reach the guestbook right now.', 'error');
+      if (emptyEl) emptyEl.hidden = true;
+    }
+  }
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    if (form.website && form.website.value) return; // honeypot tripped
+
+    const name = (nameInput.value || '').trim();
+    const message = (msgInput.value || '').trim();
+    if (!name || !message) {
+      setStatus('Please fill in your name and a message.', 'error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    if (submitLbl) submitLbl.textContent = 'Signing…';
+    setStatus('');
+
+    try {
+      const r = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, message, website: form.website ? form.website.value : '' }),
+      });
+      const data = await r.json().catch(() => ({}));
+
+      if (r.ok && data.entry) {
+        if (emptyEl) emptyEl.hidden = true;
+        listEl.insertAdjacentHTML('afterbegin', entryHTML(data.entry));
+        updateCount();
+        msgInput.value = '';
+        setStatus('✅ Thanks for signing the guestbook!', 'success');
+      } else if (r.status === 429) {
+        setStatus('⏳ ' + (data.error || 'Please wait before posting again.'), 'error');
+      } else if (r.status === 503) {
+        setStatus('⚙️ ' + (data.error || 'Guestbook is not configured yet.'), 'muted');
+      } else {
+        setStatus('⚠️ ' + (data.error || 'Something went wrong. Please try again.'), 'error');
+      }
+    } catch (err) {
+      setStatus('⚠️ Network error — please try again.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      if (submitLbl) submitLbl.textContent = 'Sign Guestbook';
+    }
+  });
+
+  load();
+})();

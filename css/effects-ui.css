@@ -1,0 +1,232 @@
+/* ─────────────────────────────────────────────
+   GLOW EFFECT BACKGROUND BLOBS
+   ───────────────────────────────────────────── */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 10%; left: -10%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 10%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(6,182,212,0.06), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  #particles,
+  .mouse-glow {
+    display: none !important;
+  }
+  [class*="reveal-"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ── PROJECTS TOGGLE (SHOW MORE / LESS) ── */
+.project-card.more-project {
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease, border-color 0.4s ease;
+  overflow: hidden;
+}
+
+.project-card.more-project.hide-project {
+  max-height: 0 !important;
+  min-height: 0 !important;
+  opacity: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  transform: translateY(-15px) scale(0.98) !important;
+  pointer-events: none !important;
+}
+
+.projects-toggle-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  position: relative;
+  z-index: 10;
+}
+
+#projects-toggle-btn {
+  gap: 8px;
+  padding: 0 32px;
+}
+
+/* ── DYNAMIC RESPONSIVE PUSH FOR FLOATING BADGES ── */
+@media (max-width: 1200px) {
+  .badge-1 { right: -5px !important; }
+  .badge-2 { left: -5px !important; bottom: -20px !important; top: auto !important; right: auto !important; }
+  .badge-3 { right: -5px !important; }
+}
+
+@media (max-width: 480px) {
+  /* Badges are hidden under 768px via display: none to prevent clutter/clipping */
+}
+
+/* ── INTERACTIVE IDE RUN BUTTON ── */
+.code-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.code-run-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #34d399;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-left: auto; /* Push it to the right */
+  user-select: none;
+}
+
+.code-run-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.code-run-btn:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #34d399;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.2);
+}
+
+.code-run-btn.stop-state {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+.code-run-btn.stop-state:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
+}
+
+.code-run-btn.running svg {
+  animation: run-spin 0.6s linear;
+}
+
+@keyframes run-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ── INTERACTIVE TERMINAL CONSOLE OUTPUT ── */
+.console-output {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  background: #060913;
+  border-top: 1px solid var(--border);
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+}
+
+.console-output.open {
+  max-height: 260px;
+  opacity: 1;
+}
+
+.console-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #090e1a;
+  padding: 6px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.console-close-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0 4px;
+}
+
+.console-close-btn:hover {
+  color: #f87171;
+}
+
+.console-body {
+  padding: 14px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-2);
+  max-height: 200px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.console-line {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  margin-bottom: 2px;
+  text-align: left;
+}
+
+.console-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.console-line.prompt {
+  color: var(--text);
+}
+
+.console-line.compilation {
+  color: #a78bfa; /* Purple compiler status */
+}
+
+.console-line.divider {
+  color: rgba(255, 255, 255, 0.08);
+}
+
+.console-line.info-title {
+  color: #f59e0b; /* Yellow label */
+}
+
+.console-line.text-success {
+  color: #34d399;
+}
+

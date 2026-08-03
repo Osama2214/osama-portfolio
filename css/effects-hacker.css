@@ -1,0 +1,566 @@
+/* ── HACKER MATRIX MODE TOGGLE ── */
+.matrix-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-right: 12px;
+}
+
+.matrix-toggle-btn:hover {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: var(--p);
+  color: var(--p-light);
+  box-shadow: 0 0 12px var(--p-glow);
+}
+
+.matrix-toggle-btn svg {
+  transition: transform 0.3s;
+}
+
+.matrix-toggle-btn:active svg {
+  transform: scale(0.9);
+}
+
+/* Dev Tools Dropdown */
+.dev-tools-dropdown {
+  position: relative;
+  margin-right: 0;
+}
+
+.dev-tools-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+/* Icon-only at every width now — with the nav-links block able to grow
+   up to 6 items, keeping the nav-right group small and constant is what
+   actually keeps the header from feeling crowded, not breakpoint math. */
+.dev-tools-btn span,
+.dev-tools-btn .dropdown-arrow {
+  display: none;
+}
+
+.dev-tools-btn:hover,
+.dev-tools-dropdown.open .dev-tools-btn {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: var(--p);
+  color: var(--p-light);
+  box-shadow: 0 0 12px var(--p-glow);
+}
+
+.dev-tools-btn .dropdown-arrow {
+  transition: transform 0.3s ease;
+  opacity: 0.6;
+}
+
+.dev-tools-dropdown.open .dev-tools-btn .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.dev-tools-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 100%;
+  background: rgba(5, 8, 18, 0.96);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 10px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(124,58,237,0.08);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 200;
+}
+
+.dev-tools-dropdown.open .dev-tools-menu {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+.dev-tools-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  color: var(--text-2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dev-tools-item:hover {
+  background: rgba(124, 58, 237, 0.12);
+  color: var(--p-light);
+}
+
+.dev-tools-item svg {
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+
+/* Color Palette Changes in Hacker Mode */
+body.matrix-mode {
+  --p: #10b981;
+  --p-h: #059669;
+  --p-light: #34d399;
+  --p-glow: rgba(16, 185, 129, 0.25);
+  --border-h: rgba(16, 185, 129, 0.4);
+  --accent: #10b981;
+}
+
+/* Override hardcoded purple borders, backgrounds, and shadows in Hacker Mode */
+body.matrix-mode .skill-group:hover {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15) !important;
+}
+
+body.matrix-mode .learning-group {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.03)) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+body.matrix-mode .learning-pill {
+  border-color: rgba(16, 185, 129, 0.25) !important;
+  background: rgba(16, 185, 129, 0.05) !important;
+}
+
+
+body.matrix-mode .skill-pill:hover {
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  background: rgba(16, 185, 129, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12) !important;
+}
+
+body.matrix-mode .project-card.featured {
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+body.matrix-mode .project-card.featured:hover {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  box-shadow: 0 20px 60px rgba(16, 185, 129, 0.18) !important;
+}
+
+body.matrix-mode .project-card:hover {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+body.matrix-mode .tech-tag {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: var(--p-light) !important;
+}
+
+body.matrix-mode .cs-icon {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: var(--p-light) !important;
+}
+
+body.matrix-mode .cert-card:hover,
+body.matrix-mode a.cert-card-link:hover {
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15) !important;
+}
+
+body.matrix-mode .cert-verify-btn {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+body.matrix-mode .cert-verify-btn:hover {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+body.matrix-mode .cert-year {
+  background: rgba(16, 185, 129, 0.1) !important;
+}
+
+body.matrix-mode .contact-card:hover {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12) !important;
+}
+
+body.matrix-mode .email-icon {
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+
+body.matrix-mode .cta-card {
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+body.matrix-mode .cta-glow {
+  background: conic-gradient(
+    from 180deg, transparent 0deg, rgba(16, 185, 129, 0.2) 90deg, transparent 180deg
+  ) !important;
+}
+
+body.matrix-mode .btn-primary {
+  background: linear-gradient(135deg, var(--p), #065f46) !important;
+}
+
+body.matrix-mode .btn-primary:hover {
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.45) !important;
+}
+
+body.matrix-mode .hero::before {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.08), transparent 70%) !important;
+}
+
+body.matrix-mode .hero::after {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.05), transparent 70%) !important;
+}
+
+body.matrix-mode .footer-gradient-line {
+  background: linear-gradient(to right, transparent, rgba(16, 185, 129, 0.5), rgba(52, 211, 153, 0.7), rgba(16, 185, 129, 0.5), transparent) !important;
+}
+
+body.matrix-mode .mouse-glow {
+  background: radial-gradient(
+    700px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(16, 185, 129, 0.07), transparent 40%
+  ) !important;
+}
+
+body.matrix-mode .nav-pill {
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+
+
+
+
+
+
+
+
+
+/* Highlight the toggle button in matrix mode */
+body.matrix-mode .matrix-toggle-btn {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: var(--p);
+  color: var(--p-light);
+  box-shadow: 0 0 12px var(--p-glow);
+}
+
+/* CRT Scanlines / Glitch filter when matrix mode is active */
+body.matrix-mode::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+  z-index: 99999;
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.2;
+  animation: crt-flicker 0.15s infinite;
+}
+
+@keyframes crt-flicker {
+  0% { opacity: 0.18; }
+  50% { opacity: 0.22; }
+  100% { opacity: 0.18; }
+}
+
+/* ── Hacker Mode Extras ───────────────────────────────── */
+
+/* Glitch text effect on hero name */
+.glitch-text {
+  position: relative;
+  animation: glitchAnim 2.5s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0.75;
+}
+
+.glitch-text::before {
+  color: #ff003c;
+  clip-path: polygon(0 20%, 100% 20%, 100% 35%, 0 35%);
+  animation: glitchSlice1 2.5s infinite;
+}
+
+.glitch-text::after {
+  color: #00ff41;
+  clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+  animation: glitchSlice2 2.5s infinite;
+}
+
+@keyframes glitchAnim {
+  0%, 90%, 100% { transform: none; }
+  91%  { transform: skewX(-1deg); }
+  93%  { transform: skewX(1deg); }
+  95%  { transform: skewX(-0.5deg); }
+}
+
+@keyframes glitchSlice1 {
+  0%, 88%, 100% { transform: none; opacity: 0; }
+  89%  { transform: translateX(-4px); opacity: 0.75; }
+  91%  { transform: translateX(4px);  opacity: 0.75; }
+  93%  { transform: none; opacity: 0; }
+}
+
+@keyframes glitchSlice2 {
+  0%, 85%, 100% { transform: none; opacity: 0; }
+  86%  { transform: translateX(4px);  opacity: 0.75; }
+  88%  { transform: translateX(-4px); opacity: 0.75; }
+  90%  { transform: none; opacity: 0; }
+}
+
+/* Floating hacker messages */
+@keyframes hackerMsgAnim {
+  0%   { opacity: 0; transform: translateY(10px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-16px); }
+}
+
+/* Scanline flicker */
+@keyframes scanlineFlicker {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.92; }
+}
+
+@media (max-width: 1150px) {
+  .matrix-toggle-btn {
+    padding: 6px;
+    margin-right: 8px;
+  }
+  .matrix-toggle-btn span {
+    display: none;
+  }
+}
+
+/* Shrink the whole nav-right button group (Dev Tools / Portfolio OS /
+   GitHub) to a matched set of icon-only 34x34 buttons well before the
+   absolutely-centered .nav-links block (up to 500px wide with 6 links)
+   has any chance of colliding with it. Triggers earlier than the
+   768px hamburger breakpoint on purpose — this is a "shrink the right
+   side" step, not the "collapse to mobile menu" step. */
+@media (max-width: 768px) {
+  /* Hide Dev Tools dropdown from navbar on mobile — accessible via mobile menu */
+  .dev-tools-dropdown {
+    display: none;
+  }
+}
+
+/* ── TERMINAL CONSOLE STYLES ── */
+:root {
+  --term-color: var(--p-light);
+  --term-accent: var(--accent);
+}
+
+.terminal-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 45vh;
+  z-index: 1010;
+  background: rgba(5, 8, 18, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 2px solid var(--term-color);
+  font-family: 'JetBrains Mono', Consolas, Monaco, 'Courier New', Courier, monospace;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+}
+
+.terminal-panel.open {
+  transform: translateY(0);
+}
+
+/* Themes overrides */
+.terminal-panel.theme-green {
+  --term-color: #10b981;
+  --term-accent: #34d399;
+}
+.terminal-panel.theme-cyan {
+  --term-color: #06b6d4;
+  --term-accent: #22d3ee;
+}
+.terminal-panel.theme-amber {
+  --term-color: #f59e0b;
+  --term-accent: #fbbf24;
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+
+
+.terminal-title {
+  font-size: 11.5px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.terminal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-2);
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+
+.terminal-close-btn:hover {
+  color: var(--red);
+}
+
+.terminal-output-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--term-color);
+  transition: color 0.3s;
+}
+
+.terminal-output-container::-webkit-scrollbar {
+  width: 5px;
+}
+.terminal-output-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal-output-container::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+
+.terminal-output-container pre {
+  font-family: 'JetBrains Mono', Consolas, Monaco, 'Courier New', Courier, monospace !important;
+  white-space: pre !important;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.terminal-line {
+  margin-bottom: 6px;
+  white-space: pre-wrap;
+}
+
+.terminal-line.banner {
+  color: var(--term-accent);
+  font-weight: bold;
+}
+
+.terminal-line.error { color: var(--red); }
+.terminal-line.success { color: var(--green); }
+.terminal-line.info { color: var(--term-accent); }
+.terminal-line.loading { color: var(--orange); }
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.terminal-prompt {
+  color: var(--term-accent);
+  font-weight: bold;
+  margin-right: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.terminal-input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#terminalInput {
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--term-color);
+  font-family: 'JetBrains Mono', Consolas, Monaco, 'Courier New', Courier, monospace;
+  font-size: 13.5px;
+  padding: 0;
+  caret-color: var(--term-accent);
+  transition: color 0.3s;
+}
+
+.terminal-input-ghost {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--text-3);
+  font-family: 'JetBrains Mono', Consolas, Monaco, 'Courier New', Courier, monospace;
+  font-size: 13.5px;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.55;
+  white-space: pre;
+}
+
+@keyframes terminal-flash {
+  0%, 100% { box-shadow: 0 0 0px transparent; }
+  50% { box-shadow: inset 0 0 30px rgba(16, 185, 129, 0.25); }
+}
+

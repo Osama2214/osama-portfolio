@@ -1,0 +1,41 @@
+/* ─────────────────────────────────────────────
+   SECTIONS
+   ───────────────────────────────────────────── */
+.section {
+  padding: 100px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.section-alt {
+  background: linear-gradient(180deg, transparent, var(--bg-2) 30%, var(--bg-2) 70%, transparent);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.section-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--p-light);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.section-title {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.section-desc {
+  color: var(--text-2);
+  font-size: 17px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+

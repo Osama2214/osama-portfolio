@@ -1,0 +1,115 @@
+/* ─────────────────────────────────────────────
+   OSAMA AHMED PORTFOLIO — style.css
+   ───────────────────────────────────────────── */
+
+/* ── RESET & ROOT ── */
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  /* Colors */
+  --bg:          #050812;
+  --bg-2:        #080d1a;
+  --surface:     #0c1223;
+  --card:        #0f1929;
+  --card-h:      #131f35;
+  --border:      rgba(255,255,255,0.06);
+  --border-h:    rgba(124,58,237,0.4);
+
+  /* Primary — Purple */
+  --p:           #7c3aed;
+  --p-h:         #6d28d9;
+  --p-light:     #a78bfa;
+  --p-glow:      rgba(124,58,237,0.25);
+
+  /* Accent — Cyan */
+  --accent:      #06b6d4;
+  --accent-glow: rgba(6,182,212,0.2);
+
+  /* Text */
+  --text:        #e2e8f0;
+  --text-2:      #94a3b8;
+  --text-3:      #4a5568;
+  --muted:       #64748b;
+
+  /* Semantic */
+  --green:       #10b981;
+  --orange:      #f59e0b;
+  --red:         #ef4444;
+
+  /* Misc */
+  --r:           14px;
+  --r-sm:        8px;
+  --transition:  0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+html.pos-os-active,
+body.pos-os-active {
+  overflow: hidden !important;
+  scrollbar-width: none;
+}
+
+html.pos-os-active::-webkit-scrollbar,
+body.pos-os-active::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--p); border-radius: 3px; }
+
+/* ── CANVAS ── */
+#particles {
+  position: fixed; inset: 0;
+  z-index: 0; pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ── MOUSE GLOW ── */
+.mouse-glow {
+  position: fixed; inset: 0;
+  z-index: 1; pointer-events: none;
+  background: radial-gradient(
+    700px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(124,58,237,0.06), transparent 40%
+  );
+  transition: background 0.1s;
+}
+
+/* ── SELECTION ── */
+::selection { background: var(--p); color: #fff; }
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+

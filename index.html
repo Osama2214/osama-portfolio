@@ -4,6 +4,7 @@
   <!-- SVG icon defs (Munjez-style) -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050812" />
   <title>Osama Ahmed — Backend Developer & IT Student</title>
   <meta name="description" content="Osama Ahmed Abdelaziz — IT Student & Aspiring Backend Developer (.NET). Builder of Munjez productivity app. Based in Egypt." />
   <meta name="author" content="Osama Ahmed Abdelaziz" />
@@ -30,6 +31,28 @@
   <meta name="twitter:title" content="Osama Ahmed — Backend Developer" />
   <meta name="twitter:description" content="IT Student & Aspiring Backend Developer (.NET). Builder of Munjez productivity app." />
   <meta name="twitter:image" content="https://osama-portfolio-six.vercel.app/og-image.png" />
+
+  <!-- Structured data — Person (helps Google & LinkedIn understand who this is) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Osama Ahmed Abdelaziz",
+    "givenName": "Osama",
+    "familyName": "Ahmed Abdelaziz",
+    "jobTitle": "Backend Developer",
+    "description": "IT Student and aspiring Backend Developer (.NET). Builder of the Munjez productivity app.",
+    "url": "https://osama-portfolio-six.vercel.app/",
+    "image": "https://osama-portfolio-six.vercel.app/og-image.png",
+    "email": "mailto:osamaahmed.dev00@gmail.com",
+    "address": { "@type": "PostalAddress", "addressCountry": "EG" },
+    "knowsAbout": [".NET", "C#", "ASP.NET", "Backend Development", "REST APIs", "SQL", "JavaScript", "Software Engineering"],
+    "sameAs": [
+      "https://github.com/Osama2214",
+      "https://www.linkedin.com/in/osama-ahmed-67127222a"
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1198,5 +1221,7 @@
   <script src="js/portfolio-os.js?v=20260803" defer></script>
   <script src="js/command-palette.js?v=20260803" defer></script>
   <script src="js/guestbook.js?v=20260803" defer></script>
+  <!-- Vercel Web Analytics (privacy-friendly, cookieless) — enable it in the Vercel dashboard -->
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

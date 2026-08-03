@@ -181,7 +181,9 @@
   margin: 12px 0 0;
   font-size: 0.86rem;
   min-height: 1.2em;
+  transition: opacity 0.4s ease;
 }
+.gb-status-fading { opacity: 0; }
 .gb-status svg {
   width: 15px;
   height: 15px;

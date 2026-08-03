@@ -1044,6 +1044,18 @@
           <span class="pos-icon-emoji">🖥️</span>
           <span class="pos-icon-label">Terminal</span>
         </button>
+        <button class="pos-icon" data-app="settings" title="Open Settings">
+          <span class="pos-icon-emoji">⚙️</span>
+          <span class="pos-icon-label">Settings</span>
+        </button>
+        <button class="pos-icon" data-app="games" title="Open Games">
+          <span class="pos-icon-emoji">🎮</span>
+          <span class="pos-icon-label">Games</span>
+        </button>
+        <button class="pos-icon" data-app="browser" title="Open Browser">
+          <span class="pos-icon-emoji">🌐</span>
+          <span class="pos-icon-label">Browser</span>
+        </button>
         <button class="pos-icon" data-app="projects" title="Open Projects">
           <span class="pos-icon-emoji">📂</span>
           <span class="pos-icon-label">Projects</span>
@@ -1051,14 +1063,6 @@
         <button class="pos-icon" data-app="resume" title="Open Resume">
           <span class="pos-icon-emoji">📄</span>
           <span class="pos-icon-label">Resume</span>
-        </button>
-        <button class="pos-icon" data-app="browser" title="Open Browser">
-          <span class="pos-icon-emoji">🌐</span>
-          <span class="pos-icon-label">Browser</span>
-        </button>
-        <button class="pos-icon" data-app="settings" title="Open Settings">
-          <span class="pos-icon-emoji">⚙️</span>
-          <span class="pos-icon-label">Settings</span>
         </button>
         <button class="pos-icon" data-app="contact" title="Open Contact">
           <span class="pos-icon-emoji">📧</span>
@@ -1074,7 +1078,7 @@
       <div id="posWindowsContainer"></div>
 
       <!-- Bottom Dock (Taskbar) -->
-      <div class="pos-dock-wrap">
+      <div class="pos-dock-wrap" id="posDockWrap">
         <div class="pos-dock" id="posDock">
           <div class="pos-dock-apps" id="posTaskbarApps"></div>
         </div>

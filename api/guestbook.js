@@ -16,8 +16,26 @@
 
 'use strict';
 
-const REDIS_URL   = process.env.UPSTASH_REDIS_REST_URL   || process.env.KV_REST_API_URL;
-const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+// Resolve the Upstash REST credentials. We check the common names first, then
+// fall back to scanning env vars — so it works whatever prefix Vercel/Upstash
+// applies (e.g. STORAGE_KV_REST_API_URL). Read-only tokens are never used for writes.
+function findEnv(match, reject) {
+  const env = process.env;
+  for (const key of Object.keys(env)) {
+    if (match.test(key) && (!reject || !reject.test(key)) && env[key]) return env[key];
+  }
+  return undefined;
+}
+
+const REDIS_URL =
+  process.env.UPSTASH_REDIS_REST_URL ||
+  process.env.KV_REST_API_URL ||
+  findEnv(/REST_API_URL$|REDIS_REST_URL$/);
+
+const REDIS_TOKEN =
+  process.env.UPSTASH_REDIS_REST_TOKEN ||
+  process.env.KV_REST_API_TOKEN ||
+  findEnv(/REST_API_TOKEN$|REDIS_REST_TOKEN$/, /READ_ONLY/);
 
 const LIST_KEY    = 'guestbook:entries';
 const MAX_ENTRIES = 100;   // never keep more than this

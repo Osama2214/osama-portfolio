@@ -145,12 +145,27 @@
   text-align: center;
   padding: 40px 10px;
 }
+.gb-empty-icon {
+  display: block;
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 12px;
+  opacity: 0.5;
+}
 
 /* Form status line */
 .gb-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   margin: 12px 0 0;
   font-size: 0.86rem;
   min-height: 1.2em;
+}
+.gb-status svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
 }
 .gb-status-success { color: var(--green); }
 .gb-status-error   { color: var(--red); }

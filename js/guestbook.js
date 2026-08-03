@@ -65,9 +65,17 @@
     updateCount();
   }
 
+  // Clean inline icons (stroke-based, inherit the status colour) — no emoji.
+  const STATUS_ICONS = {
+    success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+    error:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    muted:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+  };
+
   function setStatus(msg, kind) {
     if (!statusEl) return;
-    statusEl.textContent = msg || '';
+    if (!msg) { statusEl.innerHTML = ''; statusEl.className = 'gb-status'; return; }
+    statusEl.innerHTML = (STATUS_ICONS[kind] || '') + '<span>' + esc(msg) + '</span>';
     statusEl.className = 'gb-status' + (kind ? ' gb-status-' + kind : '');
   }
 
@@ -85,7 +93,7 @@
       const data = await r.json();
       if (data && data.configured === false) {
         if (emptyEl) emptyEl.hidden = true;
-        disableForm('⚙️ The guestbook backend is being set up — check back soon.');
+        disableForm('The guestbook backend is being set up — check back soon.');
         return;
       }
       render((data && data.entries) || []);
@@ -123,16 +131,16 @@
         listEl.insertAdjacentHTML('afterbegin', entryHTML(data.entry));
         updateCount();
         msgInput.value = '';
-        setStatus('✅ Thanks for signing the guestbook!', 'success');
+        setStatus('Thanks for signing the guestbook!', 'success');
       } else if (r.status === 429) {
-        setStatus('⏳ ' + (data.error || 'Please wait before posting again.'), 'error');
+        setStatus(data.error || 'Please wait before posting again.', 'error');
       } else if (r.status === 503) {
-        setStatus('⚙️ ' + (data.error || 'Guestbook is not configured yet.'), 'muted');
+        setStatus(data.error || 'Guestbook is not configured yet.', 'muted');
       } else {
-        setStatus('⚠️ ' + (data.error || 'Something went wrong. Please try again.'), 'error');
+        setStatus(data.error || 'Something went wrong. Please try again.', 'error');
       }
     } catch (err) {
-      setStatus('⚠️ Network error — please try again.', 'error');
+      setStatus('Network error — please try again.', 'error');
     } finally {
       submitBtn.disabled = false;
       if (submitLbl) submitLbl.textContent = 'Sign Guestbook';

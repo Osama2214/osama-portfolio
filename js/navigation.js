@@ -79,6 +79,9 @@ navLinks.forEach(link => {
   }
 });
 
+// Use a thin horizontal detection band near the middle of the viewport instead
+// of an area threshold — a percentage threshold can never be reached by sections
+// that are taller than the viewport (e.g. Projects), leaving them un-highlighted.
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -93,7 +96,7 @@ const observer = new IntersectionObserver((entries) => {
       }
     }
   });
-}, { threshold: 0.4 });
+}, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
 
 sections.forEach(s => observer.observe(s));
 

@@ -120,7 +120,13 @@ module.exports = async (req, res) => {
       const rlKey = `guestbook:rl:${clientIp(req)}`;
       const set = await redis(['SET', rlKey, '1', 'NX', 'EX', String(RL_WINDOW)]);
       if (set === null) {
-        return res.status(429).json({ error: 'You just posted — please wait a moment before posting again.' });
+        let retryAfter = RL_WINDOW;
+        try {
+          const ttl = await redis(['TTL', rlKey]);
+          if (typeof ttl === 'number' && ttl > 0) retryAfter = ttl;
+        } catch (_) { /* fall back to full window */ }
+        res.setHeader('Retry-After', String(retryAfter));
+        return res.status(429).json({ error: 'You just posted — please wait a moment before posting again.', retryAfter });
       }
     } catch (_) { /* ignore limiter errors */ }
 

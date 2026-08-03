@@ -15,6 +15,12 @@
   const statusEl   = document.getElementById('gbStatus');
   const emptyEl    = document.getElementById('gbEmpty');
   const countEl    = document.getElementById('gbCount');
+  const barEl      = document.getElementById('gbCooldownBar');
+  const fillEl     = document.getElementById('gbCooldownFill');
+
+  const COOLDOWN = 30; // seconds — must match RL_WINDOW in api/guestbook.js
+  let cooldownTimer = null;
+  let cooldownEndsAt = 0;
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
@@ -87,6 +93,46 @@
     setStatus(reason, 'muted');
   }
 
+  // ── Cooldown timer ─────────────────────────────────────────
+  function inCooldown() { return Date.now() < cooldownEndsAt; }
+  function remaining() { return Math.max(0, Math.ceil((cooldownEndsAt - Date.now()) / 1000)); }
+
+  function endCooldown() {
+    if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
+    cooldownEndsAt = 0;
+    submitBtn.disabled = false;
+    submitBtn.classList.remove('gb-btn-cooling');
+    if (submitLbl) submitLbl.textContent = 'Sign Guestbook';
+    if (barEl) barEl.hidden = true;
+  }
+
+  function tickCooldown() {
+    const s = remaining();
+    if (s <= 0) { endCooldown(); return; }
+    submitBtn.disabled = true;
+    submitBtn.classList.add('gb-btn-cooling');
+    if (submitLbl) submitLbl.textContent = 'Wait ' + s + 's';
+  }
+
+  function startCooldown(seconds) {
+    const secs = Math.max(1, Math.round(seconds || COOLDOWN));
+    cooldownEndsAt = Date.now() + secs * 1000;
+
+    // animate the progress bar draining over the remaining time
+    if (barEl && fillEl) {
+      barEl.hidden = false;
+      fillEl.style.transition = 'none';
+      fillEl.style.width = '100%';
+      void fillEl.offsetWidth; // force reflow so the next transition runs
+      fillEl.style.transition = 'width ' + secs + 's linear';
+      fillEl.style.width = '0%';
+    }
+
+    tickCooldown();
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    cooldownTimer = setInterval(tickCooldown, 250);
+  }
+
   async function load() {
     try {
       const r = await fetch(API, { headers: { Accept: 'application/json' } });
@@ -106,6 +152,11 @@
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
     if (form.website && form.website.value) return; // honeypot tripped
+
+    if (inCooldown()) {
+      setStatus('Please wait ' + remaining() + 's before posting again.', 'error');
+      return;
+    }
 
     const name = (nameInput.value || '').trim();
     const message = (msgInput.value || '').trim();
@@ -132,8 +183,10 @@
         updateCount();
         msgInput.value = '';
         setStatus('Thanks for signing the guestbook!', 'success');
+        startCooldown(COOLDOWN);
       } else if (r.status === 429) {
         setStatus(data.error || 'Please wait before posting again.', 'error');
+        startCooldown(Number(data.retryAfter) || COOLDOWN);
       } else if (r.status === 503) {
         setStatus(data.error || 'Guestbook is not configured yet.', 'muted');
       } else {
@@ -142,8 +195,11 @@
     } catch (err) {
       setStatus('Network error — please try again.', 'error');
     } finally {
-      submitBtn.disabled = false;
-      if (submitLbl) submitLbl.textContent = 'Sign Guestbook';
+      // Don't clobber the cooldown countdown running in the button.
+      if (!inCooldown()) {
+        submitBtn.disabled = false;
+        if (submitLbl) submitLbl.textContent = 'Sign Guestbook';
+      }
     }
   });
 

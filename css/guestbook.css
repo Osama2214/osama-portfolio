@@ -30,6 +30,12 @@
   align-items: start;
 }
 
+/* The form card inherits height:100% + flex-grow from the contact section, which
+   makes it stretch to match a tall message wall and open up empty gaps. In the
+   guestbook we want it to keep its natural height. */
+.gb-grid .form-card { height: auto; }
+.gb-grid .form-card .contact-form { flex: 0 1 auto; }
+
 /* Honeypot — visually hidden, off-screen, kept out of the tab order */
 .gb-hp {
   position: absolute;

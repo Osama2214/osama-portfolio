@@ -15,6 +15,7 @@
   const svgFolder   = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>';
   const svgAward    = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>';
   const svgMail     = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  const svgBook     = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
   const svgTerminal = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>';
   const svgSkull    = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M9 16s1-1.5 3-1.5 3 1.5 3 1.5"/></svg>';
   const svgMonitor  = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>';
@@ -49,9 +50,10 @@
   const commands = [
     { group: 'Navigate', icon: svgHome, label: 'Go to Home', keywords: 'home hero top', action: () => scrollTo('#home') },
     { group: 'Navigate', icon: svgUser, label: 'Go to About', keywords: 'about me who', action: () => scrollTo('#about') },
-    { group: 'Navigate', icon: svgCode, label: 'Go to Skills', keywords: 'skills stack tech', action: () => scrollTo('#skills') },
     { group: 'Navigate', icon: svgFolder, label: 'Go to Projects', keywords: 'projects work munjez cafe', action: () => scrollTo('#projects') },
+    { group: 'Navigate', icon: svgCode, label: 'Go to Skills', keywords: 'skills stack tech', action: () => scrollTo('#skills') },
     { group: 'Navigate', icon: svgAward, label: 'Go to Education & Certs', keywords: 'education certifications ccna eelu', action: () => scrollTo('#education') },
+    { group: 'Navigate', icon: svgBook, label: 'Go to Guestbook', keywords: 'guestbook sign message book reactions', action: () => scrollTo('#guestbook') },
     { group: 'Navigate', icon: svgMail, label: 'Go to Contact', keywords: 'contact message form', action: () => scrollTo('#contact') },
 
     { group: 'Actions', icon: svgTerminal, label: 'Open Terminal Console', keywords: 'terminal console dev tools', action: () => clickEl('terminalToggle'), hint: 'toggles' },

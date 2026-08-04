@@ -106,8 +106,8 @@
       type: 'Specialty Coffee Shop & Roastery Web',
       desc: 'A premium, highly interactive coffee shop landing page. Custom fluid typography, sticky glassmorphism nav, dynamic animations, scroll-triggered hooks, and a zero-dependency responsive architecture.',
       tech: ['HTML5', 'CSS3', 'JavaScript'],
-      live: 'https://nti-task-2.vercel.app/',
-      github: 'https://github.com/Osama2214/NTI-Task-2',
+      live: 'https://coffee-landing-osama.vercel.app/',
+      github: 'https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe',
     },
   ];
 
@@ -161,7 +161,7 @@
     bootScreen.classList.add('pos-hidden');
     desktop.classList.remove('pos-hidden');
     isBooting = false;
-    initDesktopIconLayout();
+    layoutIconsWhenReady();
     startClock();
     playStartupSound();
     if (musicEnabled) startAmbientMusic();
@@ -343,6 +343,14 @@
   });
 
   // ── App Launcher ─────────────────────────────────────────────
+  // Wait until the desktop has actually been laid out (a freshly-shown grid can
+  // report clientWidth 0 for a frame or two) so icons aren't all clamped to 0,0.
+  function layoutIconsWhenReady(tries) {
+    tries = tries || 0;
+    if (iconsGrid.clientWidth > 0 || tries > 20) { initDesktopIconLayout(); return; }
+    setTimeout(() => layoutIconsWhenReady(tries + 1), 50);
+  }
+
   function initDesktopIconLayout() {
     const icons = Array.from(iconsGrid.querySelectorAll('.pos-icon'));
     const saved = getSavedDesktopIconPositions();
@@ -387,8 +395,14 @@
   }
 
   function clampDesktopIconPosition(x, y, icon) {
-    const maxX = Math.max(0, iconsGrid.clientWidth - icon.offsetWidth - 8);
-    const maxY = Math.max(0, iconsGrid.clientHeight - icon.offsetHeight - 8);
+    // Fall back to viewport / default icon size if the grid isn't measured yet,
+    // so positions never collapse to (0,0) and stack the icons.
+    const gw = iconsGrid.clientWidth  || window.innerWidth;
+    const gh = iconsGrid.clientHeight || window.innerHeight;
+    const iw = icon.offsetWidth  || 80;
+    const ih = icon.offsetHeight || 68;
+    const maxX = Math.max(0, gw - iw - 8);
+    const maxY = Math.max(0, gh - ih - 8);
     return {
       x: Math.min(Math.max(8, x), maxX),
       y: Math.min(Math.max(8, y), maxY)
@@ -871,7 +885,7 @@
     tLine("Type 'help' to list commands.", 'pos-t-info');
     tLine('', '');
 
-    const CMDS = ['help','about','skills','projects','experience','contact','cv','coffee','social','clear','hack','guess','secret','sudo'];
+    const CMDS = ['help','about','skills','projects','experience','contact','github','guestbook','reactions','cv','coffee','social','clear','hack','guess','secret','sudo'];
 
     // Ghost autocomplete helper (same behavior as the outside terminal)
     function updateGhostText() {
@@ -906,8 +920,8 @@
         tLine('Status: Live');
         tLine('Tech Stack: HTML5, CSS3, JavaScript');
         tLine('Features: Fluid typography, glassmorphism nav, dynamic animations, scroll-triggered hooks, zero-dependency.');
-        tHTML('Live Site: <a href="https://nti-task-2.vercel.app/" target="_blank" style="color:var(--pos-accent)">nti-task-2.vercel.app</a>');
-        tHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Task-2" target="_blank" style="color:var(--pos-accent)">github.com/Osama2214/NTI-Task-2</a>');
+        tHTML('Live Site: <a href="https://coffee-landing-osama.vercel.app/" target="_blank" style="color:var(--pos-accent)">coffee-landing-osama.vercel.app</a>');
+        tHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe" target="_blank" style="color:var(--pos-accent)">NTI-Full-Stack-Web-Development/Task-2/osama-cafe</a>');
       } else {
         tLine('Invalid selection. Exited project selector.', 'pos-t-error');
       }
@@ -981,12 +995,13 @@
           break;
         case 'skills':
           tLine('Loading technical stack visualizer...', 'pos-t-loading');
-          await progressBar('PHP           ', 10); await sleep(50);
-          await progressBar('Laravel       ', 8);  await sleep(50);
-          await progressBar('SQL & Database', 8);  await sleep(50);
-          await progressBar('Java          ', 6);  await sleep(50);
-          await progressBar('HTML & CSS    ', 6);  await sleep(50);
-          await progressBar('React         ', 3);
+          await progressBar('PHP / Laravel  ', 8); await sleep(50);
+          await progressBar('C# / ASP.NET   ', 7); await sleep(50);
+          await progressBar('SQL & Databases', 8); await sleep(50);
+          await progressBar('RESTful APIs   ', 6); await sleep(50);
+          await progressBar('JavaScript     ', 7); await sleep(50);
+          await progressBar('HTML & CSS     ', 8); await sleep(50);
+          await progressBar('React          ', 4);
           break;
         case 'projects':
           tLine('1. Munjez            (Productivity Desktop App)');
@@ -1091,6 +1106,62 @@
           tLine('Portfolio OS Terminal v1.0', 'pos-t-banner');
           tLine('──────────────────────────', 'pos-t-banner');
           break;
+        case 'github': {
+          tLine('Fetching live GitHub stats...', 'pos-t-loading');
+          try {
+            const res = await fetch('/api/github', { headers: { Accept: 'application/json' } });
+            const d = await res.json();
+            if (d && !d.error) {
+              tLine(`@${d.login}${d.name ? ' — ' + d.name : ''}`, 'pos-t-banner');
+              tLine(`  Public Repos : ${d.repos}`);
+              tLine(`  Total Stars  : ${d.stars}`);
+              tLine(`  Followers    : ${d.followers}`);
+              if (Array.isArray(d.top) && d.top.length) {
+                tLine('  Top repos    :');
+                d.top.slice(0, 3).forEach(rp => tLine(`     - ${rp.name} (${rp.stars} stars)`));
+              }
+              tHTML('Profile: <a href="https://github.com/Osama2214" target="_blank" style="color:var(--pos-accent)">github.com/Osama2214</a>');
+            } else {
+              tLine('Could not reach GitHub right now.', 'pos-t-error');
+            }
+          } catch (e) { tLine('Could not reach GitHub right now.', 'pos-t-error'); }
+          break;
+        }
+        case 'guestbook': {
+          tLine('Loading guestbook...', 'pos-t-loading');
+          try {
+            const res = await fetch('/api/guestbook', { headers: { Accept: 'application/json' } });
+            const d = await res.json();
+            if (d && d.configured === false) {
+              tLine('Guestbook is being set up — check back soon.', 'pos-t-info');
+            } else {
+              const entries = d.entries || [];
+              tLine(`Guestbook — ${entries.length} message${entries.length === 1 ? '' : 's'} signed.`, 'pos-t-banner');
+              entries.slice(0, 3).forEach(e => tLine(`  ${e.name}: ${String(e.message).slice(0, 60)}`));
+              tLine('Sign it in the Guestbook section on the site.', 'pos-t-info');
+            }
+          } catch (e) { tLine('Could not load the guestbook.', 'pos-t-error'); }
+          break;
+        }
+        case 'reactions': {
+          tLine('Loading live project reactions...', 'pos-t-loading');
+          try {
+            const res = await fetch('/api/reactions', { headers: { Accept: 'application/json' } });
+            const d = await res.json();
+            if (d && d.reactions) {
+              const names = { 'munjez': 'Munjez', 'munjez-website': 'Munjez Website', 'osama-cafe': 'Osama Café' };
+              tLine('Live Project Reactions:', 'pos-t-banner');
+              Object.keys(d.reactions).forEach(p => {
+                const c = d.reactions[p];
+                tLine(`  ${(names[p] || p).padEnd(15)} like ${c.like}  ·  love ${c.love}  ·  star ${c.star}`);
+              });
+              tLine('React on the Projects section!', 'pos-t-info');
+            } else {
+              tLine('Reactions are not available right now.', 'pos-t-error');
+            }
+          } catch (e) { tLine('Could not load reactions.', 'pos-t-error'); }
+          break;
+        }
         default:
           tHTML(`<span style="color:#ef4444">bash: ${cmd}: command not found</span>  (try 'help')`);
       }
@@ -1106,7 +1177,9 @@
       const d = {
         help:'list commands', about:'a short biography about me', skills:'visual display of my core technical stack',
         projects:'interactive list of my built projects', experience:'educational & scholarship history',
-        contact:'channels to reach out or connect with me', cv:'simulates and opens my resume PDF',
+        contact:'channels to reach out or connect with me',
+        github:'live GitHub stats (repos, stars, followers)', guestbook:'recent guestbook messages',
+        reactions:'live like/love/star counts per project', cv:'simulates and opens my resume PDF',
         coffee:'energize the terminal developer', social:'quick links to GitHub & LinkedIn',
         clear:'wipes the console history clean', hack:'initiate terminal hack sequence',
         guess:'play a number guessing game', secret:'[LOCKED] you need root access first...',

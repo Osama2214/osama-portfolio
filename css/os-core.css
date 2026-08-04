@@ -91,6 +91,9 @@
 .nav-os-btn:hover::before { opacity: 1; }
 .nav-os-btn:active { transform: translateY(0); }
 .nav-os-btn > * { position: relative; z-index: 1; }
+/* While the OS assets are being fetched on first launch */
+.nav-os-btn.os-btn-loading { opacity: 0.6; pointer-events: none; animation: navOsPulse 0.9s ease-in-out infinite; }
+@keyframes navOsPulse { 0%,100% { opacity: 0.5; } 50% { opacity: 0.85; } }
 
 /* ══════════════════════
    BOOT SCREEN

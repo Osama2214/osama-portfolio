@@ -10,7 +10,7 @@
 
   if (!terminalPanel || !terminalInput) return;
 
-  const commands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'coffee', 'coffee++', '3am', 'clear', 'theme', 'cv', 'social', 'secret', 'hack', 'guess'];
+  const commands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'github', 'guestbook', 'reactions', 'coffee', 'coffee++', '3am', 'clear', 'theme', 'cv', 'social', 'secret', 'hack', 'guess'];
   const themes = ['default', 'theme-green', 'theme-cyan', 'theme-amber'];
   let currentThemeIdx = 0;
 
@@ -118,12 +118,13 @@
   // Skills concurrent progress bars
   function animateSkillsBars() {
     const skillList = [
-      { name: 'PHP', blocks: 10 },
-      { name: 'Laravel', blocks: 8 },
-      { name: 'SQL & Database', blocks: 8 },
-      { name: 'Java', blocks: 6 },
-      { name: 'HTML & CSS', blocks: 6 },
-      { name: 'React', blocks: 3 }
+      { name: 'PHP / Laravel', blocks: 8 },
+      { name: 'C# / ASP.NET', blocks: 7 },
+      { name: 'SQL & Databases', blocks: 8 },
+      { name: 'RESTful APIs', blocks: 6 },
+      { name: 'JavaScript', blocks: 7 },
+      { name: 'HTML & CSS', blocks: 8 },
+      { name: 'React', blocks: 4 }
     ];
 
     const promises = skillList.map(skill => {
@@ -206,6 +207,9 @@
         printLine(mob ? '  projects   - My projects'                : '  projects   - Interactive list of my built projects');
         printLine(mob ? '  experience - Education history'          : '  experience - Detailed educational & scholarship history');
         printLine(mob ? '  contact    - Reach out'                  : '  contact    - Channels to reach out or connect with me');
+        printLine(mob ? '  github     - Live GitHub stats'          : '  github     - Live GitHub stats (repos, stars, followers)');
+        printLine(mob ? '  guestbook  - Sign the guestbook'         : '  guestbook  - Recent messages + jump to the guestbook');
+        printLine(mob ? '  reactions  - Project reactions'          : '  reactions  - Live like/love/star counts per project');
         printLine(mob ? '  cv         - Open resume'                : '  cv         - Simulates and opens my resume PDF');
         printLine(mob ? '  coffee     - Energize'                   : '  coffee     - Energize the terminal developer');
         printLine(mob ? '  theme      - Change colors'              : '  theme      - Cycle console colors (purple, green, cyan, amber)');
@@ -400,6 +404,67 @@
         }
         break;
 
+      case 'github': {
+        printLine('Fetching live GitHub stats...', 'loading');
+        try {
+          const res = await fetch('/api/github', { headers: { Accept: 'application/json' } });
+          const d = await res.json();
+          if (d && !d.error) {
+            printLine(`@${d.login}${d.name ? ' — ' + d.name : ''}`, 'banner');
+            printLine(`  Public Repos : ${d.repos}`);
+            printLine(`  Total Stars  : ${d.stars}`);
+            printLine(`  Followers    : ${d.followers}`);
+            if (Array.isArray(d.top) && d.top.length) {
+              printLine('  Top repos    :');
+              d.top.slice(0, 3).forEach(rp => printLine(`     - ${rp.name} (${rp.stars} stars)`));
+            }
+            printHTML('Profile: <a href="https://github.com/Osama2214" target="_blank" style="color:var(--term-accent)">github.com/Osama2214</a>');
+          } else {
+            printLine('Could not reach GitHub right now.', 'error');
+          }
+        } catch (e) { printLine('Could not reach GitHub right now.', 'error'); }
+        break;
+      }
+
+      case 'guestbook': {
+        printLine('Loading guestbook...', 'loading');
+        try {
+          const res = await fetch('/api/guestbook', { headers: { Accept: 'application/json' } });
+          const d = await res.json();
+          if (d && d.configured === false) {
+            printLine('Guestbook is being set up — check back soon.', 'info');
+          } else {
+            const entries = d.entries || [];
+            printLine(`Guestbook — ${entries.length} message${entries.length === 1 ? '' : 's'} signed.`, 'banner');
+            entries.slice(0, 3).forEach(e => printLine(`  ${e.name}: ${String(e.message).slice(0, 60)}`));
+            printLine('Opening the Guestbook — sign it!', 'success');
+            const gb = document.getElementById('guestbook');
+            if (gb) { closeTerminalPanel(); gb.scrollIntoView({ behavior: 'smooth' }); }
+          }
+        } catch (e) { printLine('Could not load the guestbook.', 'error'); }
+        break;
+      }
+
+      case 'reactions': {
+        printLine('Loading live project reactions...', 'loading');
+        try {
+          const res = await fetch('/api/reactions', { headers: { Accept: 'application/json' } });
+          const d = await res.json();
+          if (d && d.reactions) {
+            const names = { 'munjez': 'Munjez', 'munjez-website': 'Munjez Website', 'osama-cafe': 'Osama Café' };
+            printLine('Live Project Reactions:', 'banner');
+            Object.keys(d.reactions).forEach(p => {
+              const c = d.reactions[p];
+              printLine(`  ${(names[p] || p).padEnd(15)} like ${c.like}  ·  love ${c.love}  ·  star ${c.star}`);
+            });
+            printLine('React on the Projects section!', 'info');
+          } else {
+            printLine('Reactions are not available right now.', 'error');
+          }
+        } catch (e) { printLine('Could not load reactions.', 'error'); }
+        break;
+      }
+
       default:
         printLine(`command not found: "${cmd}". Type "help" to see available commands.`, 'error');
         break;
@@ -441,8 +506,8 @@
       printLine('Status: Live');
       printLine('Tech Stack: HTML5, CSS3, JavaScript');
       printLine('Features: Fluid typography, glassmorphism nav, dynamic animations, scroll-triggered hooks, zero-dependency.');
-      printHTML('Live Site: <a href="https://nti-task-2.vercel.app/" target="_blank" style="color:var(--term-accent)">https://nti-task-2.vercel.app/</a>');
-      printHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Task-2" target="_blank" style="color:var(--term-accent)">github.com/Osama2214/NTI-Task-2</a>');
+      printHTML('Live Site: <a href="https://coffee-landing-osama.vercel.app/" target="_blank" style="color:var(--term-accent)">https://coffee-landing-osama.vercel.app/</a>');
+      printHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe" target="_blank" style="color:var(--term-accent)">NTI-Full-Stack-Web-Development/Task-2/osama-cafe</a>');
     } else {
       printLine('Invalid selection. Exited project selector.', 'error');
     }

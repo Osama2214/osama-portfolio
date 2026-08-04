@@ -1,0 +1,55 @@
+/* ─────────────────────────────────────────────
+   PROJECT REACTIONS  (live, backed by Redis)
+   ───────────────────────────────────────────── */
+.project-reactions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.preact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  line-height: 1;
+  color: var(--text-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition),
+              background var(--transition), transform var(--transition);
+}
+.preact svg { width: 15px; height: 15px; }
+.preact:hover {
+  color: var(--text);
+  border-color: var(--border-h);
+  transform: translateY(-1px);
+}
+.preact:disabled { cursor: default; opacity: 0.7; }
+.preact-count { min-width: 8px; text-align: left; }
+
+/* Active — this browser has reacted (icon fills in) */
+.preact-on {
+  color: var(--p-light);
+  border-color: var(--border-h);
+  background: var(--p-glow);
+}
+.preact-on svg { fill: currentColor; }
+
+/* Little pop when clicked */
+.preact-pop { animation: preactPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes preactPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preact-pop { animation: none; }
+}

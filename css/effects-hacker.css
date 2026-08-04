@@ -418,6 +418,33 @@ body.matrix-mode::after {
   transform: translateY(0);
 }
 
+/* Drag the top edge (the coloured line) to resize the terminal height */
+.terminal-resize-handle {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  cursor: ns-resize;
+  z-index: 3;
+  touch-action: none;
+}
+.terminal-resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 46px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--term-color);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.terminal-resize-handle:hover::after,
+.terminal-panel.is-resizing .terminal-resize-handle::after { opacity: 0.85; }
+
 /* Themes overrides */
 .terminal-panel.theme-green {
   --term-color: #10b981;

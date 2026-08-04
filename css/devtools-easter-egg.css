@@ -1,0 +1,136 @@
+/* ─────────────────────────────────────────────
+   HIDDEN DEVELOPER MODE  (DevTools easter egg)
+   ───────────────────────────────────────────── */
+
+/* Brief visual freeze right before the glitch */
+.dte-freeze * { animation-play-state: paused !important; transition: none !important; }
+
+.dte-glitch { animation: dteGlitch 0.38s steps(2, end); }
+@keyframes dteGlitch {
+  0%   { filter: none; transform: none; }
+  10%  { filter: hue-rotate(15deg) saturate(2); transform: translate(-2px, 1px); }
+  25%  { filter: hue-rotate(-20deg) saturate(1.6); transform: translate(2px, -1px) skewX(1deg); }
+  40%  { filter: none; transform: translate(-1px, 0); }
+  55%  { filter: hue-rotate(10deg); transform: translate(1px, 1px); }
+  70%  { filter: none; transform: none; }
+  100% { filter: none; transform: none; }
+}
+
+.dte-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(3, 5, 12, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.dte-overlay.dte-open { opacity: 1; }
+.dte-overlay.dte-closing { opacity: 0; }
+
+.dte-panel {
+  width: 100%;
+  max-width: 560px;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--border-h);
+  border-radius: var(--r);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5), 0 0 40px var(--p-glow);
+  transform: translateY(14px) scale(0.98);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+.dte-overlay.dte-open .dte-panel { transform: translateY(0) scale(1); }
+
+.dte-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.dte-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border-h); opacity: 0.6; }
+.dte-panel-title {
+  flex: 1;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+.dte-close {
+  background: none;
+  border: none;
+  color: var(--text-3);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.dte-close:hover { color: var(--text); }
+
+.dte-body {
+  padding: 18px 20px;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.dte-body::-webkit-scrollbar { width: 7px; }
+.dte-body::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 8px; }
+
+.dte-line { color: var(--text-2); min-height: 1.65em; white-space: pre-wrap; overflow-wrap: anywhere; }
+.dte-heading { color: var(--p-light); font-weight: 700; }
+.dte-strong { color: var(--text); }
+.dte-dim { color: var(--text-2); }
+.dte-success { color: var(--green); font-weight: 600; }
+.dte-progress { color: var(--accent); }
+
+.dte-check-item { display: flex; align-items: center; gap: 8px; color: var(--text-2); }
+.dte-check { width: 14px; height: 14px; flex: 0 0 auto; color: var(--green); }
+
+.dte-actions {
+  display: flex;
+  gap: 10px;
+  padding: 14px 20px 20px;
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.dte-actions.dte-actions-in { opacity: 1; transform: translateY(0); }
+
+.dte-btn {
+  flex: 1;
+  text-align: center;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--p-light);
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  transition: background var(--transition), transform var(--transition);
+}
+.dte-btn:hover { background: rgba(124, 58, 237, 0.32); transform: translateY(-1px); }
+
+@media (max-width: 480px) {
+  .dte-panel { max-height: 88vh; }
+  .dte-body { font-size: 12px; padding: 16px; }
+  .dte-actions { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dte-glitch { animation: none; }
+  .dte-overlay, .dte-panel, .dte-actions { transition: none; }
+}

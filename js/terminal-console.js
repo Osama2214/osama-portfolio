@@ -22,6 +22,9 @@
   let guessAttempts = 0;
 
   function openTerminalPanel() {
+    // Terminal is a desktop experience — never open it on phone-sized screens
+    // (covers the command palette / any trigger, not just the mobile menu item).
+    if (window.matchMedia('(max-width: 768px)').matches) return;
     terminalPanel.classList.add('open');
     setTimeout(() => {
       terminalInput.focus();
@@ -49,6 +52,43 @@
     });
   }
   if (terminalCloseBtn) terminalCloseBtn.addEventListener('click', closeTerminalPanel);
+
+  // ── Resize by dragging the top edge ──
+  const resizeHandle = document.getElementById('terminalResizeHandle');
+  if (resizeHandle) {
+    let dragging = false, startY = 0, startH = 0;
+    const MIN_H = 160;
+    const maxH = () => Math.round(window.innerHeight * 0.92);
+
+    resizeHandle.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      startY = e.clientY;
+      startH = terminalPanel.getBoundingClientRect().height;
+      terminalPanel.style.transition = 'none';       // no lag while dragging
+      terminalPanel.classList.add('is-resizing');
+      document.body.style.userSelect = 'none';
+      try { resizeHandle.setPointerCapture(e.pointerId); } catch (_) {}
+      e.preventDefault();
+    });
+
+    resizeHandle.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      let h = startH + (startY - e.clientY);          // drag up → taller, down → shorter
+      h = Math.max(MIN_H, Math.min(maxH(), h));
+      terminalPanel.style.height = h + 'px';
+    });
+
+    const endDrag = (e) => {
+      if (!dragging) return;
+      dragging = false;
+      terminalPanel.style.transition = '';
+      terminalPanel.classList.remove('is-resizing');
+      document.body.style.userSelect = '';
+      try { resizeHandle.releasePointerCapture(e.pointerId); } catch (_) {}
+    };
+    resizeHandle.addEventListener('pointerup', endDrag);
+    resizeHandle.addEventListener('pointercancel', endDrag);
+  }
 
   // Click anywhere in terminal to focus input
   terminalPanel.addEventListener('click', (e) => {

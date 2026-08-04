@@ -52,10 +52,22 @@
   .badge-2 { left: -12px; bottom: -20px; right: auto; top: auto; }
 }
 
+/* Tablet / split-screen widths: with 6 nav links plus the action icons the
+   centered link row gets cramped and can overlap the icons on the right.
+   Tighten the links across this range so they always clear the icons. */
+@media (min-width: 769px) and (max-width: 1040px) {
+  .nav-links { gap: 0; max-width: 400px; }
+  .nav-link { padding: 6px 9px; font-size: 13px; }
+}
+
 @media (max-width: 768px) {
   .nav-links, .nav-cta { display: none; }
   .nav-hamburger { display: flex; }
   .nav-mobile.open { display: flex; }
+  /* Portfolio OS is a desktop experience (draggable windows, etc.) — hide its
+     launcher on phones. Uses the id so it wins over os-core.css, which defines
+     .nav-os-btn and loads later in the cascade. */
+  #launchOsBtn { display: none; }
 
   .hero-name { font-size: 52px; margin-bottom: 12px; }
   .hero-title { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0 4px; font-size: 18px; margin-bottom: 18px; }
@@ -110,6 +122,14 @@
   .nav-mobile-link:hover {
     color: var(--text);
   }
+
+  /* Terminal Console is a desktop experience — hide it from the mobile menu. */
+  #mobileTerminalToggle { display: none; }
+
+  /* Drop the Hacker Mode icon on phones and make the button flow like the other
+     links so its text starts on the same left edge as every menu item. */
+  .nav-mobile-hacker > span:first-child { display: none; }
+  .nav-mobile-hacker { display: block; padding: 12px 14px; }
 
   .hero {
     min-height: 100vh;

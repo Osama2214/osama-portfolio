@@ -23,6 +23,9 @@
 
   async function boot() {
     if (started) return;
+    // Portfolio OS is desktop-only — never launch it on phone-sized screens
+    // (covers the command palette / any other trigger, not just the button).
+    if (window.matchMedia('(max-width: 768px)').matches) return;
     started = true;
     btn.classList.add('os-btn-loading');
 

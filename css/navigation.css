@@ -154,6 +154,17 @@ nav.scrolled {
   padding: 16px 24px;
 }
 
+.nav-mobile-group {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 14px 14px 4px; /* left padding matches .nav-mobile-link so text starts aligned */
+}
+.nav-mobile-group:first-child { padding-top: 2px; }
+
 .nav-mobile-link {
   color: var(--text-2);
   text-decoration: none;

@@ -4,9 +4,8 @@
 .project-reactions {
   display: flex;
   gap: 8px;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
+  margin-top: auto;   /* pin to the bottom of the card, aligned across all cards */
+  padding-top: 18px;  /* breathing room above (no divider line) */
 }
 
 .preact {

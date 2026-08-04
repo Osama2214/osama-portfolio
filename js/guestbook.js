@@ -17,6 +17,20 @@
   const countEl    = document.getElementById('gbCount');
   const barEl      = document.getElementById('gbCooldownBar');
   const fillEl     = document.getElementById('gbCooldownFill');
+  const wallEl     = document.querySelector('#guestbook .gb-wall');
+  const formCard   = document.querySelector('#guestbook .form-card');
+
+  // Keep the message wall no taller than the form card (the list scrolls inside).
+  function syncWallHeight() {
+    if (!wallEl) return;
+    if (window.matchMedia('(max-width: 820px)').matches) { wallEl.style.maxHeight = ''; return; }
+    if (formCard) wallEl.style.maxHeight = formCard.offsetHeight + 'px';
+  }
+  if (wallEl && formCard && 'ResizeObserver' in window) {
+    new ResizeObserver(syncWallHeight).observe(formCard);
+  }
+  window.addEventListener('resize', syncWallHeight);
+  syncWallHeight();
 
   const COOLDOWN = 30; // seconds — must match RL_WINDOW in api/guestbook.js
   let cooldownTimer = null;
@@ -79,18 +93,22 @@
     muted:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
   };
 
+  const STATUS_AUTO_HIDE_MS = 7000;
   let statusHideTimer = null;
-  function setStatus(msg, kind, autoHideMs) {
+  // Every status (success, error, validation…) fades out on its own after a
+  // few seconds. Pass persist=true for a message that should stay (e.g. the
+  // "backend is being set up" state that disables the form).
+  function setStatus(msg, kind, persist) {
     if (!statusEl) return;
     if (statusHideTimer) { clearTimeout(statusHideTimer); statusHideTimer = null; }
     if (!msg) { statusEl.innerHTML = ''; statusEl.className = 'gb-status'; return; }
     statusEl.innerHTML = (STATUS_ICONS[kind] || '') + '<span>' + esc(msg) + '</span>';
     statusEl.className = 'gb-status' + (kind ? ' gb-status-' + kind : '');
-    if (autoHideMs) {
+    if (!persist) {
       statusHideTimer = setTimeout(() => {
         statusEl.classList.add('gb-status-fading');
         statusHideTimer = setTimeout(() => setStatus(''), 400); // clear after fade
-      }, autoHideMs);
+      }, STATUS_AUTO_HIDE_MS);
     }
   }
 
@@ -99,7 +117,7 @@
     if (submitBtn) submitBtn.disabled = true;
     if (nameInput) nameInput.disabled = true;
     if (msgInput) msgInput.disabled = true;
-    setStatus(reason, 'muted');
+    setStatus(reason, 'muted', true); // persistent — it's a state, not a transient notice
   }
 
   // ── Cooldown timer ─────────────────────────────────────────
@@ -201,7 +219,7 @@
         listEl.insertAdjacentHTML('afterbegin', entryHTML(data.entry));
         updateCount();
         msgInput.value = '';
-        setStatus('Thanks for signing the guestbook!', 'success', 10000); // auto-hide after 10s
+        setStatus('Thanks for signing the guestbook!', 'success'); // auto-hides like all statuses
         beginCooldown(COOLDOWN); // silent — no timer shown on the first post
       } else if (r.status === 429) {
         beginCooldown(Number(data.retryAfter) || COOLDOWN);

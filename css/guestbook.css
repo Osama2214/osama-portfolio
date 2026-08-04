@@ -45,13 +45,17 @@
   overflow: hidden;
 }
 
-/* Message wall */
+/* Message wall — capped to the form card's height (set by JS); the list scrolls
+   inside, so this panel never grows taller than the "Leave a message" card. */
 .gb-wall {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--r);
   padding: 22px;
   min-height: 260px;
+  max-height: 80vh; /* fallback cap; JS tightens this to the form-card height */
+  display: flex;
+  flex-direction: column;
 }
 .gb-wall-head {
   display: flex;
@@ -82,7 +86,8 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: 440px;
+  flex: 1 1 auto;     /* grow with messages, then shrink + scroll once the wall is capped */
+  min-height: 0;
   overflow-y: auto;
 }
 .gb-list::-webkit-scrollbar { width: 8px; }
@@ -204,5 +209,6 @@
 
 @media (max-width: 820px) {
   .gb-grid { grid-template-columns: 1fr; }
-  .gb-list { max-height: 360px; }
+  /* Stacked layout — cap the wall so it doesn't run away; the list scrolls inside. */
+  .gb-wall { max-height: 70vh; }
 }

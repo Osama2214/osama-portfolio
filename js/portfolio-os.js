@@ -80,6 +80,8 @@
       id: 'munjez',
       name: 'Munjez',
       icon: '🖥️',
+      iconImg: 'https://munjez-website.vercel.app/screenshots/icon.webp',
+      liveLabel: '⬇️ Download Now',
       badge: 'Featured',
       type: 'Productivity Desktop App',
       desc: 'A full-featured offline productivity app — Tasks, Calendar (Hijri), Pomodoro, Habits, Stopwatch & White Noise. Built solo, runs natively on Windows, Linux & Android. No account, no internet required.',
@@ -91,6 +93,7 @@
       id: 'munjez-website',
       name: 'Munjez Website',
       icon: '🌐',
+      iconImg: 'icons/munjez-icon.webp',
       badge: 'Open Source',
       type: 'Marketing & Landing Page',
       desc: 'The official marketing website for Munjez — bilingual (Arabic & English), full changelog, download links, and privacy policy. Built as a static site with pure HTML, CSS & JS.',
@@ -99,9 +102,23 @@
       github: 'https://github.com/Osama2214/munjez-website',
     },
     {
+      id: 'pc-builder',
+      name: 'PC Builder',
+      icon: '🖥️',
+      iconImg: 'icons/pc-builder-icon.svg',
+      badge: 'Open Source',
+      type: 'E-Commerce & Build Compatibility Platform',
+      desc: 'A full-stack e-commerce platform for PC components built around a "Build a PC" flow that verifies part compatibility (socket, RAM type, PSU wattage, GPU/case fit). Full admin panel and an AI chat assistant that can build a cart or a PC build from the conversation.',
+      tech: ['Laravel', 'PHP', 'JavaScript', 'PostgreSQL', 'Sanctum', 'Vercel'],
+      live: 'https://pc-builder-sandy.vercel.app/',
+      github: 'https://github.com/Osama2214/pc-builder',
+    },
+    {
       id: 'osama-cafe',
       name: 'Osama Café',
       icon: '☕',
+      iconImg: 'icons/osama-cafe-logo.png',
+      iconStyle: 'filter:brightness(1.6)',
       badge: 'Open Source',
       type: 'Specialty Coffee Shop & Roastery Web',
       desc: 'A premium, highly interactive coffee shop landing page. Custom fluid typography, sticky glassmorphism nav, dynamic animations, scroll-triggered hooks, and a zero-dependency responsive architecture.',
@@ -110,6 +127,14 @@
       github: 'https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe',
     },
   ];
+
+  // Renders a project's real icon image when available, falling back to its emoji.
+  function projectIconHTML(p, size) {
+    if (p.iconImg) {
+      return `<img src="${p.iconImg}" alt="${p.name}" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:6px;${p.iconStyle || ''}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${p.icon}',style:'font-size:${size - 2}px'}))" />`;
+    }
+    return `<span style="font-size:${size - 2}px">${p.icon}</span>`;
+  }
 
   // ── Launch Button ────────────────────────────────────────────
   launchBtn.addEventListener('click', () => {
@@ -916,6 +941,13 @@
         tHTML('Live Site: <a href="https://munjez-website.vercel.app" target="_blank" style="color:var(--pos-accent)">munjez-website.vercel.app</a>');
         tHTML('GitHub:   <a href="https://github.com/Osama2214/munjez-website" target="_blank" style="color:var(--pos-accent)">github.com/Osama2214/munjez-website</a>');
       } else if (choice === '3') {
+        tLine('PC Builder — E-Commerce & Build Compatibility Platform', 'pos-t-banner');
+        tLine('Status: Live');
+        tLine('Tech Stack: Laravel, PHP, JavaScript, PostgreSQL, Sanctum, Vercel');
+        tLine('Features: Compatibility-checked PC builder, admin panel, AI chat assistant, cart/wishlist/checkout.');
+        tHTML('Live Site: <a href="https://pc-builder-sandy.vercel.app/" target="_blank" style="color:var(--pos-accent)">pc-builder-sandy.vercel.app</a>');
+        tHTML('GitHub:   <a href="https://github.com/Osama2214/pc-builder" target="_blank" style="color:var(--pos-accent)">github.com/Osama2214/pc-builder</a>');
+      } else if (choice === '4') {
         tLine('Osama Café — Specialty Coffee Shop & Roastery Web', 'pos-t-banner');
         tLine('Status: Live');
         tLine('Tech Stack: HTML5, CSS3, JavaScript');
@@ -1006,9 +1038,10 @@
         case 'projects':
           tLine('1. Munjez            (Productivity Desktop App)');
           tLine('2. Munjez Website    (Marketing & Landing Page)');
-          tLine('3. Osama Café        (Coffee Shop Landing Page)');
+          tLine('3. PC Builder        (E-Commerce & Build Compatibility Platform)');
+          tLine('4. Osama Café        (Coffee Shop Landing Page)');
           tLine('');
-          tLine('Choose project number [1-3]:', 'pos-t-info');
+          tLine('Choose project number [1-4]:', 'pos-t-info');
           activeSubMode = 'projects';
           break;
         case 'experience':
@@ -1149,7 +1182,7 @@
             const res = await fetch('/api/reactions', { headers: { Accept: 'application/json' } });
             const d = await res.json();
             if (d && d.reactions) {
-              const names = { 'munjez': 'Munjez', 'munjez-website': 'Munjez Website', 'osama-cafe': 'Osama Café' };
+              const names = { 'munjez': 'Munjez', 'munjez-website': 'Munjez Website', 'osama-cafe': 'Osama Café', 'pc-builder': 'PC Builder' };
               tLine('Live Project Reactions:', 'pos-t-banner');
               Object.keys(d.reactions).forEach(p => {
                 const c = d.reactions[p];
@@ -1241,7 +1274,7 @@
       PROJECTS.forEach(p => {
         const item = document.createElement('button');
         item.className = 'pos-file-item';
-        item.innerHTML = `<span class="pos-file-item-icon">${p.icon}</span><span class="pos-file-item-name">${p.name}</span>`;
+        item.innerHTML = `<span class="pos-file-item-icon">${projectIconHTML(p, 26)}</span><span class="pos-file-item-name">${p.name}</span>`;
         item.addEventListener('click', () => showProject(p));
         grid.appendChild(item);
       });
@@ -1266,7 +1299,7 @@
       detail.className = 'pos-file-detail';
       detail.innerHTML = `
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span style="font-size:28px">${p.icon}</span>
+          ${projectIconHTML(p, 32)}
           <div>
             <h3 style="margin:0;font-size:16px;color:var(--pos-text)">${p.name}</h3>
             <span style="font-size:11px;color:var(--pos-text-2)">${p.type || ''}</span>
@@ -1276,7 +1309,7 @@
         <p style="margin:0 0 14px">${p.desc}</p>
         ${techTags ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">${techTags}</div>` : ''}
         <div class="pos-file-detail-links">
-          ${p.live ? `<a href="${p.live}" target="_blank" class="pos-file-detail-link pos-link-primary">🌐 Live Demo</a>` : ''}
+          ${p.live ? `<a href="${p.live}" target="_blank" class="pos-file-detail-link pos-link-primary">${p.liveLabel || '🌐 Live Demo'}</a>` : ''}
           ${p.github ? `<a href="${p.github}" target="_blank" class="pos-file-detail-link pos-link-secondary">🐙 GitHub</a>` : ''}
         </div>`;
       mainContent.appendChild(detail);
@@ -1301,6 +1334,7 @@
           <strong style="color:var(--pos-accent)">## Projects</strong><br>
           - Munjez (React · TypeScript · Tauri · Rust)<br>
           - Munjez Website (HTML · CSS · JS)<br>
+          - PC Builder (Laravel · PHP · JS)<br>
           - Osama Café (HTML5 · CSS3 · JS)<br><br>
           <strong style="color:var(--pos-accent)">## Contact</strong><br>
           osamaahmed.dev00@gmail.com

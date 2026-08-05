@@ -279,9 +279,10 @@
       case 'projects':
         printLine('1. Munjez            (Productivity Desktop App)');
         printLine('2. Munjez Website    (Marketing & Landing Page)');
-        printLine('3. Osama Café        (Coffee Shop Landing Page)');
+        printLine('3. PC Builder        (E-Commerce & Build Compatibility Platform)');
+        printLine('4. Osama Café        (Coffee Shop Landing Page)');
         printLine('');
-        printLine('Choose project number [1-3]:', 'info');
+        printLine('Choose project number [1-4]:', 'info');
         activeSubMode = 'projects';
         break;
 
@@ -491,7 +492,7 @@
           const res = await fetch('/api/reactions', { headers: { Accept: 'application/json' } });
           const d = await res.json();
           if (d && d.reactions) {
-            const names = { 'munjez': 'Munjez', 'munjez-website': 'Munjez Website', 'osama-cafe': 'Osama Café' };
+            const names = { 'munjez': 'Munjez', 'munjez-website': 'Munjez Website', 'osama-cafe': 'Osama Café', 'pc-builder': 'PC Builder' };
             printLine('Live Project Reactions:', 'banner');
             Object.keys(d.reactions).forEach(p => {
               const c = d.reactions[p];
@@ -542,6 +543,13 @@
       printHTML('Live Site: <a href="https://munjez-website.vercel.app" target="_blank" style="color:var(--term-accent)">https://munjez-website.vercel.app</a>');
       printHTML('GitHub:   <a href="https://github.com/Osama2214/munjez-website" target="_blank" style="color:var(--term-accent)">github.com/Osama2214/munjez-website</a>');
     } else if (choice === '3') {
+      printLine('PC Builder — E-Commerce & Build Compatibility Platform', 'banner');
+      printLine('Status: Live');
+      printLine('Tech Stack: Laravel, PHP, JavaScript, PostgreSQL, Sanctum, Vercel');
+      printLine('Features: Compatibility-checked PC builder, admin panel, AI chat assistant, cart/wishlist/checkout.');
+      printHTML('Live Site: <a href="https://pc-builder-sandy.vercel.app/" target="_blank" style="color:var(--term-accent)">https://pc-builder-sandy.vercel.app/</a>');
+      printHTML('GitHub:   <a href="https://github.com/Osama2214/pc-builder" target="_blank" style="color:var(--term-accent)">github.com/Osama2214/pc-builder</a>');
+    } else if (choice === '4') {
       printLine('Osama Café — Specialty Coffee Shop & Roastery Web', 'banner');
       printLine('Status: Live');
       printLine('Tech Stack: HTML5, CSS3, JavaScript');

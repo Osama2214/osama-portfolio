@@ -26,7 +26,7 @@ const REDIS_TOKEN =
   process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN ||
   findEnv(/REST_API_TOKEN$|REDIS_REST_TOKEN$/, /READ_ONLY/);
 
-const PROJECTS = ['munjez', 'munjez-website', 'osama-cafe'];
+const PROJECTS = ['munjez', 'munjez-website', 'pc-builder', 'osama-cafe'];
 const TYPES    = ['like', 'love', 'star'];
 const RL_LIMIT  = 40; // reaction actions allowed per IP per window
 const RL_WINDOW = 60; // seconds

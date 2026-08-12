@@ -65,8 +65,8 @@
   <link rel="stylesheet" href="css/about.css?v=20260812i" />
   <link rel="stylesheet" href="css/skills.css?v=20260803" />
   <link rel="stylesheet" href="css/projects.css?v=20260809" />
-  <link rel="stylesheet" href="css/education.css?v=20260803" />
-  <link rel="stylesheet" href="css/contact.css?v=20260803" />
+  <link rel="stylesheet" href="css/education.css?v=20260813" />
+  <link rel="stylesheet" href="css/contact.css?v=20260813" />
   <link rel="stylesheet" href="css/footer.css?v=20260803" />
   <link rel="stylesheet" href="css/responsive.css?v=20260813c" />
   <link rel="stylesheet" href="css/effects-ui.css?v=20260803" />
@@ -1092,11 +1092,13 @@
                   <span class="it-year-badge year-future">Future</span>
                   <h4 class="it-title">???</h4>
                 </div>
-                <p class="future-hint-text">Click to reveal the next chapter...</p>
+                <p class="future-hint-text"><span>Click to reveal the next chapter...</span></p>
                 <div class="future-hidden-content" id="futureHiddenContent">
-                  <h4 class="future-company-title">Maybe Your Company?</h4>
-                  <p class="future-company-desc">Osama is ready to bring high energy, clean backend code, and dedication to your team!</p>
-                  <a href="#contact" class="future-cta-btn">Let's Work Together →</a>
+                  <div class="future-hidden-inner">
+                    <h4 class="future-company-title">Maybe Your Company?</h4>
+                    <p class="future-company-desc">Osama is ready to bring high energy, clean backend code, and dedication to your team!</p>
+                    <a href="#contact" class="future-cta-btn">Let's Work Together →</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1415,20 +1417,23 @@
 
         <div class="form-card reveal-right">
           <h4 class="form-card-title">Send a Message</h4>
-          <form class="contact-form" id="contactForm" action="https://formspree.io/f/mqevywgl" method="POST">
+          <form class="contact-form" id="contactForm" action="https://formspree.io/f/mqevywgl" method="POST" novalidate>
             <div class="form-row">
               <div class="form-group">
                 <label for="cf-name" class="form-label">Name</label>
                 <input type="text" id="cf-name" name="name" class="form-input" placeholder="Your name" required />
+                <span class="form-error-msg" id="cf-name-error"></span>
               </div>
               <div class="form-group">
                 <label for="cf-email" class="form-label">Email</label>
                 <input type="email" id="cf-email" name="email" class="form-input" placeholder="you@example.com" required />
+                <span class="form-error-msg" id="cf-email-error"></span>
               </div>
             </div>
             <div class="form-group">
               <label for="cf-message" class="form-label">Message</label>
               <textarea id="cf-message" name="message" class="form-input form-textarea" rows="5" placeholder="Tell me about your project, requirements, timeline, and budget..." required></textarea>
+              <span class="form-error-msg" id="cf-message-error"></span>
             </div>
             <button type="submit" class="btn btn-primary" id="send-message-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -1610,7 +1615,7 @@
   <script src="js/effects.js?v=20260803" defer></script>
   <script src="js/navigation.js?v=20260803" defer></script>
   <script src="js/interactions.js?v=20260812" defer></script>
-  <script src="js/features.js?v=20260803" defer></script>
+  <script src="js/features.js?v=20260813" defer></script>
   <script src="js/terminal-console.js?v=20260813b" defer></script>
   <script src="js/easter-eggs.js?v=20260803" defer></script>
   <!-- Portfolio OS is loaded on demand (first launch) by this tiny loader -->

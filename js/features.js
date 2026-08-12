@@ -16,9 +16,58 @@ const formStatus     = document.getElementById('formStatus');
 const sendBtn        = document.getElementById('send-message-btn');
 const sendLabel      = document.getElementById('send-message-label');
 
+// Custom validation — the form has novalidate on it, so none of this relies
+// on (or fights with) the browser's native "Please fill out this field"
+// popup. Same required/email-format rules, just styled to match the site
+// instead of an OS-native tooltip.
+const cfFields = {
+  name:    { input: document.getElementById('cf-name'),    error: document.getElementById('cf-name-error') },
+  email:   { input: document.getElementById('cf-email'),   error: document.getElementById('cf-email-error') },
+  message: { input: document.getElementById('cf-message'), error: document.getElementById('cf-message-error') },
+};
+
+function cfSetError(field, message) {
+  field.input.closest('.form-group').classList.add('has-error');
+  field.error.textContent = message;
+}
+function cfClearError(field) {
+  field.input.closest('.form-group').classList.remove('has-error');
+  field.error.textContent = '';
+}
+function cfValidateField(key) {
+  const field = cfFields[key];
+  const value = field.input.value.trim();
+  if (!value) {
+    cfSetError(field, key === 'email' ? 'Please enter your email.' : key === 'name' ? 'Please enter your name.' : 'Please write a message.');
+    return false;
+  }
+  if (key === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    cfSetError(field, "That email doesn't look right.");
+    return false;
+  }
+  cfClearError(field);
+  return true;
+}
+
 if (contactForm) {
+  // Clear a field's error the moment the user starts fixing it, instead of
+  // making them re-submit to find out it's okay now.
+  Object.keys(cfFields).forEach((key) => {
+    cfFields[key].input.addEventListener('input', () => {
+      if (cfFields[key].input.value.trim()) cfValidateField(key);
+    });
+  });
+
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    const keys = Object.keys(cfFields);
+    const results = keys.map(cfValidateField);
+    if (results.includes(false)) {
+      cfFields[keys[results.indexOf(false)]].input.focus();
+      return;
+    }
+
     sendBtn.disabled = true;
     sendLabel.textContent = 'Sending...';
     formStatus.textContent = '';

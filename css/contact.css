@@ -275,6 +275,36 @@
 .form-status.success { color: var(--green); }
 .form-status.error   { color: #ef4444; }
 
+/* Custom validation — replaces the browser's native "Please fill out this
+   field" tooltip (disabled via novalidate on the form) with messages styled
+   to match the rest of the site instead of a jarring white OS popup. */
+.form-error-msg {
+  display: block;
+  font-size: 12px;
+  color: #ef4444;
+  min-height: 0;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+}
+
+.form-group.has-error .form-error-msg {
+  max-height: 20px;
+  opacity: 1;
+  margin-top: 1px;
+}
+
+.form-group.has-error .form-input {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.form-group.has-error .form-input:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
 #send-message-btn {
   margin-top: 4px;
   justify-content: center;

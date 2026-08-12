@@ -15,6 +15,19 @@
 
 .about-para strong { color: var(--text); }
 
+.about-statement {
+  border-left: 3px solid var(--p);
+  background: rgba(124,58,237,0.06);
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin: 24px 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.about-statement strong { color: var(--p-light); }
+
 .about-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

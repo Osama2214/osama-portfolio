@@ -267,7 +267,94 @@ body.matrix-mode .nav-pill {
   background: rgba(16, 185, 129, 0.15) !important;
 }
 
+/* Services section — icon boxes + "Request X →" / "View X Work →" buttons
+   (service-cta-btn is reused by both) */
+body.matrix-mode .service-icon-wrap {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
 
+body.matrix-mode .service-card:hover .service-icon-wrap {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+body.matrix-mode .service-cta-btn {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Experience & Journey — featured internship card, training cards,
+   academic card, university logo box, degree tag */
+body.matrix-mode .exp-card.featured-exp {
+  background: linear-gradient(135deg, var(--card), rgba(16, 185, 129, 0.05)) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+body.matrix-mode .exp-card.featured-exp:hover {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  box-shadow: 0 20px 60px rgba(16, 185, 129, 0.15) !important;
+}
+
+body.matrix-mode .training-card:hover {
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+body.matrix-mode .edu-academic-card {
+  background: linear-gradient(135deg, var(--card), rgba(16, 185, 129, 0.05)) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+body.matrix-mode .edu-academic-card:hover {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  box-shadow: 0 20px 60px rgba(16, 185, 129, 0.15) !important;
+}
+
+body.matrix-mode .edu-uni-logo {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+body.matrix-mode .edu-degree-tag {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+body.matrix-mode .pq-pill {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Testimonial avatar circles */
+body.matrix-mode .testi-avatar {
+  background: rgba(16, 185, 129, 0.12) !important;
+}
+
+/* About section quote block */
+body.matrix-mode .about-statement {
+  background: rgba(16, 185, 129, 0.06) !important;
+}
+
+/* Hero code card frame shadow */
+body.matrix-mode .code-card {
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Command Palette (Ctrl K) item hover/active */
+body.matrix-mode .cmdk-item.active,
+body.matrix-mode .cmdk-item:hover {
+  background: rgba(16, 185, 129, 0.12) !important;
+}
+
+/* Dev Tools dropdown menu */
+body.matrix-mode .dev-tools-menu {
+  border-color: rgba(16, 185, 129, 0.25) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(16, 185, 129, 0.08) !important;
+}
+
+body.matrix-mode .dev-tools-item:hover {
+  background: rgba(16, 185, 129, 0.12) !important;
+}
 
 
 

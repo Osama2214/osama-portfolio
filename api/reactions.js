@@ -7,7 +7,7 @@
    Counts live in a Redis hash per project (reactions:<project>) with the
    fields like/love/star. Only allow-listed projects and types are accepted,
    delta is clamped to ±1, counts never go below zero, and each IP is
-   rate-limited to avoid abuse. Storage is the same Upstash Redis as the guestbook.
+   rate-limited to avoid abuse. Storage is Upstash Redis.
 ══════════════════════════════════════════════════════════════ */
 
 'use strict';

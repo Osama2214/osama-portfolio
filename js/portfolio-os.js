@@ -347,7 +347,7 @@
             const idx = Array.from(iconsGrid.querySelectorAll('.pos-icon')).indexOf(iconEl);
             const pos = getDefaultIconPosition(idx, iconEl);
             setDesktopIconPosition(iconEl, pos.x, pos.y);
-            saveDesktopIconPositions();
+            saveDesktopIconPositions(iconEl);
           } },
       ]);
       return;
@@ -380,6 +380,16 @@
     const icons = Array.from(iconsGrid.querySelectorAll('.pos-icon'));
     const saved = getSavedDesktopIconPositions();
 
+    // One-time cleanup: earlier versions could freeze Trash's position into
+    // localStorage (see saveDesktopIconPositions above), overriding its
+    // "always the live bottom-right corner" default with a stale (x,y) from
+    // whatever the window size happened to be at save time. Drop it so
+    // anyone who already tripped that bug self-heals back to the corner.
+    if (saved.trash) {
+      delete saved.trash;
+      localStorage.setItem(DESKTOP_ICON_POS_KEY, JSON.stringify(saved));
+    }
+
     icons.forEach((icon, index) => {
       const appId = icon.dataset.app;
       const pos = saved[appId] || getDefaultIconPosition(index, icon);
@@ -408,9 +418,23 @@
     }
   }
 
-  function saveDesktopIconPositions() {
-    const positions = {};
-    iconsGrid.querySelectorAll('.pos-icon').forEach(icon => {
+  // Persists only the icon that was actually dragged, merged into whatever's
+  // already saved — NOT every icon's current on-screen position. Trash has no
+  // fixed slot: its default position is computed live from the current window
+  // size (bottom-right corner) every time it's untouched. Saving all icons here
+  // used to freeze that live corner position into a static (x,y) the moment
+  // *any* icon was dragged — including ones the user never touched — so Trash
+  // would silently stop tracking the corner and appear to have "moved" on a
+  // later visit at a different window size, even though nobody dragged it.
+  // draggedIcon omitted → bulk save (e.g. "Arrange Icons"): persists every
+  // icon *except* Trash, which must never be frozen into a static (x,y) — see
+  // above. draggedIcon passed → persists just that one icon; if the user
+  // deliberately drags Trash itself, that's an intentional move and is honored.
+  function saveDesktopIconPositions(draggedIcon) {
+    const positions = getSavedDesktopIconPositions();
+    const icons = draggedIcon ? [draggedIcon] : Array.from(iconsGrid.querySelectorAll('.pos-icon'));
+    icons.forEach(icon => {
+      if (icon.dataset.app === 'trash' && icon !== draggedIcon) return;
       positions[icon.dataset.app] = {
         x: parseFloat(icon.style.left) || 0,
         y: parseFloat(icon.style.top) || 0
@@ -475,7 +499,7 @@
       if (!dragging || e.pointerId !== pointerId) return;
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      if (!didDragDesktopIcon && Math.hypot(dx, dy) < 4) return;
+      if (!didDragDesktopIcon && Math.hypot(dx, dy) < 6) return;
       didDragDesktopIcon = true;
       icon.classList.add('pos-icon-dragging');
       setDesktopIconPosition(icon, startLeft + dx, startTop + dy);
@@ -488,7 +512,7 @@
       try { icon.releasePointerCapture(pointerId); } catch (err) {}
       if (didDragDesktopIcon) {
         setDesktopIconSnappedPosition(icon, parseFloat(icon.style.left) || 0, parseFloat(icon.style.top) || 0);
-        saveDesktopIconPositions();
+        saveDesktopIconPositions(icon);
       }
     });
 
@@ -498,12 +522,31 @@
     });
   }
 
+  // Re-clamp icons so a shrinking window doesn't push them off-screen — for
+  // this session only. This used to also call saveDesktopIconPositions(),
+  // which is the main way Trash's live "always the bottom-right corner"
+  // position got permanently frozen into a stale (x,y): resize fires on
+  // every browser maximize/restore/zoom, so nearly any visit would eventually
+  // trigger it and leave Trash stuck wherever the window happened to be that
+  // one time, even though the user never touched an icon. A fresh page load
+  // already recomputes everyone's position correctly via
+  // initDesktopIconLayout(), so nothing needs to be persisted here.
   window.addEventListener('resize', () => {
     if (!desktopIconsReady) return;
-    iconsGrid.querySelectorAll('.pos-icon').forEach(icon => {
-      setDesktopIconPosition(icon, parseFloat(icon.style.left) || 0, parseFloat(icon.style.top) || 0);
+    const saved = getSavedDesktopIconPositions();
+    Array.from(iconsGrid.querySelectorAll('.pos-icon')).forEach((icon, index) => {
+      // No saved (user-placed) position for this icon → it's still on its
+      // live default, so recompute that default for the new window size
+      // instead of just clamping the old pixel value. This is what actually
+      // keeps Trash glued to the corner as the window is resized, rather
+      // than leaving it stranded wherever it happened to be before.
+      if (!saved[icon.dataset.app]) {
+        const pos = getDefaultIconPosition(index, icon);
+        setDesktopIconPosition(icon, pos.x, pos.y);
+      } else {
+        setDesktopIconPosition(icon, parseFloat(icon.style.left) || 0, parseFloat(icon.style.top) || 0);
+      }
     });
-    saveDesktopIconPositions();
   });
 
   function openApp(appId) {
@@ -905,12 +948,12 @@
 
     // Banner — same style as main site terminal
     tLine('Portfolio OS — Terminal v1.0', 'pos-t-banner');
-    tLine('Osama Ahmed · Backend Dev & IT Student at EELU', 'pos-t-banner');
+    tLine('Osama Ahmed · Full Stack Developer (.NET & Laravel)', 'pos-t-banner');
     tLine('─────────────────────────────────────────────', 'pos-t-banner');
     tLine("Type 'help' to list commands.", 'pos-t-info');
     tLine('', '');
 
-    const CMDS = ['help','about','skills','projects','experience','contact','github','guestbook','reactions','cv','coffee','social','clear','hack','guess','secret','sudo'];
+    const CMDS = ['help','about','skills','projects','experience','contact','github','reactions','cv','coffee','social','clear','hack','guess','secret','sudo'];
 
     // Ghost autocomplete helper (same behavior as the outside terminal)
     function updateGhostText() {
@@ -1020,10 +1063,10 @@
           break;
         case 'about':
           await typeOut("Hi, I'm Osama Ahmed.", 'pos-t-success', 22);
-          await typeOut('Backend Developer & 3rd-year IT student at EELU.', 'pos-t-output', 18);
-          await typeOut('Built Munjez — a full offline desktop productivity app — solo.', 'pos-t-output', 16);
-          await typeOut('Currently mastering ASP.NET Core & PHP/Laravel.', 'pos-t-output', 18);
-          await typeOut('Available for Internships ✅', 'pos-t-info', 22);
+          await typeOut('Full Stack Developer (.NET & Laravel) studying IT at EELU.', 'pos-t-output', 18);
+          await typeOut('Built Munjez — a cross-platform desktop productivity app — solo.', 'pos-t-output', 16);
+          await typeOut('Specialized in ASP.NET Core, PHP/Laravel & Desktop Software.', 'pos-t-output', 18);
+          await typeOut('Available for Freelance & Roles ✅', 'pos-t-info', 22);
           break;
         case 'skills':
           tLine('Loading technical stack visualizer...', 'pos-t-loading');
@@ -1033,7 +1076,7 @@
           await progressBar('RESTful APIs   ', 6); await sleep(50);
           await progressBar('JavaScript     ', 7); await sleep(50);
           await progressBar('HTML & CSS     ', 8); await sleep(50);
-          await progressBar('React          ', 4);
+          await progressBar('Git & GitHub   ', 8);
           break;
         case 'projects':
           tLine('1. Munjez            (Productivity Desktop App)');
@@ -1160,22 +1203,6 @@
           } catch (e) { tLine('Could not reach GitHub right now.', 'pos-t-error'); }
           break;
         }
-        case 'guestbook': {
-          tLine('Loading guestbook...', 'pos-t-loading');
-          try {
-            const res = await fetch('/api/guestbook', { headers: { Accept: 'application/json' } });
-            const d = await res.json();
-            if (d && d.configured === false) {
-              tLine('Guestbook is being set up — check back soon.', 'pos-t-info');
-            } else {
-              const entries = d.entries || [];
-              tLine(`Guestbook — ${entries.length} message${entries.length === 1 ? '' : 's'} signed.`, 'pos-t-banner');
-              entries.slice(0, 3).forEach(e => tLine(`  ${e.name}: ${String(e.message).slice(0, 60)}`));
-              tLine('Sign it in the Guestbook section on the site.', 'pos-t-info');
-            }
-          } catch (e) { tLine('Could not load the guestbook.', 'pos-t-error'); }
-          break;
-        }
         case 'reactions': {
           tLine('Loading live project reactions...', 'pos-t-loading');
           try {
@@ -1211,7 +1238,7 @@
         help:'list commands', about:'a short biography about me', skills:'visual display of my core technical stack',
         projects:'interactive list of my built projects', experience:'educational & scholarship history',
         contact:'channels to reach out or connect with me',
-        github:'live GitHub stats (repos, stars, followers)', guestbook:'recent guestbook messages',
+        github:'live GitHub stats (repos, stars, followers)',
         reactions:'live like/love/star counts per project', cv:'simulates and opens my resume PDF',
         coffee:'energize the terminal developer', social:'quick links to GitHub & LinkedIn',
         clear:'wipes the console history clean', hack:'initiate terminal hack sequence',
@@ -1329,8 +1356,8 @@
         <h3>📄 README.md</h3>
         <p style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:1.9;color:var(--pos-text)">
           <strong style="color:var(--pos-accent)"># Osama Ahmed — Portfolio</strong><br><br>
-          Backend Developer & 3rd-year IT student at EELU 🇪🇬<br>
-          Currently mastering ASP.NET Core & PHP/Laravel<br><br>
+          Full Stack Developer (.NET & Laravel) · EELU IT Student 🇪🇬<br>
+          Specialized in ASP.NET Core, PHP/Laravel & Desktop Apps<br><br>
           <strong style="color:var(--pos-accent)">## Projects</strong><br>
           - Munjez (React · TypeScript · Tauri · Rust)<br>
           - Munjez Website (HTML · CSS · JS)<br>
@@ -1354,9 +1381,8 @@
       d.className = 'pos-file-detail';
       d.innerHTML = `
         <h3>👤 Osama Ahmed</h3>
-        <p>3rd-year IT student at EELU, Egypt. Passionate about building real software from scratch.
-        Built Munjez — a full offline productivity desktop app — solo. Currently mastering
-        <strong>ASP.NET Core</strong> & <strong>PHP/Laravel</strong>, seeking an internship to grow.</p>
+        <p>Full Stack Developer specializing in <strong>ASP.NET Core</strong> &amp; <strong>PHP/Laravel</strong>.
+        Built Munjez — a full offline productivity desktop app — solo. Available for freelance projects &amp; engineering roles.</p>
         <div class="pos-file-detail-links">
           <a href="https://github.com/Osama2214" target="_blank" class="pos-file-detail-link pos-link-secondary">🐙 GitHub</a>
           <a href="https://www.linkedin.com/in/osama-ahmed-67127222a" target="_blank" class="pos-file-detail-link pos-link-secondary">💼 LinkedIn</a>
@@ -1714,7 +1740,7 @@
           <div class="pos-contact-avatar">👨‍💻</div>
           <div>
             <div class="pos-contact-name">Osama Ahmed</div>
-            <div class="pos-contact-title-text">Backend Dev & IT Student at EELU</div>
+            <div class="pos-contact-title-text">Full Stack Developer (.NET &amp; Laravel)</div>
           </div>
         </div>
 

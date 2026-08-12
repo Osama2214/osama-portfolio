@@ -1,0 +1,101 @@
+/* ─────────────────────────────────────────────
+   CLIENT TESTIMONIALS
+   ───────────────────────────────────────────── */
+
+.testi-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.testi-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: testi-scroll 56.7s linear infinite;
+}
+
+.testi-marquee:hover .testi-track { animation-play-state: paused; }
+
+@keyframes testi-scroll {
+  from { transform: translateX(0); }
+  /* Exactly one full set (5 cards @ 320px + 5 gaps @ 20px) — not -50%, which
+     is thrown off by the odd gap count and causes a visible jump at the seam. */
+  to   { transform: translateX(-1700px); }
+}
+
+.testi-card {
+  flex: 0 0 320px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.testi-stars {
+  color: #fbbf24;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+/* Half-star rating: splits the star glyph itself down the middle via a
+   background-clip gradient. A percentage-width clip on the whole string
+   doesn't work reliably — the ★ glyph has blank side-bearing inside its
+   own character box, so clipping the box edge can miss the ink entirely
+   and the star still reads as fully filled. Clipping the gradient to the
+   glyph's actual shape (background-clip: text) doesn't have that problem. */
+.star-half {
+  background: linear-gradient(90deg, #fbbf24 50%, var(--border) 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.testi-quote {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-2);
+  flex: 1;
+}
+
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  order: -1;
+}
+
+.testi-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(124,58,237,0.12);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--p-light);
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.testi-name { font-size: 14px; font-weight: 600; color: var(--text); margin: 0; }
+/* min-height reserves 2 lines even for one-line roles, so the stars row
+   below always starts at the same height — otherwise a long role (e.g.
+   "Website Frontend & Backend Development") wraps to 2 lines and pushes
+   that card's stars down relative to cards with a shorter, 1-line role. */
+.testi-role {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+  margin: 0;
+  min-height: calc(1.4em * 2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testi-track { animation: none; }
+}

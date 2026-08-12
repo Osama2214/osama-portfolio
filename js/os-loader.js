@@ -8,7 +8,7 @@
   const btn = document.getElementById('launchOsBtn');
   if (!btn) return;
 
-  const V = '?v=20260804';
+  const V = '?v=20260813e';
   let started = false;
 
   function inject(tag, attrs) {

@@ -17,9 +17,9 @@ nav.scrolled {
 }
 
 .nav-inner {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 28px;
   height: 64px;
   display: flex;
   align-items: center;
@@ -36,6 +36,7 @@ nav.scrolled {
   font-size: 20px;
   letter-spacing: -0.5px;
   z-index: 2;
+  flex: 0 0 auto;
 }
 
 .logo-bracket {
@@ -46,11 +47,11 @@ nav.scrolled {
 .nav-links {
   list-style: none;
   display: flex;
+  justify-content: center;
   gap: 2px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 440px;
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .nav-pill {

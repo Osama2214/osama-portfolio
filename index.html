@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#050812" />
-  <title>Osama Ahmed — Backend Developer & IT Student</title>
-  <meta name="description" content="Osama Ahmed Abdelaziz — IT Student & Aspiring Backend Developer (.NET). Builder of Munjez productivity app. Based in Egypt." />
+  <title>Osama Ahmed — Full Stack Developer (.NET & Laravel)</title>
+  <meta name="description" content="Osama Ahmed Abdelaziz — Full Stack Developer (.NET & Laravel). Creator of Munjez desktop app & specialized full-stack web applications. Based in Egypt." />
   <meta name="author" content="Osama Ahmed Abdelaziz" />
 
   <!-- Favicon -->
@@ -16,8 +16,8 @@
   <link rel="canonical" href="https://osama-portfolio-six.vercel.app/" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Osama Ahmed — Backend Developer" />
-  <meta property="og:description" content="IT Student & Aspiring Backend Developer (.NET). Builder of Munjez productivity app." />
+  <meta property="og:title" content="Osama Ahmed — Full Stack Developer" />
+  <meta property="og:description" content="Full Stack Developer (.NET & Laravel). Creator of Munjez productivity app and modern web applications." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://osama-portfolio-six.vercel.app/" />
   <meta property="og:image" content="https://osama-portfolio-six.vercel.app/og-image.png" />
@@ -28,8 +28,8 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Osama Ahmed — Backend Developer" />
-  <meta name="twitter:description" content="IT Student & Aspiring Backend Developer (.NET). Builder of Munjez productivity app." />
+  <meta name="twitter:title" content="Osama Ahmed — Full Stack Developer" />
+  <meta name="twitter:description" content="Full Stack Developer (.NET & Laravel). Creator of Munjez productivity app and modern web applications." />
   <meta name="twitter:image" content="https://osama-portfolio-six.vercel.app/og-image.png" />
 
   <!-- Structured data — Person (helps Google & LinkedIn understand who this is) -->
@@ -40,16 +40,16 @@
     "name": "Osama Ahmed Abdelaziz",
     "givenName": "Osama",
     "familyName": "Ahmed Abdelaziz",
-    "jobTitle": "Backend Developer",
-    "description": "IT Student and aspiring Backend Developer (.NET). Builder of the Munjez productivity app.",
+    "jobTitle": "Full Stack Developer",
+    "description": "Full Stack Developer (.NET & Laravel). Creator of the Munjez productivity app and custom web applications.",
     "url": "https://osama-portfolio-six.vercel.app/",
     "image": "https://osama-portfolio-six.vercel.app/og-image.png",
     "email": "mailto:osamaahmed.dev00@gmail.com",
     "address": { "@type": "PostalAddress", "addressCountry": "EG" },
-    "knowsAbout": [".NET", "C#", "ASP.NET", "Backend Development", "REST APIs", "SQL", "JavaScript", "Software Engineering"],
+    "knowsAbout": [".NET", "C#", "ASP.NET Core", "Laravel", "PHP", "JavaScript", "REST APIs", "SQL", "Software Engineering"],
     "sameAs": [
       "https://github.com/Osama2214",
-      "https://www.linkedin.com/in/osama-ahmed-67127222a"
+      "https://www.linkedin.com/in/osama-ahmed008"
     ]
   }
   </script>
@@ -59,24 +59,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <!-- ── Stylesheets (order matters for the cascade) ── -->
   <link rel="stylesheet" href="css/base.css?v=20260803" />
-  <link rel="stylesheet" href="css/navigation.css?v=20260810" />
-  <link rel="stylesheet" href="css/hero.css?v=20260803" />
+  <link rel="stylesheet" href="css/navigation.css?v=20260812" />
+  <link rel="stylesheet" href="css/hero.css?v=20260812" />
   <link rel="stylesheet" href="css/sections.css?v=20260803" />
-  <link rel="stylesheet" href="css/about.css?v=20260803" />
+  <link rel="stylesheet" href="css/about.css?v=20260812i" />
   <link rel="stylesheet" href="css/skills.css?v=20260803" />
   <link rel="stylesheet" href="css/projects.css?v=20260809" />
   <link rel="stylesheet" href="css/education.css?v=20260803" />
   <link rel="stylesheet" href="css/contact.css?v=20260803" />
   <link rel="stylesheet" href="css/footer.css?v=20260803" />
-  <link rel="stylesheet" href="css/responsive.css?v=20260811" />
+  <link rel="stylesheet" href="css/responsive.css?v=20260813c" />
   <link rel="stylesheet" href="css/effects-ui.css?v=20260803" />
-  <link rel="stylesheet" href="css/effects-hacker.css?v=20260811" />
+  <link rel="stylesheet" href="css/effects-hacker.css?v=20260813" />
   <link rel="stylesheet" href="css/effects-eggs.css?v=20260803" />
   <link rel="stylesheet" href="css/os-core.css?v=20260803" />
   <!-- os-apps.css & os-games.css are lazy-loaded by js/os-loader.js on first OS launch -->
 
   <link rel="stylesheet" href="css/command-palette.css?v=20260803" />
-  <link rel="stylesheet" href="css/guestbook.css?v=20260813" />
+  <link rel="stylesheet" href="css/testimonials.css?v=20260813" />
   <link rel="stylesheet" href="css/reactions.css?v=20260809" />
   <link rel="stylesheet" href="css/github.css?v=20260803" />
   <link rel="stylesheet" href="css/devtools-easter-egg.css?v=20260805" />
@@ -98,10 +98,12 @@
       <ul class="nav-links">
         <span class="nav-pill" id="navPill"></span>
         <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
         <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#experience" class="nav-link">Experience</a></li>
         <li><a href="#skills" class="nav-link">Skills</a></li>
-        <li><a href="#education" class="nav-link">Education</a></li>
-        <li><a href="#guestbook" class="nav-link">Guestbook</a></li>
+        <li><a href="#education" class="nav-link">Journey</a></li>
+        <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
       </ul>
       
@@ -152,10 +154,12 @@
     <div class="nav-mobile" id="navMobile">
       <span class="nav-mobile-group">Navigate</span>
       <a href="#about" class="nav-mobile-link">About</a>
+      <a href="#services" class="nav-mobile-link">Services</a>
       <a href="#projects" class="nav-mobile-link">Projects</a>
+      <a href="#experience" class="nav-mobile-link">Experience</a>
       <a href="#skills" class="nav-mobile-link">Skills</a>
-      <a href="#education" class="nav-mobile-link">Education</a>
-      <a href="#guestbook" class="nav-mobile-link">Guestbook</a>
+      <a href="#education" class="nav-mobile-link">Journey</a>
+      <a href="#testimonials" class="nav-mobile-link">Testimonials</a>
       <a href="#contact" class="nav-mobile-link">Contact</a>
 
       <span class="nav-mobile-group">Developer Tools</span>
@@ -171,10 +175,6 @@
   <!-- ── HERO ── -->
   <section id="home" class="hero">
     <div class="hero-content">
-      <div class="hero-badge reveal-up" data-delay="0">
-        <span class="badge-dot"></span>
-        Available for Internships
-      </div>
       <h1 class="hero-name reveal-up" data-delay="100" data-text="Osama Ahmed">
         <span class="name-first">Osama</span>
         <span class="name-last">Ahmed</span>
@@ -187,18 +187,15 @@
         </span>
       </div>
       <p class="hero-desc hero-desc-full reveal-up" data-delay="300">
-        3rd-year IT student at EELU with a passion for turning ideas into real software.
-        I built <a href="https://munjez-website.vercel.app" target="_blank" class="hero-link">Munjez</a> —
-        a full productivity desktop app from scratch, solo, shipped on Windows, Linux &amp; Android.
-        Now mastering <strong>ASP.NET Core</strong> &amp; <strong>PHP/Laravel</strong>, seeking an internship to grow.
+        I build web products that are simple to use, solid under the hood, and made to solve real problems. From backend logic to the final interface, I like being involved in the whole process.
       </p>
       <p class="hero-desc hero-desc-short reveal-up" data-delay="300">
-        3rd-year IT student at EELU &amp; backend developer. Mastering ASP.NET Core &amp; PHP/Laravel, seeking an internship to grow.
+        Full Stack Developer (.NET &amp; Laravel) &amp; Desktop Engineer. Building robust backend APIs, custom web applications, and cross-platform software.
       </p>
       <div class="hero-actions reveal-up" data-delay="400">
-        <a href="#projects" class="btn btn-primary" id="view-work-btn">
+        <a href="#services" class="btn btn-primary" id="view-work-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          View My Work
+          Explore Services
         </a>
         <a href="Osama_Ahmed_CV.pdf" target="_blank" class="btn btn-secondary" id="download-cv-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -206,7 +203,7 @@
         </a>
         <a href="mailto:osamaahmed.dev00@gmail.com" target="_blank" rel="noopener" class="btn btn-ghost" id="contact-me-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Contact Me
+          Hire Me
         </a>
       </div>
 
@@ -229,12 +226,12 @@
           <div class="code-line"><span class="c-kw">public class</span> <span class="c-cl">Developer</span></div>
           <div class="code-line"><span class="c-br">{</span></div>
           <div class="code-line indent"><span class="c-prop">string</span> Name <span class="c-op">=</span> <span class="c-str">"Osama Ahmed"</span><span class="c-semi">;</span></div>
-          <div class="code-line indent"><span class="c-prop">string</span> Role <span class="c-op">=</span> <span class="c-str">"Backend Dev"</span><span class="c-semi">;</span></div>
-          <div class="code-line indent"><span class="c-prop">string[]</span> Skills <span class="c-op">=</span> <span class="c-br">{</span></div>
-          <div class="code-line indent2"><span class="c-str">"C#"</span><span class="c-semi">,</span> <span class="c-str">"Python"</span><span class="c-semi">,</span> <span class="c-str">"PHP"</span><span class="c-semi">,</span></div>
-          <div class="code-line indent2"><span class="c-str">"Java"</span><span class="c-semi">,</span> <span class="c-str">"SQL"</span></div>
+          <div class="code-line indent"><span class="c-prop">string</span> Role <span class="c-op">=</span> <span class="c-str">"Full Stack Dev"</span><span class="c-semi">;</span></div>
+          <div class="code-line indent"><span class="c-prop">string[]</span> Stack <span class="c-op">=</span> <span class="c-br">{</span></div>
+          <div class="code-line indent2"><span class="c-str">"C# / ASP.NET"</span><span class="c-semi">,</span> <span class="c-str">"Laravel"</span><span class="c-semi">,</span></div>
+          <div class="code-line indent2"><span class="c-str">"PHP"</span><span class="c-semi">,</span> <span class="c-str">"SQL"</span><span class="c-semi">,</span> <span class="c-str">"JavaScript"</span></div>
           <div class="code-line indent"><span class="c-br">}</span><span class="c-semi">;</span></div>
-          <div class="code-line indent"><span class="c-prop">bool</span> OpenToWork <span class="c-op">=</span> <span class="c-bool">true</span><span class="c-semi">;</span></div>
+          <div class="code-line indent"><span class="c-prop">bool</span> AvailableForHire <span class="c-op">=</span> <span class="c-bool">true</span><span class="c-semi">;</span></div>
           <div class="code-line"><span class="c-br">}</span></div>
         </div>
         <!-- Console Output Window -->
@@ -249,23 +246,24 @@
             <div class="console-line divider">-----------------------------------------</div>
             <div class="console-line info-title">Osama Ahmed Profile Loaded:</div>
             <div class="console-line">Name   : Osama Ahmed</div>
-            <div class="console-line">Stack  : ASP.NET Core &amp; PHP/Laravel</div>
-            <div class="console-line">Status : Ready for Internships!</div>
+            <div class="console-line">Role   : Full Stack Developer</div>
+            <div class="console-line">Stack  : .NET Core, Laravel &amp; PHP</div>
+            <div class="console-line">Status : Open for Freelance &amp; Roles!</div>
             <div class="console-line divider">-----------------------------------------</div>
           </div>
         </div>
       </div>
       <div class="floating-badge badge-1">
         <svg class="fb-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        <span>Backend Dev</span>
+        <span>Full Stack Dev</span>
       </div>
       <div class="floating-badge badge-2">
         <svg class="fb-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        <span>Self-Taught</span>
+        <span>Client Focused</span>
       </div>
       <div class="floating-badge badge-3">
         <svg class="fb-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-        <span>Internship Ready</span>
+        <span>Available for Hire</span>
       </div>
     </div>
 
@@ -285,17 +283,10 @@
       <div class="about-grid">
         <div class="about-text reveal-left">
           <p class="about-para">
-            I'm <strong>Osama Ahmed Abdelaziz</strong> — a self-driven IT student at the
-            <strong>Egyptian E-Learning University (EELU)</strong>, based in 6th of October City, Giza.
-            I got into programming because I genuinely love building things — not because I had to.
+            I'm <strong>Osama Ahmed</strong>, a full-stack developer who enjoys turning ideas into practical web products. I work across the backend, database, and interface to build applications that are reliable, easy to use, and made for real needs. I'm currently studying IT at the <strong>Egyptian E-Learning University (EELU)</strong>.
           </p>
           <p class="about-para">
-            I focus on <strong>backend development</strong> and have a strong interest in how
-            software is architected under the hood. I'm not afraid to start from zero —
-            I learn by doing, and I push myself to ship real products, not just tutorials.
-          </p>
-          <p class="about-para">
-            Right now, I'm strengthening my backend expertise in <strong>ASP.NET Core</strong>, <strong>PHP/Laravel</strong>, and <strong>RESTful API</strong> design through intensive scholarships at <strong>DEPI</strong> and <strong>NTI</strong>. I'm actively looking for an <strong>internship</strong> where I can contribute, solve real-world problems, and grow fast.
+            I've built and shipped projects ranging from business websites and e-commerce platforms to complete web applications, including <a href="#munjez-card" class="hero-link"><strong>Munjez</strong></a>, a cross-platform productivity app I built from the ground up.
           </p>
           <div class="about-info-grid">
             <div class="info-item">
@@ -312,26 +303,97 @@
             </a>
             <div class="info-item">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              Expected Graduation: 2028
+              Status: Available for Freelance
             </div>
           </div>
-          <div class="about-langs">
-            <div class="lang-item">
-              <span class="lang-name">Arabic</span>
-              <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
-              <span class="lang-level">Native</span>
-            </div>
-            <div class="lang-item">
-              <span class="lang-name">English</span>
-              <div class="lang-bar"><div class="lang-fill" style="width:65%"></div></div>
-              <span class="lang-level">Intermediate</span>
-            </div>
-            <div class="lang-item">
-              <span class="lang-name">German</span>
-              <div class="lang-bar"><div class="lang-fill" style="width:20%"></div></div>
-              <span class="lang-level">Beginner</span>
-            </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ── -->
+  <section id="services" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-tag">// services</span>
+        <h2 class="section-title">Services Offered</h2>
+        <p class="section-desc">I build web applications, backends, and integrations that solve real business needs.</p>
+      </div>
+      <div class="services-grid reveal-up">
+
+        <!-- Service 1: Full-Stack Web Applications -->
+        <div class="service-card">
+          <div class="project-glow"></div>
+          <div class="service-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
+          <h3 class="service-title">Full-Stack Web Development</h3>
+          <p class="service-desc">I build complete web applications from frontend to backend, focused on reliability, usability, and real business needs.</p>
+          <ul class="service-features">
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Business websites &amp; web applications</li>
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Admin dashboards &amp; management systems</li>
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> E-commerce &amp; custom web platforms</li>
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Responsive design across devices</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tech-tag">ASP.NET Core</span>
+            <span class="tech-tag">Laravel</span>
+            <span class="tech-tag">JavaScript</span>
+            <span class="tech-tag">SQL</span>
+          </div>
+          <a href="#contact" class="service-cta-btn">
+            Request Web Development →
+          </a>
+        </div>
+
+        <!-- Service 2: Backend Development & REST APIs -->
+        <div class="service-card">
+          <div class="project-glow"></div>
+          <div class="service-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h7"/><circle cx="19" cy="18" r="3"/><path d="m21.5 20.5-1.5-1.5"/></svg>
+          </div>
+          <h3 class="service-title">Backend &amp; REST API Development</h3>
+          <p class="service-desc">I build secure and well-structured backends that handle your application logic, data, authentication, and integrations.</p>
+          <ul class="service-features">
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> RESTful API development</li>
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Authentication &amp; authorization</li>
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Business logic &amp; application architecture</li>
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> API validation, security &amp; error handling</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tech-tag">ASP.NET Core</span>
+            <span class="tech-tag">Laravel</span>
+            <span class="tech-tag">PHP</span>
+            <span class="tech-tag">REST API</span>
+          </div>
+          <a href="#contact" class="service-cta-btn">
+            Request Backend Development →
+          </a>
+        </div>
+
+        <!-- Service 4: Database Design & Integration -->
+        <div class="service-card">
+          <div class="project-glow"></div>
+          <div class="service-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <h3 class="service-title">Database &amp; Third-Party Integration</h3>
+          <p class="service-desc">I design reliable databases and connect your application with external services and third-party APIs.</p>
+          <ul class="service-features">
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Database design &amp; optimization</li>
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> SQL Server, MySQL &amp; PostgreSQL</li>
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Third-party API integration</li>
+            <li class="sf-item"><svg class="sf-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Payment &amp; external service integration</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tech-tag">SQL Server</span>
+            <span class="tech-tag">MySQL</span>
+            <span class="tech-tag">PostgreSQL</span>
+          </div>
+          <a href="#contact" class="service-cta-btn">
+            Request Integration →
+          </a>
         </div>
 
       </div>
@@ -538,7 +600,7 @@
             </div>
           </div>
           <p class="project-desc">
-            A full-stack e-commerce platform for PC components, built around a "Build a PC" flow that actively verifies parts are compatible — socket, RAM type, PSU wattage, GPU/case fit — plus a full admin panel and an AI chat assistant.
+            A full-stack e-commerce platform for PC components, built around a "Build a PC" flow that actively verifies parts are compatible — socket, RAM type, PSU wattage, GPU/case fit — plus a full admin panel and an AI chat assistant. <strong>Result:</strong> a deployable, real-inventory-ready storefront — live and open source.
           </p>
           <div class="project-tech">
             <span class="tech-tag">Laravel</span>
@@ -577,7 +639,7 @@
                 <span class="pbadge" style="background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3)">Live</span>
               </div>
               <h3 class="project-name">Osama Café</h3>
-              <p class="project-type">Specialty Coffee Shop &amp; Roastery Web</p>
+              <p class="project-type">Coffee Shop Website &amp; Admin Dashboard</p>
             </div>
             <div class="project-links">
               <a href="https://osama-cafe.xo.je/" target="_blank" class="plink" title="Live Site" id="osama-cafe-live">
@@ -589,11 +651,13 @@
             </div>
           </div>
           <p class="project-desc">
-            A premium, highly interactive coffee shop and roastery landing page. Built with custom fluid typography, sticky glassmorphism navigation, dynamic animations, scroll-triggered event hooks, and a clean zero-dependency responsive architecture.
+            A coffee shop and roastery site with a real PHP backend behind it, not just a static page. Visitors get a fast, animated front end; the owner gets a password-protected admin dashboard to manage the menu, gallery, testimonials, and FAQ with no code changes, plus a contact form and newsletter signup that save to a real database and send automatic email. <strong>Result:</strong> a site a café owner could actually run their business from, not just look at.
           </p>
           <div class="project-tech">
-            <span class="tech-tag">HTML5</span>
-            <span class="tech-tag">CSS3</span>
+            <span class="tech-tag">PHP</span>
+            <span class="tech-tag">PDO</span>
+            <span class="tech-tag">SQLite / MySQL</span>
+            <span class="tech-tag">PHPMailer</span>
             <span class="tech-tag">JavaScript</span>
           </div>
           <div class="project-reactions" data-project="osama-cafe">
@@ -648,6 +712,92 @@
     </div>
   </section>
 
+  <!-- ── EXPERIENCE & INTERNSHIPS ── -->
+  <section id="experience" class="section">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-tag">// experience &amp; training</span>
+        <h2 class="section-title">Experience &amp; Training</h2>
+        <p class="section-desc">Professional experience and technical training focused on backend and full-stack web development.</p>
+      </div>
+
+      <h3 class="trainings-title">// experience &amp; internships</h3>
+      <div class="experience-grid reveal-up">
+
+        <!-- DEPI Card -->
+        <div class="exp-card featured-exp">
+          <div class="project-glow"></div>
+          <div class="exp-header">
+            <div class="exp-icon-wrap">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg" alt="DEPI" width="38" height="38" />
+            </div>
+            <div class="exp-meta">
+              <h3 class="exp-role">Full-Stack / Backend .NET Intern</h3>
+              <h4 class="exp-company">Digital Egypt Pioneers Initiative (DEPI) — MCIT</h4>
+              <span class="exp-date">July 2026 — Present</span>
+            </div>
+          </div>
+          <p class="exp-desc">
+            Building practical backend and full-stack development skills through hands-on work with the Microsoft .NET ecosystem.
+          </p>
+          <ul class="exp-highlights">
+            <li>Building RESTful APIs with ASP.NET Core &amp; C#.</li>
+            <li>Working with SQL Server and Entity Framework Core.</li>
+            <li>Applying authentication, authorization, and clean architecture principles.</li>
+          </ul>
+          <div class="service-tags">
+            <span class="tech-tag">ASP.NET Core</span>
+            <span class="tech-tag">C#</span>
+            <span class="tech-tag">SQL Server</span>
+            <span class="tech-tag">EF Core</span>
+            <span class="tech-tag">REST APIs</span>
+          </div>
+          <a href="https://drive.google.com/drive/folders/1bMG0XbP2Xd1Kb5DdnmMcxSLQ7Rc4W1M_?usp=drive_link" target="_blank" rel="noopener" class="service-cta-btn">
+            View DEPI Work →
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Training & Certifications Sub-Block -->
+      <h3 class="trainings-title" style="margin-top: 36px;">// training</h3>
+      <div class="experience-grid reveal-up">
+          <!-- NTI Card -->
+          <div class="exp-card">
+            <div class="project-glow"></div>
+            <div class="exp-header">
+              <div class="exp-icon-wrap">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="NTI" width="38" height="38" />
+              </div>
+              <div class="exp-meta">
+                <h3 class="exp-role">Full-Stack Web Development using PHP</h3>
+                <h4 class="exp-company">National Telecommunication Institute (NTI)</h4>
+                <span class="exp-date">120 Hours</span>
+              </div>
+            </div>
+            <p class="exp-desc">
+              Intensive full-stack training focused on building modern web applications using PHP, Laravel, MySQL, and REST APIs.
+            </p>
+            <ul class="exp-highlights">
+              <li>Building full-stack web applications with PHP &amp; Laravel.</li>
+              <li>Working with MySQL, migrations, and Eloquent ORM.</li>
+              <li>Developing frontend interfaces integrated with backend APIs.</li>
+            </ul>
+            <div class="service-tags">
+              <span class="tech-tag">PHP</span>
+              <span class="tech-tag">Laravel</span>
+              <span class="tech-tag">MySQL</span>
+              <span class="tech-tag">REST APIs</span>
+              <span class="tech-tag">JavaScript</span>
+            </div>
+            <a href="https://github.com/Osama2214/NTI-Full-Stack-Web-Development" target="_blank" rel="noopener" class="service-cta-btn">
+              View NTI Work →
+            </a>
+          </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── SKILLS ── -->
   <section id="skills" class="section">
     <div class="container">
@@ -668,7 +818,6 @@
             <div class="skill-pill">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="C#" class="skill-icon" width="22" height="22" loading="lazy" />
               <span>C#</span>
-              <span class="skill-badge learning">Learning</span>
             </div>
             <div class="skill-pill">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="skill-icon" width="22" height="22" loading="lazy" />
@@ -685,7 +834,6 @@
             <div class="skill-pill">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" class="skill-icon" width="22" height="22" loading="lazy" />
               <span>PHP</span>
-              <span class="skill-badge learning">Learning</span>
             </div>
           </div>
         </div>
@@ -698,12 +846,16 @@
           </h3>
           <div class="sg-items">
             <div class="skill-pill">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL" class="skill-icon" width="22" height="22" loading="lazy" />
-              <span>SQL</span>
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" alt="SQL Server" class="skill-icon" width="22" height="22" loading="lazy" />
+              <span>SQL Server</span>
             </div>
             <div class="skill-pill">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase" class="skill-icon" width="22" height="22" loading="lazy" />
-              <span>Firebase</span>
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" class="skill-icon" width="22" height="22" loading="lazy" />
+              <span>MySQL</span>
+            </div>
+            <div class="skill-pill">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" class="skill-icon" width="22" height="22" loading="lazy" />
+              <span>PostgreSQL</span>
             </div>
           </div>
         </div>
@@ -712,7 +864,7 @@
         <div class="skill-group">
           <h3 class="sg-title">
             <svg class="sg-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            Web Technologies
+            Web Technologies &amp; Frameworks
           </h3>
           <div class="sg-items">
             <div class="skill-pill">
@@ -720,12 +872,16 @@
               <span>JavaScript</span>
             </div>
             <div class="skill-pill">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" class="skill-icon" width="22" height="22" loading="lazy" />
-              <span>HTML / CSS</span>
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" class="skill-icon" width="22" height="22" loading="lazy" />
+              <span>HTML5</span>
             </div>
             <div class="skill-pill">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" class="skill-icon" width="22" height="22" loading="lazy" />
-              <span>React</span>
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" class="skill-icon" width="22" height="22" loading="lazy" />
+              <span>CSS3</span>
+            </div>
+            <div class="skill-pill">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="Laravel" class="skill-icon" width="22" height="22" loading="lazy" />
+              <span>Laravel</span>
             </div>
           </div>
         </div>
@@ -825,11 +981,6 @@
               <span>RESTful APIs</span>
               <div class="learning-progress"></div>
             </div>
-            <div class="skill-pill learning-pill">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="Laravel" class="skill-icon" width="22" height="22" loading="lazy" />
-              <span>Laravel</span>
-              <div class="learning-progress"></div>
-            </div>
           </div>
         </div>
 
@@ -842,8 +993,9 @@
   <section id="education" class="section section-alt">
     <div class="container">
       <div class="section-header reveal-up">
-        <span class="section-tag">// education</span>
-        <h2 class="section-title">Education & Certifications</h2>
+        <span class="section-tag">// learning &amp; certs</span>
+        <h2 class="section-title">Learning Journey &amp; Certifications</h2>
+        <p class="section-desc">My journey from software development fundamentals to backend and full-stack development.</p>
       </div>
       <div class="edu-grid">
         <div class="edu-timeline reveal-left">
@@ -1007,57 +1159,184 @@
     </div>
   </section>
 
-  <!-- ── GUESTBOOK (live serverless + Redis demo) ── -->
-  <section id="guestbook" class="section">
+  <!-- ── TESTIMONIALS ── -->
+  <section id="testimonials" class="section">
     <div class="container">
       <div class="section-header reveal-up">
-        <span class="section-tag">// guestbook</span>
-        <h2 class="section-title">Sign the Guestbook</h2>
-        <p class="section-desc">A live demo of my backend work — every message is validated, rate-limited, and stored through a serverless API on a real database.</p>
+        <span class="section-tag">// testimonials</span>
+        <h2 class="section-title">Client Testimonials</h2>
+        <p class="section-desc">What clients and collaborators say about working with me.</p>
       </div>
 
-      <div class="gb-tech reveal-up">
-        <span class="gb-chip">Serverless Function</span>
-        <span class="gb-chip">Node.js</span>
-        <span class="gb-chip">Redis</span>
-        <span class="gb-chip">Rate-limited</span>
-        <span class="gb-chip">GET · POST</span>
-      </div>
-
-      <div class="gb-grid">
-        <div class="form-card reveal-left">
-          <h4 class="form-card-title">Leave a message</h4>
-          <form class="contact-form" id="gbForm" novalidate>
-            <div class="form-group">
-              <label for="gb-name" class="form-label">Name</label>
-              <input type="text" id="gb-name" name="name" class="form-input" placeholder="Your name" maxlength="40" autocomplete="name" required />
+      <div class="testi-marquee reveal-up">
+        <div class="testi-track" id="testiTrack">
+          <div class="testi-card">
+            <div class="testi-stars" aria-label="4.5 out of 5 stars">★★★★<span class="star-half">★</span></div>
+            <p class="testi-quote">Amazing person to work with. Great communication skills, deep knowledge of PHP and interconnections with databases.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">NL</div>
+              <div>
+                <p class="testi-name">Nathan L.</p>
+                <p class="testi-role">Frontend + Backend Development</p>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="gb-message" class="form-label">Message</label>
-              <textarea id="gb-message" name="message" class="form-input form-textarea" rows="3" maxlength="280" placeholder="Say hi, drop feedback, or leave a note…" required></textarea>
-            </div>
-            <!-- honeypot: hidden from humans, bots fill it -->
-            <div class="gb-hp" aria-hidden="true">
-              <label>Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
-            </div>
-            <button type="submit" class="btn btn-primary" id="gbSubmit">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              <span id="gbSubmitLabel">Sign Guestbook</span>
-            </button>
-            <div class="gb-cooldown-bar" id="gbCooldownBar" hidden aria-hidden="true"><span class="gb-cooldown-fill" id="gbCooldownFill"></span></div>
-            <p class="gb-status" id="gbStatus" role="status" aria-live="polite"></p>
-          </form>
-        </div>
-
-        <div class="gb-wall reveal-right">
-          <div class="gb-wall-head">
-            <h4 class="form-card-title">Recent messages<span class="gb-count" id="gbCount">0</span></h4>
           </div>
-          <ul class="gb-list" id="gbList"></ul>
-          <p class="gb-empty" id="gbEmpty" hidden>
-            <svg class="gb-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            No messages yet — be the first to sign it.
-          </p>
+          <div class="testi-card">
+            <div class="testi-stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="testi-quote">He has been a fantastic provider in helping us build out both the front and back ends of our sites. Super nice guy — very responsive and easy to work with.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">EM</div>
+              <div>
+                <p class="testi-name">Edward M.</p>
+                <p class="testi-role">Website Frontend &amp; Backend Development</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="testi-quote">Exceptional professionalism, creativity, and technical expertise. Attention to detail was excellent, and the website was beautiful, highly functional, user-friendly and responsive across all devices.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">NK</div>
+              <div>
+                <p class="testi-name">Nebojša K.</p>
+                <p class="testi-role">Company Website Redesign</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="testi-quote">He was very responsive, quick to answer questions and make changes. The whole experience was stress-free and enjoyable.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">DR</div>
+              <div>
+                <p class="testi-name">Daniel R.</p>
+                <p class="testi-role">Portfolio Website Redesign</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars" aria-label="4 out of 5 stars">★★★★☆</div>
+            <p class="testi-quote">Clean and organized code, great documentation, attention to detail, scalability, on-time delivery, excellent communication and collaboration.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">SM</div>
+              <div>
+                <p class="testi-name">Sophie M.</p>
+                <p class="testi-role">Full-Stack Web Application</p>
+              </div>
+            </div>
+          </div>
+          <!-- duplicate set — enables the seamless loop -->
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★<span class="star-half">★</span></div>
+            <p class="testi-quote">Amazing person to work with. Great communication skills, deep knowledge of PHP and interconnections with databases.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">NL</div>
+              <div>
+                <p class="testi-name">Nathan L.</p>
+                <p class="testi-role">Frontend + Backend Development</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">He has been a fantastic provider in helping us build out both the front and back ends of our sites. Super nice guy — very responsive and easy to work with.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">EM</div>
+              <div>
+                <p class="testi-name">Edward M.</p>
+                <p class="testi-role">Website Frontend &amp; Backend Development</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">Exceptional professionalism, creativity, and technical expertise. Attention to detail was excellent, and the website was beautiful, highly functional, user-friendly and responsive across all devices.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">NK</div>
+              <div>
+                <p class="testi-name">Nebojša K.</p>
+                <p class="testi-role">Company Website Redesign</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">He was very responsive, quick to answer questions and make changes. The whole experience was stress-free and enjoyable.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">DR</div>
+              <div>
+                <p class="testi-name">Daniel R.</p>
+                <p class="testi-role">Portfolio Website Redesign</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★☆</div>
+            <p class="testi-quote">Clean and organized code, great documentation, attention to detail, scalability, on-time delivery, excellent communication and collaboration.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">SM</div>
+              <div>
+                <p class="testi-name">Sophie M.</p>
+                <p class="testi-role">Full-Stack Web Application</p>
+              </div>
+            </div>
+          </div>
+          <!-- third set — extra buffer so wide viewports never run out of cards mid-loop -->
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★<span class="star-half">★</span></div>
+            <p class="testi-quote">Amazing person to work with. Great communication skills, deep knowledge of PHP and interconnections with databases.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">NL</div>
+              <div>
+                <p class="testi-name">Nathan L.</p>
+                <p class="testi-role">Frontend + Backend Development</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">He has been a fantastic provider in helping us build out both the front and back ends of our sites. Super nice guy — very responsive and easy to work with.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">EM</div>
+              <div>
+                <p class="testi-name">Edward M.</p>
+                <p class="testi-role">Website Frontend &amp; Backend Development</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">Exceptional professionalism, creativity, and technical expertise. Attention to detail was excellent, and the website was beautiful, highly functional, user-friendly and responsive across all devices.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">NK</div>
+              <div>
+                <p class="testi-name">Nebojša K.</p>
+                <p class="testi-role">Company Website Redesign</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">He was very responsive, quick to answer questions and make changes. The whole experience was stress-free and enjoyable.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">DR</div>
+              <div>
+                <p class="testi-name">Daniel R.</p>
+                <p class="testi-role">Portfolio Website Redesign</p>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card" aria-hidden="true">
+            <div class="testi-stars">★★★★☆</div>
+            <p class="testi-quote">Clean and organized code, great documentation, attention to detail, scalability, on-time delivery, excellent communication and collaboration.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">SM</div>
+              <div>
+                <p class="testi-name">Sophie M.</p>
+                <p class="testi-role">Full-Stack Web Application</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1068,8 +1347,8 @@
     <div class="container">
       <div class="section-header reveal-up">
         <span class="section-tag">// contact</span>
-        <h2 class="section-title">Let's Connect</h2>
-        <p class="section-desc">Open to internships, collaborations, and new opportunities</p>
+        <h2 class="section-title">Let's Work Together</h2>
+        <p class="section-desc">Have a project in mind? Let's discuss how I can help bring it to life.</p>
       </div>
       <div class="contact-quicklinks reveal-up">
         <a href="mailto:osamaahmed.dev00@gmail.com" class="contact-card" id="email-contact" target="_blank" rel="noopener">
@@ -1082,7 +1361,7 @@
           </div>
           <svg class="cc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
-        <a href="https://www.linkedin.com/in/osama-ahmed-67127222a" target="_blank" class="contact-card" id="linkedin-contact">
+        <a href="https://www.linkedin.com/in/osama-ahmed008" target="_blank" class="contact-card" id="linkedin-contact">
           <div class="cc-icon linkedin-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           </div>
@@ -1121,15 +1400,14 @@
             <div class="cta-inner">
               <h3 class="cta-title">Let's Build Something Together</h3>
               <p class="cta-desc">
-                I've already proven I can ship real software solo. Now I want to join a team,
-                learn fast, and make a real impact. If you're looking for someone hungry to grow —
-                that's me.
+                Have a web application, backend, or API project in mind? I can help turn your idea
+                into a reliable and production-ready solution.
               </p>
               <div class="cta-highlights">
-                <div class="ch-item"><svg class="ch-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Built &amp; shipped Munjez solo — end to end</div>
-                <div class="ch-item"><svg class="ch-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Self-taught, never stops learning</div>
-                <div class="ch-item"><svg class="ch-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Full ownership from idea to release</div>
-                <div class="ch-item"><svg class="ch-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Ready for an internship now</div>
+                <div class="ch-item"><svg class="ch-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Full-stack web applications</div>
+                <div class="ch-item"><svg class="ch-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Backend &amp; REST API development</div>
+                <div class="ch-item"><svg class="ch-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Database design &amp; integration</div>
+                <div class="ch-item"><svg class="ch-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Clear communication throughout the project</div>
               </div>
             </div>
           </div>
@@ -1150,7 +1428,7 @@
             </div>
             <div class="form-group">
               <label for="cf-message" class="form-label">Message</label>
-              <textarea id="cf-message" name="message" class="form-input form-textarea" rows="5" placeholder="Tell me about the opportunity..." required></textarea>
+              <textarea id="cf-message" name="message" class="form-input form-textarea" rows="5" placeholder="Tell me about your project, requirements, timeline, and budget..." required></textarea>
             </div>
             <button type="submit" class="btn btn-primary" id="send-message-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -1174,7 +1452,7 @@
           <a href="https://github.com/Osama2214" target="_blank" class="footer-social" title="GitHub" id="footer-github">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           </a>
-          <a href="https://www.linkedin.com/in/osama-ahmed-67127222a" target="_blank" class="footer-social" title="LinkedIn" id="footer-linkedin">
+          <a href="https://www.linkedin.com/in/osama-ahmed008" target="_blank" class="footer-social" title="LinkedIn" id="footer-linkedin">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           </a>
           <a href="mailto:osamaahmed.dev00@gmail.com" target="_blank" class="footer-social" title="Email" id="footer-email">
@@ -1331,17 +1609,16 @@
   <!-- ── Scripts (defer keeps original load order & shared scope) ── -->
   <script src="js/effects.js?v=20260803" defer></script>
   <script src="js/navigation.js?v=20260803" defer></script>
-  <script src="js/interactions.js?v=20260803" defer></script>
+  <script src="js/interactions.js?v=20260812" defer></script>
   <script src="js/features.js?v=20260803" defer></script>
-  <script src="js/terminal-console.js?v=20260811" defer></script>
+  <script src="js/terminal-console.js?v=20260813b" defer></script>
   <script src="js/easter-eggs.js?v=20260803" defer></script>
   <!-- Portfolio OS is loaded on demand (first launch) by this tiny loader -->
-  <script src="js/os-loader.js?v=20260808" defer></script>
-  <script src="js/command-palette.js?v=20260803" defer></script>
-  <script src="js/guestbook.js?v=20260812" defer></script>
+  <script src="js/os-loader.js?v=20260813e" defer></script>
+  <script src="js/command-palette.js?v=20260813b" defer></script>
   <script src="js/reactions.js?v=20260803" defer></script>
   <script src="js/github.js?v=20260803" defer></script>
-  <script src="js/devtools-easter-egg.js?v=20260808" defer></script>
+  <script src="js/devtools-easter-egg.js?v=20260813" defer></script>
   <!-- Vercel Web Analytics (privacy-friendly, cookieless) — enable it in the Vercel dashboard -->
   <script defer src="/_vercel/insights/script.js"></script>
 </body>

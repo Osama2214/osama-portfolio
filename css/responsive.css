@@ -52,18 +52,23 @@
   .badge-2 { left: -12px; bottom: -20px; right: auto; top: auto; }
 }
 
-/* Tablet / split-screen widths: with 6 nav links plus the action icons the
-   centered link row gets cramped and can overlap the icons on the right.
-   Tighten the links across this range so they always clear the icons. */
-@media (min-width: 769px) and (max-width: 1040px) {
-  .nav-links { gap: 0; max-width: 400px; }
-  .nav-link { padding: 6px 9px; font-size: 13px; }
-}
-
-@media (max-width: 768px) {
+/* Collapse to the hamburger menu below 1140px — measured as the actual
+   width the desktop nav needs to fit all 8 links (About…Contact) plus the
+   logo and the icon-button group with zero crowding. This used to be 768px,
+   with a squeeze-zone hack (tighter gap/padding/font-size) covering 769–
+   1040px to keep the row from overlapping the icons in between. That was
+   tuned for 6 links; once Services and Experience were added it no longer
+   fit even squeezed, and the last link ("Contact") overlapped the icon
+   buttons. Rather than re-tuning fragile magic numbers again next time a
+   link is added, the nav now just switches to the hamburger before it would
+   ever need to squeeze at all. */
+@media (max-width: 1140px) {
   .nav-links, .nav-cta { display: none; }
   .nav-hamburger { display: flex; }
   .nav-mobile.open { display: flex; }
+}
+
+@media (max-width: 768px) {
   /* Portfolio OS is a desktop experience (draggable windows, etc.) — hide its
      launcher on phones. Uses the id so it wins over os-core.css, which defines
      .nav-os-btn and loads later in the cascade. */
@@ -287,10 +292,16 @@
     border-radius: 12px;
   }
 
+  /* The 2-column grid above (repeat(2, minmax(0, 1fr))) gives every pill an
+     equal ~148px slot regardless of its label's length — that's what was
+     silently ellipsis-truncating "Network Fundamentals" (the one label long
+     enough to actually hit that limit). Letting the label wrap onto a
+     second line instead keeps it fully readable without breaking the
+     2-column grid's equal-width alignment the way a single very wide pill
+     would. */
   .skill-pill span:not(.skill-badge) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.25;
   }
 
   .skill-icon {

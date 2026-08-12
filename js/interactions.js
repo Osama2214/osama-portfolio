@@ -1,10 +1,10 @@
 // ── TYPEWRITER ───────────────────────────────
 const titles = [
-  'Backend Developer',
-  '.NET & PHP Developer',
-  'App Builder',
-  'Problem Solver',
-  'IT Student',
+  'Full-Stack Web Developer',
+  'Business Website Developer',
+  'Web Application Developer',
+  'E-Commerce Developer',
+  'Backend & API Developer',
 ];
 
 let tIdx = 0, cIdx = 0, deleting = false;
@@ -117,8 +117,8 @@ revealEls.forEach(el => scrollObserver.observe(el));
 statNums.forEach(el => scrollObserver.observe(el));
 langFills.forEach(el => scrollObserver.observe(el));
 
-// ── TILT EFFECT on Project Cards ─────────────
-document.querySelectorAll('.project-card').forEach(card => {
+// ── TILT EFFECT on Cards ─────────────
+document.querySelectorAll('.project-card, .service-card, .exp-card').forEach(card => {
   let rect = null;
   card.addEventListener('mouseenter', () => {
     rect = card.getBoundingClientRect();
@@ -157,7 +157,7 @@ skillGroups.forEach(g => {
 });
 
 // ── CURSOR GLOW on CARDS ─────────────────────
-document.querySelectorAll('.project-card, .cert-card, .contact-card').forEach(el => {
+document.querySelectorAll('.project-card, .service-card, .exp-card, .cert-card, .contact-card').forEach(el => {
   let rect = null;
   el.addEventListener('mouseenter', () => {
     rect = el.getBoundingClientRect();

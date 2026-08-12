@@ -192,7 +192,7 @@
     checkItem('HTML5'); checkItem('CSS3 (modular, hand-written)'); checkItem('Vanilla JavaScript (ES6+, zero build step)');
     line('');
     await type('Backend', 'dte-heading');
-    checkItem('Node.js Serverless Functions'); checkItem('REST endpoints (Guestbook, Reactions, GitHub stats)'); checkItem('Upstash Redis');
+    checkItem('Node.js Serverless Functions'); checkItem('REST endpoints (Reactions, GitHub stats)'); checkItem('Upstash Redis');
     line('');
     await type('Deployment', 'dte-heading');
     checkItem('Vercel'); checkItem('Vercel Web Analytics');

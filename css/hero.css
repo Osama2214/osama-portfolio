@@ -9,8 +9,8 @@
     on browsers that don't support svh. */
   display: flex;
   align-items: center;
-  padding: 100px 24px 80px;
-  max-width: 1200px;
+  padding: 100px 32px 80px;
+  max-width: 1400px;
   margin: 0 auto;
   position: relative;
   gap: 60px;
@@ -223,6 +223,7 @@
   display: flex;
   align-items: center;
   gap: 24px;
+  margin-top: 40px;
 }
 
 .stat-item {

@@ -10,7 +10,7 @@
 
   if (!terminalPanel || !terminalInput) return;
 
-  const commands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'github', 'guestbook', 'reactions', 'coffee', 'coffee++', '3am', 'clear', 'theme', 'cv', 'social', 'secret', 'hack', 'guess'];
+  const commands = ['help', 'about', 'skills', 'projects', 'experience', 'contact', 'github', 'reactions', 'coffee', 'coffee++', '3am', 'clear', 'theme', 'cv', 'social', 'secret', 'hack', 'guess'];
   const themes = ['default', 'theme-green', 'theme-cyan', 'theme-amber'];
   let currentThemeIdx = 0;
 
@@ -164,7 +164,7 @@
       { name: 'RESTful APIs', blocks: 6 },
       { name: 'JavaScript', blocks: 7 },
       { name: 'HTML & CSS', blocks: 8 },
-      { name: 'React', blocks: 4 }
+      { name: 'Git & GitHub', blocks: 8 }
     ];
 
     const promises = skillList.map(skill => {
@@ -248,7 +248,6 @@
         printLine(mob ? '  experience - Education history'          : '  experience - Detailed educational & scholarship history');
         printLine(mob ? '  contact    - Reach out'                  : '  contact    - Channels to reach out or connect with me');
         printLine(mob ? '  github     - Live GitHub stats'          : '  github     - Live GitHub stats (repos, stars, followers)');
-        printLine(mob ? '  guestbook  - Sign the guestbook'         : '  guestbook  - Recent messages + jump to the guestbook');
         printLine(mob ? '  reactions  - Project reactions'          : '  reactions  - Live like/love/star counts per project');
         printLine(mob ? '  cv         - Open resume'                : '  cv         - Simulates and opens my resume PDF');
         printLine(mob ? '  coffee     - Energize'                   : '  coffee     - Energize the terminal developer');
@@ -267,7 +266,7 @@
         loadingLine.remove();
 
         const aboutLine = printLine('');
-        await typeText(aboutLine, "Hi,\nI'm Osama Ahmed.\n\nBackend Developer & 3rd-year IT student at EELU.\n\nBuilt Munjez — a full offline desktop productivity app — solo.\nCurrently mastering ASP.NET Core & PHP/Laravel.\nAvailable for Internships ✅\n", 15);
+        await typeText(aboutLine, "Hi,\nI'm Osama Ahmed.\n\nFull Stack Developer (.NET & Laravel) studying IT at EELU.\n\nBuilt Munjez — a cross-platform desktop productivity app — solo.\nSpecialized in ASP.NET Core, PHP/Laravel & Desktop Software.\nAvailable for Freelance & Roles ✅\n", 15);
         break;
 
       case 'skills':
@@ -464,25 +463,6 @@
             printLine('Could not reach GitHub right now.', 'error');
           }
         } catch (e) { printLine('Could not reach GitHub right now.', 'error'); }
-        break;
-      }
-
-      case 'guestbook': {
-        printLine('Loading guestbook...', 'loading');
-        try {
-          const res = await fetch('/api/guestbook', { headers: { Accept: 'application/json' } });
-          const d = await res.json();
-          if (d && d.configured === false) {
-            printLine('Guestbook is being set up — check back soon.', 'info');
-          } else {
-            const entries = d.entries || [];
-            printLine(`Guestbook — ${entries.length} message${entries.length === 1 ? '' : 's'} signed.`, 'banner');
-            entries.slice(0, 3).forEach(e => printLine(`  ${e.name}: ${String(e.message).slice(0, 60)}`));
-            printLine('Opening the Guestbook — sign it!', 'success');
-            const gb = document.getElementById('guestbook');
-            if (gb) { closeTerminalPanel(); gb.scrollIntoView({ behavior: 'smooth' }); }
-          }
-        } catch (e) { printLine('Could not load the guestbook.', 'error'); }
         break;
       }
 

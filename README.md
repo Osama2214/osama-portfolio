@@ -1,6 +1,6 @@
 # Osama Ahmed — Developer Portfolio Website
 
-Welcome to the source code repository of my personal developer portfolio website. This is a premium, highly interactive, and responsive portfolio designed to showcase my engineering projects, technical skills, certifications, and academic background — backed by a small set of real serverless features (guestbook, project reactions, live GitHub stats).
+Welcome to the source code repository of my personal developer portfolio website. This is a premium, highly interactive, and responsive portfolio designed to showcase my engineering projects, technical skills, certifications, and academic background — backed by a small set of real serverless features (project reactions, live GitHub stats).
 
 Live Deployment: **[osama-portfolio-six.vercel.app](https://osama-portfolio-six.vercel.app/)**
 
@@ -16,8 +16,8 @@ Live Deployment: **[osama-portfolio-six.vercel.app](https://osama-portfolio-six.
 * **Command Palette (⌘K)**: Fuzzy-searchable quick-navigation palette for jumping to sections, projects, and actions.
 * **C# IDE Mock Editor Window**: An interactive, syntax-highlighted code editor mockup representing developer credentials.
 * **Typewriter Tagline Loops**: Automated, zero-dependency typewriter animation cycling through core backend developer taglines.
-* **Live Guestbook**: A real serverless guestbook (Vercel + Upstash Redis) with rate limiting, honeypot spam protection, and HTML-escaped rendering. See [GUESTBOOK_SETUP.md](GUESTBOOK_SETUP.md).
-* **Project Reactions**: Persisted like/love/star counters per project, backed by the same Redis store.
+* **Client Testimonials**: A scrolling marquee of real client reviews.
+* **Project Reactions**: Persisted like/love/star counters per project, backed by a Redis store.
 * **Live GitHub Stats**: Server-side fetch of public GitHub profile/repo stats, cached in Redis to stay well under API rate limits.
 * **Matrix Mode & Hacker Effects / Easter Eggs**: Toggleable Matrix rain effect, a DevTools console easter egg, and other hidden interactions.
 * **Ambient Audio**: Optional ambient/startup/shutdown sound design tied to the Portfolio OS experience.
@@ -31,9 +31,9 @@ Live Deployment: **[osama-portfolio-six.vercel.app](https://osama-portfolio-six.
 
 * **Core Structure**: HTML5 (Semantic elements)
 * **Styling & Layout**: CSS3 — modularized per feature (`css/base.css`, `css/hero.css`, `css/os-core.css`, `css/effects-hacker.css`, `css/responsive.css`, etc.), vanilla grids, flexbox, variables, keyframe animations.
-* **Interactive Logic**: Vanilla JavaScript (ES6+, IntersectionObserver API, HTML5 Canvas API) — modularized per feature (`js/portfolio-os.js`, `js/os-games.js`, `js/terminal-console.js`, `js/command-palette.js`, `js/guestbook.js`, `js/github.js`, `js/reactions.js`, etc.)
-* **Backend**: Node.js Vercel Serverless Functions (zero-dependency, `api/*.js`) for the guestbook, reactions, and GitHub stats endpoints.
-* **Storage**: Upstash Redis (REST API) for guestbook entries, reaction counts, and GitHub stats caching.
+* **Interactive Logic**: Vanilla JavaScript (ES6+, IntersectionObserver API, HTML5 Canvas API) — modularized per feature (`js/portfolio-os.js`, `js/os-games.js`, `js/terminal-console.js`, `js/command-palette.js`, `js/github.js`, `js/reactions.js`, etc.)
+* **Backend**: Node.js Vercel Serverless Functions (zero-dependency, `api/*.js`) for the reactions and GitHub stats endpoints.
+* **Storage**: Upstash Redis (REST API) for reaction counts and GitHub stats caching.
 * **Integrations**: Formspree (contact form), GitHub REST API (live stats).
 * **Fonts & Icons**: Google Fonts (Outfit, JetBrains Mono), Devicons CDN, Credly Badge API.
 
@@ -45,15 +45,14 @@ Live Deployment: **[osama-portfolio-six.vercel.app](https://osama-portfolio-six.
 ├── index.html               # Core HTML layout, navbar, sections, Portfolio OS shell, and form structure.
 ├── 404.html                 # Custom 404 error page.
 ├── css/                     # Modular stylesheets (base, hero, sections, OS, effects, responsive, etc.)
-├── js/                      # Modular client scripts (Portfolio OS, games, terminal, command palette, guestbook, effects, etc.)
-├── api/                     # Vercel serverless functions (guestbook, reactions, GitHub stats)
+├── js/                      # Modular client scripts (Portfolio OS, games, terminal, command palette, effects, etc.)
+├── api/                     # Vercel serverless functions (reactions, GitHub stats)
 ├── icons/                   # Local SVG/PNG assets (platforms, icons, etc.)
 ├── audio/                   # Ambient/startup/shutdown sound effects for Portfolio OS
 ├── Osama_Ahmed_CV.pdf       # Downloadable PDF resume.
 ├── favicon.svg / og-image.png
 ├── robots.txt / sitemap.xml
-├── vercel.json               # Vercel deployment configuration (routing, security headers).
-└── GUESTBOOK_SETUP.md        # Backend setup guide for the guestbook (Upstash Redis).
+└── vercel.json               # Vercel deployment configuration (routing, security headers).
 ```
 
 ---
@@ -72,7 +71,7 @@ python -m http.server 8000
 ```
 Then navigate to `http://localhost:8000` in your browser.
 
-> Note: the static site works fully without any backend configuration. The guestbook, project reactions, and live GitHub stats are backed by Vercel serverless functions and Upstash Redis — without them configured, those features degrade gracefully (e.g. the guestbook shows a "being set up" message). See [GUESTBOOK_SETUP.md](GUESTBOOK_SETUP.md) for backend setup, or run `vercel dev` to exercise the `api/` functions locally.
+> Note: the static site works fully without any backend configuration. Project reactions and live GitHub stats are backed by Vercel serverless functions and Upstash Redis — without them configured, those features degrade gracefully. Run `vercel dev` to exercise the `api/` functions locally.
 
 ---
 

@@ -554,7 +554,7 @@
       printLine('Status: Live');
       printLine('Tech Stack: HTML5, CSS3, JavaScript');
       printLine('Features: Fluid typography, glassmorphism nav, dynamic animations, scroll-triggered hooks, zero-dependency.');
-      printHTML('Live Site: <a href="https://coffee-landing-osama.vercel.app/" target="_blank" style="color:var(--term-accent)">https://coffee-landing-osama.vercel.app/</a>');
+      printHTML('Live Site: <a href="https://osama-cafe.xo.je/" target="_blank" style="color:var(--term-accent)">https://osama-cafe.xo.je/</a>');
       printHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe" target="_blank" style="color:var(--term-accent)">NTI-Full-Stack-Web-Development/Task-2/osama-cafe</a>');
     } else {
       printLine('Invalid selection. Exited project selector.', 'error');

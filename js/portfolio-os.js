@@ -123,7 +123,7 @@
       type: 'Specialty Coffee Shop & Roastery Web',
       desc: 'A premium, highly interactive coffee shop landing page. Custom fluid typography, sticky glassmorphism nav, dynamic animations, scroll-triggered hooks, and a zero-dependency responsive architecture.',
       tech: ['HTML5', 'CSS3', 'JavaScript'],
-      live: 'https://coffee-landing-osama.vercel.app/',
+      live: 'https://osama-cafe.xo.je/',
       github: 'https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe',
     },
   ];
@@ -952,7 +952,7 @@
         tLine('Status: Live');
         tLine('Tech Stack: HTML5, CSS3, JavaScript');
         tLine('Features: Fluid typography, glassmorphism nav, dynamic animations, scroll-triggered hooks, zero-dependency.');
-        tHTML('Live Site: <a href="https://coffee-landing-osama.vercel.app/" target="_blank" style="color:var(--pos-accent)">coffee-landing-osama.vercel.app</a>');
+        tHTML('Live Site: <a href="https://osama-cafe.xo.je/" target="_blank" style="color:var(--pos-accent)">osama-cafe.xo.je</a>');
         tHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe" target="_blank" style="color:var(--pos-accent)">NTI-Full-Stack-Web-Development/Task-2/osama-cafe</a>');
       } else {
         tLine('Invalid selection. Exited project selector.', 'pos-t-error');

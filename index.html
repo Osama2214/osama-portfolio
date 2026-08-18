@@ -80,6 +80,7 @@
   <link rel="stylesheet" href="css/reactions.css?v=20260809" />
   <link rel="stylesheet" href="css/github.css?v=20260803" />
   <link rel="stylesheet" href="css/devtools-easter-egg.css?v=20260805" />
+  <link rel="stylesheet" href="css/cert-lightbox.css?v=20260818e" />
 </head>
 <body>
 
@@ -642,7 +643,7 @@
               <p class="project-type">Coffee Shop Website &amp; Admin Dashboard</p>
             </div>
             <div class="project-links">
-              <a href="https://osama-cafe.xo.je/" target="_blank" class="plink" title="Live Site" id="osama-cafe-live">
+              <a href="https://osama-cafe.onrender.com/" target="_blank" class="plink" title="Live Site" id="osama-cafe-live">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
               </a>
               <a href="https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe" target="_blank" class="plink" title="Source Code" id="osama-cafe-github">
@@ -729,7 +730,7 @@
           <div class="project-glow"></div>
           <div class="exp-header">
             <div class="exp-icon-wrap">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg" alt="DEPI" width="38" height="38" />
+              <img src="icons/certs/depi-logo.png" alt="DEPI" width="44" height="44" style="width:44px;height:44px;object-fit:contain;" />
             </div>
             <div class="exp-meta">
               <h3 class="exp-role">Full-Stack / Backend .NET Intern</h3>
@@ -767,12 +768,12 @@
             <div class="project-glow"></div>
             <div class="exp-header">
               <div class="exp-icon-wrap">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="NTI" width="38" height="38" />
+                <img src="icons/certs/nti-logo.png" alt="NTI" width="44" height="44" style="width:44px;height:auto;max-height:32px;object-fit:contain;" />
               </div>
               <div class="exp-meta">
                 <h3 class="exp-role">Full-Stack Web Development using PHP</h3>
                 <h4 class="exp-company">National Telecommunication Institute (NTI)</h4>
-                <span class="exp-date">120 Hours</span>
+                <span class="exp-date">120 Hours · Completed Aug 2026</span>
               </div>
             </div>
             <p class="exp-desc">
@@ -1075,7 +1076,7 @@
                 </div>
                 <ul class="it-milestones">
                   <li>Full Stack .NET Trainee at DEPI (MCIT 200+ Hours)</li>
-                  <li>Full Stack PHP Trainee at NTI Bootcamp (120 Hours)</li>
+                  <li>Completed Full Stack PHP Training at NTI (120 Hours, 93%)</li>
                   <li>Cisco Certified — CCNA: Introduction to Networks</li>
                 </ul>
               </div>
@@ -1110,6 +1111,27 @@
             Certifications
           </h3>
           <div class="cert-cards">
+            <div class="cert-card" id="nti-cert-card">
+              <div class="cert-logo">
+                <img src="icons/certs/nti-logo.png" alt="NTI" width="48" height="24" loading="lazy" style="width:48px;height:auto;max-height:36px;object-fit:contain;" onerror="this.style.display='none'" />
+              </div>
+              <div class="cert-info">
+                <span class="cert-provider">NTI · ITIDA</span>
+                <h4 class="cert-name">Full-Stack Web Development using PHP</h4>
+                <p class="cert-desc">120-hour summer training covering PHP, Laravel, MySQL, REST APIs, and freelancing fundamentals — completed with a 93% score.</p>
+                <div class="cert-links">
+                  <span class="cert-year">2026</span>
+                  <button type="button" class="cert-verify-btn cert-view-btn" id="nti-cert-view-btn" data-cert-img="icons/certs/nti-certificate.jpg" data-cert-pdf="certificates/NTI-FullStack-PHP-Certificate.pdf" data-cert-title="Full-Stack Web Development using PHP" data-cert-subtitle="National Telecommunication Institute · ITIDA" data-cert-facts="2026,120 Hours,93% Score,Completed 13 August 2026">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    View Certificate
+                  </button>
+                  <a href="https://lnkd.in/p/eTVNnbSU" target="_blank" class="cert-verify-btn cert-verify-li" title="View on LinkedIn" id="nti-linkedin-link">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    LinkedIn
+                  </a>
+                </div>
+              </div>
+            </div>
             <div class="cert-card" id="cisco-cert-card">
               <div class="cert-logo">
                 <img src="https://images.credly.com/images/70d71df5-f3dc-4380-9b9d-f22513a70417/linkedin_thumb_CCNAITN__1_.png" alt="Cisco CCNA" width="48" height="48" loading="lazy" style="width:48px;height:48px;border-radius:8px;object-fit:contain;" onerror="this.style.display='none'" />
@@ -1120,6 +1142,10 @@
                 <p class="cert-desc">IP addressing, routing, Ethernet, switch &amp; router configuration — 14h hands-on labs</p>
                 <div class="cert-links">
                   <span class="cert-year">2026</span>
+                  <button type="button" class="cert-verify-btn cert-view-btn" id="cisco-cert-view-btn" data-cert-img="icons/certs/ccna-certificate.jpg" data-cert-pdf="certificates/Cisco-CCNA-Introduction-to-Networks-Certificate.pdf" data-cert-title="CCNA: Introduction to Networks" data-cert-subtitle="Cisco Networking Academy · EELU" data-cert-facts="2026,14h Labs,Completed 23 May 2026">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    View Certificate
+                  </button>
                   <a href="https://www.credly.com/badges/eda74ac1-2f89-4d8d-b275-1be0ea04faa5/public_url" target="_blank" class="cert-verify-btn" title="View on Credly" id="cisco-credly-link">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
                     Credly
@@ -1611,6 +1637,35 @@
     </div>
   </div>
 
+  <!-- ── CERTIFICATE LIGHTBOX ── -->
+  <div class="cert-lightbox" id="certLightbox" aria-hidden="true">
+    <div class="cert-lightbox-backdrop" id="certLightboxBackdrop"></div>
+    <div class="cert-lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="certLightboxTitle">
+      <div class="cert-lightbox-header">
+        <div class="cert-lightbox-heading">
+          <span id="certLightboxTitle" class="cert-lightbox-title"></span>
+          <span id="certLightboxSubtitle" class="cert-lightbox-subtitle"></span>
+        </div>
+        <div class="cert-lightbox-actions">
+          <a id="certLightboxDownload" href="#" class="cert-lightbox-btn" download title="Download PDF">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>PDF</span>
+          </a>
+          <button type="button" class="cert-lightbox-btn cert-lightbox-close" id="certLightboxClose" aria-label="Close certificate viewer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="cert-lightbox-body">
+        <div class="cert-lightbox-imgwrap">
+          <div class="cert-lightbox-skeleton" id="certLightboxSkeleton"></div>
+          <img id="certLightboxImg" src="" alt="Certificate preview" />
+        </div>
+      </div>
+      <div class="cert-lightbox-footer" id="certLightboxFooter"></div>
+    </div>
+  </div>
+
   <!-- ── Scripts (defer keeps original load order & shared scope) ── -->
   <script src="js/effects.js?v=20260803" defer></script>
   <script src="js/navigation.js?v=20260803" defer></script>
@@ -1624,6 +1679,7 @@
   <script src="js/reactions.js?v=20260803" defer></script>
   <script src="js/github.js?v=20260803" defer></script>
   <script src="js/devtools-easter-egg.js?v=20260813" defer></script>
+  <script src="js/cert-lightbox.js?v=20260818c" defer></script>
   <!-- Vercel Web Analytics (privacy-friendly, cookieless) — enable it in the Vercel dashboard -->
   <script defer src="/_vercel/insights/script.js"></script>
 </body>

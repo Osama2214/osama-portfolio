@@ -279,7 +279,7 @@
         printLine('1. Munjez            (Productivity Desktop App)');
         printLine('2. Munjez Website    (Marketing & Landing Page)');
         printLine('3. PC Builder        (E-Commerce & Build Compatibility Platform)');
-        printLine('4. Osama Café        (Coffee Shop Landing Page)');
+        printLine('4. Osama Café        (Coffee Shop Website & Admin Dashboard)');
         printLine('');
         printLine('Choose project number [1-4]:', 'info');
         activeSubMode = 'projects';
@@ -290,9 +290,9 @@
         printLine('  - Stack: Full Stack .NET (C#, ASP.NET Core, EF, SQL Server)');
         printLine('  - Coverage: Architecture design, soft skills, agile frameworks.');
         printLine('');
-        printLine('National Telecommunication Institute (NTI) - Trainee (2026-Present)', 'banner');
+        printLine('National Telecommunication Institute (NTI) - Completed (Jul-Aug 2026)', 'banner');
         printLine('  - Stack: Full Stack PHP (OOP, Laravel MVC, MySQL, Bootstrap)');
-        printLine('  - Coverage: Daily bootcamp style project shipping.');
+        printLine('  - Coverage: Daily bootcamp style project shipping. Scored 93%.');
         printLine('');
         printLine('Egyptian E-Learning University (EELU) - B.Sc. IT (2024-2028 Expected)', 'banner');
         printLine('  - 3rd Year student focusing on software engineering foundations.');
@@ -530,11 +530,11 @@
       printHTML('Live Site: <a href="https://pc-builder-sandy.vercel.app/" target="_blank" style="color:var(--term-accent)">https://pc-builder-sandy.vercel.app/</a>');
       printHTML('GitHub:   <a href="https://github.com/Osama2214/pc-builder" target="_blank" style="color:var(--term-accent)">github.com/Osama2214/pc-builder</a>');
     } else if (choice === '4') {
-      printLine('Osama Café — Specialty Coffee Shop & Roastery Web', 'banner');
+      printLine('Osama Café — Coffee Shop Website & Admin Dashboard', 'banner');
       printLine('Status: Live');
-      printLine('Tech Stack: HTML5, CSS3, JavaScript');
-      printLine('Features: Fluid typography, glassmorphism nav, dynamic animations, scroll-triggered hooks, zero-dependency.');
-      printHTML('Live Site: <a href="https://osama-cafe.xo.je/" target="_blank" style="color:var(--term-accent)">https://osama-cafe.xo.je/</a>');
+      printLine('Tech Stack: PHP, PDO, SQLite/MySQL, PHPMailer, JavaScript');
+      printLine('Features: Password-protected admin dashboard, DB-backed contact form & newsletter with auto email.');
+      printHTML('Live Site: <a href="https://osama-cafe.onrender.com/" target="_blank" style="color:var(--term-accent)">https://osama-cafe.onrender.com/</a>');
       printHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe" target="_blank" style="color:var(--term-accent)">NTI-Full-Stack-Web-Development/Task-2/osama-cafe</a>');
     } else {
       printLine('Invalid selection. Exited project selector.', 'error');

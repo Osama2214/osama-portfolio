@@ -120,10 +120,10 @@
       iconImg: 'icons/osama-cafe-logo.png',
       iconStyle: 'filter:brightness(1.6)',
       badge: 'Open Source',
-      type: 'Specialty Coffee Shop & Roastery Web',
-      desc: 'A premium, highly interactive coffee shop landing page. Custom fluid typography, sticky glassmorphism nav, dynamic animations, scroll-triggered hooks, and a zero-dependency responsive architecture.',
-      tech: ['HTML5', 'CSS3', 'JavaScript'],
-      live: 'https://osama-cafe.xo.je/',
+      type: 'Coffee Shop Website & Admin Dashboard',
+      desc: 'A coffee shop and roastery site with a real PHP backend behind it, not just a static page. Visitors get a fast, animated front end; the owner gets a password-protected admin dashboard to manage the menu, gallery, testimonials, and FAQ with no code changes, plus a contact form and newsletter signup that save to a real database and send automatic email.',
+      tech: ['PHP', 'PDO', 'SQLite / MySQL', 'PHPMailer', 'JavaScript'],
+      live: 'https://osama-cafe.onrender.com/',
       github: 'https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe',
     },
   ];
@@ -991,11 +991,11 @@
         tHTML('Live Site: <a href="https://pc-builder-sandy.vercel.app/" target="_blank" style="color:var(--pos-accent)">pc-builder-sandy.vercel.app</a>');
         tHTML('GitHub:   <a href="https://github.com/Osama2214/pc-builder" target="_blank" style="color:var(--pos-accent)">github.com/Osama2214/pc-builder</a>');
       } else if (choice === '4') {
-        tLine('Osama Café — Specialty Coffee Shop & Roastery Web', 'pos-t-banner');
+        tLine('Osama Café — Coffee Shop Website & Admin Dashboard', 'pos-t-banner');
         tLine('Status: Live');
-        tLine('Tech Stack: HTML5, CSS3, JavaScript');
-        tLine('Features: Fluid typography, glassmorphism nav, dynamic animations, scroll-triggered hooks, zero-dependency.');
-        tHTML('Live Site: <a href="https://osama-cafe.xo.je/" target="_blank" style="color:var(--pos-accent)">osama-cafe.xo.je</a>');
+        tLine('Tech Stack: PHP, PDO, SQLite/MySQL, PHPMailer, JavaScript');
+        tLine('Features: Password-protected admin dashboard, DB-backed contact form & newsletter with auto email.');
+        tHTML('Live Site: <a href="https://osama-cafe.onrender.com/" target="_blank" style="color:var(--pos-accent)">osama-cafe.onrender.com</a>');
         tHTML('GitHub:   <a href="https://github.com/Osama2214/NTI-Full-Stack-Web-Development/tree/main/Task-2/osama-cafe" target="_blank" style="color:var(--pos-accent)">NTI-Full-Stack-Web-Development/Task-2/osama-cafe</a>');
       } else {
         tLine('Invalid selection. Exited project selector.', 'pos-t-error');
@@ -1082,7 +1082,7 @@
           tLine('1. Munjez            (Productivity Desktop App)');
           tLine('2. Munjez Website    (Marketing & Landing Page)');
           tLine('3. PC Builder        (E-Commerce & Build Compatibility Platform)');
-          tLine('4. Osama Café        (Coffee Shop Landing Page)');
+          tLine('4. Osama Café        (Coffee Shop Website & Admin Dashboard)');
           tLine('');
           tLine('Choose project number [1-4]:', 'pos-t-info');
           activeSubMode = 'projects';
@@ -1092,9 +1092,9 @@
           tLine('  - Stack: Full Stack .NET (C#, ASP.NET Core, EF, SQL Server)');
           tLine('  - Coverage: Architecture design, soft skills, agile frameworks.');
           tLine('');
-          tLine('National Telecommunication Institute (NTI) - Trainee (2026-Present)', 'pos-t-banner');
+          tLine('National Telecommunication Institute (NTI) - Completed (Jul-Aug 2026)', 'pos-t-banner');
           tLine('  - Stack: Full Stack PHP (OOP, Laravel MVC, MySQL, Bootstrap)');
-          tLine('  - Coverage: Daily bootcamp style project shipping.');
+          tLine('  - Coverage: Daily bootcamp style project shipping. Scored 93%.');
           tLine('');
           tLine('Egyptian E-Learning University (EELU) - B.Sc. IT (2024-2028 Expected)', 'pos-t-banner');
           tLine('  - 3rd Year student focusing on software engineering foundations.');

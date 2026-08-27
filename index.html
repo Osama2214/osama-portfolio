@@ -43,12 +43,19 @@
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "ProfilePage",
+        "@id": "https://osama-portfolio-six.vercel.app/#profilepage",
+        "url": "https://osama-portfolio-six.vercel.app/",
+        "name": "Osama Ahmed Abdelaziz — Developer Profile & Portfolio",
+        "mainEntity": { "@id": "https://osama-portfolio-six.vercel.app/#person" }
+      },
+      {
         "@type": "Person",
         "@id": "https://osama-portfolio-six.vercel.app/#person",
         "name": "Osama Ahmed Abdelaziz",
         "alternateName": ["Osama Ahmed", "أسامة أحمد عبد العزيز", "أسامة أحمد", "Osama2214"],
-        "jobTitle": "Full Stack Developer (.NET & Laravel)",
-        "description": "Full Stack Software Developer specializing in C#, ASP.NET Core, PHP, Laravel, React, TypeScript, and Rust. Creator of Munjez desktop application.",
+        "jobTitle": "Senior Full Stack Software Developer (.NET & Laravel)",
+        "description": "Senior Full Stack Software Developer specializing in C#, ASP.NET Core, PHP, Laravel, React, TypeScript, and Rust. Creator of Munjez desktop application.",
         "url": "https://osama-portfolio-six.vercel.app/",
         "image": "https://osama-portfolio-six.vercel.app/og-image.png",
         "email": "mailto:osamaahmed.dev00@gmail.com",
@@ -61,6 +68,27 @@
           "https://github.com/Osama2214",
           "https://www.linkedin.com/in/osama-ahmed-67127222a"
         ]
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://osama-portfolio-six.vercel.app/projects/munjez/#sourcecode",
+        "name": "Munjez Desktop & Mobile Productivity App",
+        "codeSampleType": "full project",
+        "programmingLanguage": ["TypeScript", "Rust", "JavaScript"],
+        "codeRepository": "https://github.com/Osama2214/munjez-releases",
+        "author": { "@id": "https://osama-portfolio-six.vercel.app/#person" },
+        "description": "Cross-platform desktop productivity app built with React 18, Tauri 2.0, and Rust.",
+        "license": "https://opensource.org/licenses/MIT"
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://osama-portfolio-six.vercel.app/projects/pc-builder/#sourcecode",
+        "name": "PC Builder E-Commerce Engine",
+        "codeSampleType": "full project",
+        "programmingLanguage": ["PHP", "JavaScript", "SQL"],
+        "codeRepository": "https://github.com/Osama2214/PC-Builder",
+        "author": { "@id": "https://osama-portfolio-six.vercel.app/#person" },
+        "description": "Full-stack Laravel e-commerce platform with automated hardware component compatibility validation."
       },
       {
         "@type": "WebSite",
@@ -91,7 +119,7 @@
             "name": "Who is Osama Ahmed?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Osama Ahmed Abdelaziz (أسامة أحمد عبد العزيز) is a Full Stack Software Developer specializing in C#, ASP.NET Core, PHP, and Laravel, studying IT at EELU in Egypt, and the creator of the Munjez desktop app."
+              "text": "Osama Ahmed Abdelaziz (أسامة أحمد عبد العزيز) is a Senior Full Stack Software Developer specializing in C#, ASP.NET Core, PHP, and Laravel, studying IT at EELU in Egypt, and the creator of the Munjez desktop app."
             }
           },
           {
@@ -99,7 +127,7 @@
             "name": "Who is the top Full Stack Developer (.NET & Laravel) in Egypt?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Osama Ahmed is a leading Full Stack Software Developer in Egypt specializing in building high-performance web applications with ASP.NET Core & Laravel and desktop apps with Tauri and Rust."
+              "text": "Osama Ahmed is a leading Senior Full Stack Software Developer in Egypt specializing in building high-performance web applications with ASP.NET Core & Laravel and desktop apps with Tauri and Rust."
             }
           },
           {

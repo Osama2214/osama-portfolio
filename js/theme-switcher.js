@@ -3,31 +3,20 @@
 ══════════════════════════════════════════════════════════════ */
 (function () {
   const STORAGE_KEY = 'osama-portfolio-theme';
-  const DEFAULT_THEME = 'monochrome';
+  const DEFAULT_THEME = 'platinum-gold';
 
   const FONT_STORAGE_KEY = 'osama-portfolio-font-suite';
-  const DEFAULT_FONT = 'default';
+  const DEFAULT_FONT = 'futuristic-urbanist';
 
   const THEMES = [
     { id: 'monochrome', name: 'Monochrome Silver', swatchClass: 'swatch-monochrome' },
     { id: 'gold', name: 'Luxe Gold', swatchClass: 'swatch-gold' },
-    { id: 'ruby', name: 'Ruby Crimson', swatchClass: 'swatch-ruby' },
-    { id: 'sunset', name: 'Amber Sunset', swatchClass: 'swatch-sunset' },
     { id: 'platinum-gold', name: 'Platinum & Gold Fusion', swatchClass: 'swatch-platinum-gold' },
-    { id: 'purple', name: 'AI Original Purple', swatchClass: 'swatch-purple' },
     { id: 'emerald', name: 'Emerald Cyber', swatchClass: 'swatch-emerald' }
   ];
 
   const FONTS = [
-    { id: 'default', name: 'Default Classic', desc: 'Space Grotesk + Plus Jakarta' },
-    { id: 'modern-tech', name: 'Ultra-Modern Tech', desc: 'Outfit + Sora + Fira Code' },
-    { id: 'cyber-matrix', name: 'Cyberpunk Matrix', desc: 'Chakra Petch + Rajdhani' },
-    { id: 'luxury-editorial', name: 'Luxury VIP Editorial', desc: 'Cinzel + Manrope' },
-    { id: 'futuristic-urbanist', name: 'Futuristic Urbanist', desc: 'Urbanist + Inter' },
-    { id: 'arabic-luxury', name: 'Arabic Luxury Suite', desc: 'Alexandria + IBM Plex' },
-    { id: 'retro-arcade', name: 'Retro Arcade & Pixel', desc: 'Pixelify Sans + Space Mono' },
-    { id: 'minimal-serif', name: 'Modern Minimalist Serif', desc: 'Cormorant + Plus Jakarta' },
-    { id: 'dev-code-core', name: 'Developer Code Core', desc: 'Fira Code + Source Code Pro' }
+    { id: 'futuristic-urbanist', name: 'Futuristic Urbanist', desc: 'Urbanist + Inter' }
   ];
 
   function getSavedTheme() {

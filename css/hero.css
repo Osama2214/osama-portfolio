@@ -208,6 +208,7 @@
   transform: translateY(-2px);
   background: var(--p-glow);
   box-shadow: 0 4px 20px var(--p-glow);
+  font-weight: 600;
 }
 
 .btn-ghost {
@@ -282,18 +283,7 @@
 }
 
 .code-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--p), var(--p-light));
-  opacity: 0;
-  transition: opacity var(--transition);
-  z-index: 5;
-}
-
-.code-card:hover::before {
-  opacity: 1;
+  display: none !important;
 }
 
 .code-card:hover {
@@ -433,10 +423,12 @@
 
 
 .scroll-line {
-  width: 1px;
+  width: 2px;
   height: 48px;
-  background: linear-gradient(to bottom, var(--p) 0%, var(--p-glow) 70%, transparent 100%);
+  background: linear-gradient(to bottom, var(--p) 0%, var(--p-light) 55%, transparent 100%);
+  border-radius: 2px;
   flex-shrink: 0;
+  box-shadow: 0 0 10px var(--p-glow);
   animation: scrollLinePulse 2s ease-in-out infinite;
 }
 

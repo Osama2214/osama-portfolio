@@ -73,9 +73,11 @@
 #projects-toggle-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 10px 28px;
-  border-radius: 30px;
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 9999px;
   background: var(--p-glow);
   border: 1px solid var(--border-h);
   color: var(--p-light);
@@ -84,6 +86,13 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px var(--p-glow);
+  text-align: center;
+  line-height: 1;
+}
+
+#projects-toggle-btn svg {
+  flex-shrink: 0;
+  display: block;
 }
 
 #projects-toggle-btn:hover {
@@ -199,7 +208,7 @@
   max-height: 0;
   opacity: 0;
   overflow: hidden;
-  background: var(--bg-2);
+  background: rgba(0, 0, 0, 0.45) !important;
   border-top: 1px solid var(--border);
   transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
@@ -213,7 +222,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--surface);
+  background: rgba(0, 0, 0, 0.6) !important;
   padding: 6px 16px;
   font-family: var(--font-mono);
   font-size: 11px;
@@ -237,6 +246,7 @@
 
 .console-body {
   padding: 14px 18px;
+  background: rgba(0, 0, 0, 0.3) !important;
   font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.6;
@@ -244,6 +254,30 @@
   max-height: 200px;
   overflow-y: auto;
   text-align: left;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.console-body::-webkit-scrollbar {
+  width: 3px !important;
+  height: 3px !important;
+}
+.console-body::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.console-body::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+.console-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 99px !important;
+  box-shadow: none !important;
+  transition: background 0.2s !important;
+}
+.console-body::-webkit-scrollbar-thumb:hover {
+  background: var(--p-h) !important;
 }
 
 .console-line {
@@ -252,6 +286,7 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
   margin-bottom: 2px;
   text-align: left;
+  color: var(--text-2);
 }
 
 .console-line.visible {
@@ -261,21 +296,24 @@
 
 .console-line.prompt {
   color: var(--text);
+  font-weight: 600;
 }
 
 .console-line.compilation {
-  color: var(--p-light);
+  color: #34d399;
 }
 
 .console-line.divider {
-  color: var(--border);
+  color: var(--border-h);
+  opacity: 0.5;
 }
 
 .console-line.info-title {
-  color: var(--p);
+  color: var(--p-light);
+  font-weight: 600;
 }
 
 .console-line.text-success {
-  color: var(--green);
+  color: #34d399;
 }
 

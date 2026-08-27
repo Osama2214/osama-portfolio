@@ -63,22 +63,7 @@
 }
 
 .service-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--p), var(--p-light));
-  opacity: 0;
-  transition: opacity var(--transition);
-}
-
-.service-card > * {
-  position: relative;
-  z-index: 1;
-}
-
-.service-card:hover::before {
-  opacity: 1;
+  display: none !important;
 }
 
 .service-card:hover {
@@ -155,26 +140,36 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: 13px;
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 22px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--p-light);
   text-decoration: none;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-h);
-  padding: 11px 20px;
-  border-radius: 10px;
+  border: none !important;
+  outline: 1px solid var(--border-h);
+  outline-offset: -1px;
   margin-top: auto;
   transition: all 0.25s ease;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .service-cta-btn:hover {
-  background: var(--p-glow);
-  color: var(--p);
-  border-color: var(--p-h);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px var(--p-glow);
+  background: var(--btn-p-bg) !important;
+  color: var(--btn-p-text) !important;
+  outline: none !important;
+  border: none !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 32px var(--p-glow) !important;
+  font-weight: 700 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* ─────────────────────────────────────────────

@@ -35,11 +35,13 @@
 .interactive-timeline::before {
   content: '';
   position: absolute;
-  left: 10px;
+  left: 9.5px;
   top: 16px;
   bottom: 16px;
-  width: 2px;
+  width: 3px;
   background: var(--timeline-gradient);
+  border-radius: 3px;
+  box-shadow: 0 0 10px var(--p-glow);
 }
 
 /* Each node row */
@@ -147,17 +149,7 @@
 }
 
 .it-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--p), var(--p-light));
-  opacity: 0;
-  transition: opacity var(--transition);
-}
-
-.it-item:hover .it-card::before {
-  opacity: 1;
+  display: none !important;
 }
 
 .it-item:hover .it-card {
@@ -335,22 +327,7 @@
 }
 
 .cert-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--p), var(--p-light));
-  opacity: 0;
-  transition: opacity var(--transition);
-}
-
-.cert-card > * {
-  position: relative;
-  z-index: 1;
-}
-
-.cert-card:hover::before {
-  opacity: 1;
+  display: none !important;
 }
 
 .cert-card:hover {

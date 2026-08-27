@@ -1557,13 +1557,10 @@
     body.style.overflow = 'auto';
     const themeLabels = {
       'site-theme': 'Sync with Site Theme',
-      'gold': 'Luxe Gold',
-      'ruby': 'Ruby Crimson',
-      'sunset': 'Amber Sunset',
-      'emerald': 'Emerald Cyber',
       'monochrome': 'Monochrome Silver',
-      'purple': 'AI Original Purple',
-      'platinum-gold': 'Platinum Gold'
+      'gold': 'Luxe Gold',
+      'platinum-gold': 'Platinum & Gold Fusion',
+      'emerald': 'Emerald Cyber'
     };
     body.innerHTML = `
       <div class="pos-settings">
@@ -1602,12 +1599,10 @@
             </button>
             <div class="pos-custom-select-menu" role="listbox">
               <button class="pos-custom-option ${osTheme==='site-theme' ? 'pos-option-active' : ''}" type="button" data-value="site-theme" role="option">Sync with Site Theme</button>
-              <button class="pos-custom-option ${osTheme==='gold' ? 'pos-option-active' : ''}" type="button" data-value="gold" role="option">Luxe Gold</button>
-              <button class="pos-custom-option ${osTheme==='ruby' ? 'pos-option-active' : ''}" type="button" data-value="ruby" role="option">Ruby Crimson</button>
-              <button class="pos-custom-option ${osTheme==='sunset' ? 'pos-option-active' : ''}" type="button" data-value="sunset" role="option">Amber Sunset</button>
-              <button class="pos-custom-option ${osTheme==='emerald' ? 'pos-option-active' : ''}" type="button" data-value="emerald" role="option">Emerald Cyber</button>
               <button class="pos-custom-option ${osTheme==='monochrome' ? 'pos-option-active' : ''}" type="button" data-value="monochrome" role="option">Monochrome Silver</button>
-              <button class="pos-custom-option ${osTheme==='purple' ? 'pos-option-active' : ''}" type="button" data-value="purple" role="option">AI Original Purple</button>
+              <button class="pos-custom-option ${osTheme==='gold' ? 'pos-option-active' : ''}" type="button" data-value="gold" role="option">Luxe Gold</button>
+              <button class="pos-custom-option ${osTheme==='platinum-gold' ? 'pos-option-active' : ''}" type="button" data-value="platinum-gold" role="option">Platinum & Gold Fusion</button>
+              <button class="pos-custom-option ${osTheme==='emerald' ? 'pos-option-active' : ''}" type="button" data-value="emerald" role="option">Emerald Cyber</button>
             </div>
           </div>
         </div>
@@ -1617,20 +1612,12 @@
             <div class="pos-setting-row-label">Typography</div>
             <div class="pos-setting-row-sub">Font family suite</div>
           </div>
-          <div class="pos-custom-select" id="posFontSelect" data-value="${document.documentElement.getAttribute('data-font-suite') || 'default'}">
+          <div class="pos-custom-select" id="posFontSelect" data-value="${document.documentElement.getAttribute('data-font-suite') || 'futuristic-urbanist'}">
             <button class="pos-custom-select-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span>${document.documentElement.getAttribute('data-font-suite') === 'dev-code-core' ? 'Developer Code Core' : (document.documentElement.getAttribute('data-font-suite') === 'minimal-serif' ? 'Modern Minimalist Serif' : (document.documentElement.getAttribute('data-font-suite') === 'retro-arcade' ? 'Retro Arcade & Pixel' : (document.documentElement.getAttribute('data-font-suite') === 'arabic-luxury' ? 'Arabic Luxury Suite' : (document.documentElement.getAttribute('data-font-suite') === 'futuristic-urbanist' ? 'Futuristic Urbanist' : (document.documentElement.getAttribute('data-font-suite') === 'luxury-editorial' ? 'Luxury VIP Editorial' : (document.documentElement.getAttribute('data-font-suite') === 'cyber-matrix' ? 'Cyberpunk Matrix' : (document.documentElement.getAttribute('data-font-suite') === 'modern-tech' ? 'Ultra-Modern Tech' : 'Default Classic')))))))}</span>
+              <span>Futuristic Urbanist</span>
             </button>
             <div class="pos-custom-select-menu" role="listbox">
-              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='default'||!document.documentElement.getAttribute('data-font-suite') ? 'pos-option-active' : ''}" type="button" data-value="default" role="option">Default Classic</button>
-              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='modern-tech' ? 'pos-option-active' : ''}" type="button" data-value="modern-tech" role="option">Ultra-Modern Tech</button>
-              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='cyber-matrix' ? 'pos-option-active' : ''}" type="button" data-value="cyber-matrix" role="option">Cyberpunk Matrix</button>
-              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='luxury-editorial' ? 'pos-option-active' : ''}" type="button" data-value="luxury-editorial" role="option">Luxury VIP Editorial</button>
-              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='futuristic-urbanist' ? 'pos-option-active' : ''}" type="button" data-value="futuristic-urbanist" role="option">Futuristic Urbanist</button>
-              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='arabic-luxury' ? 'pos-option-active' : ''}" type="button" data-value="arabic-luxury" role="option">Arabic Luxury Suite</button>
-              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='retro-arcade' ? 'pos-option-active' : ''}" type="button" data-value="retro-arcade" role="option">Retro Arcade & Pixel</button>
-              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='minimal-serif' ? 'pos-option-active' : ''}" type="button" data-value="minimal-serif" role="option">Modern Minimalist Serif</button>
-              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='dev-code-core' ? 'pos-option-active' : ''}" type="button" data-value="dev-code-core" role="option">Developer Code Core</button>
+              <button class="pos-custom-option pos-option-active" type="button" data-value="futuristic-urbanist" role="option">Futuristic Urbanist</button>
             </div>
           </div>
         </div>
@@ -1845,15 +1832,12 @@
 
     if (themeId !== 'site-theme') {
       const siteThemeMap = {
-        'gold': 'gold',
-        'ruby': 'ruby',
-        'sunset': 'sunset',
-        'emerald': 'emerald',
         'monochrome': 'monochrome',
-        'purple': 'purple',
-        'platinum-gold': 'platinum-gold'
+        'gold': 'gold',
+        'platinum-gold': 'platinum-gold',
+        'emerald': 'emerald'
       };
-      const selected = siteThemeMap[themeId] || 'gold';
+      const selected = siteThemeMap[themeId] || 'platinum-gold';
       r.setAttribute('data-theme', selected);
       localStorage.setItem('osama-portfolio-theme', selected);
       window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: selected } }));

@@ -240,6 +240,10 @@
       handleGuessInput(trimmed);
       return;
     }
+    if (activeSubMode === 'theme') {
+      await handleThemeSelection(trimmed);
+      return;
+    }
 
     const args = trimmed.split(' ');
     const cmd = args[0].toLowerCase();
@@ -260,7 +264,7 @@
         printLine(mob ? '  reactions  - Project reactions'          : '  reactions  - Live like/love/star counts per project');
         printLine(mob ? '  cv         - Open resume'                : '  cv         - Simulates and opens my resume PDF');
         printLine(mob ? '  coffee     - Energize'                   : '  coffee     - Energize the terminal developer');
-        printLine(mob ? '  theme      - Change colors'              : '  theme      - Cycle console colors (purple, green, cyan, amber)');
+        printLine(mob ? '  theme      - Change theme'               : '  theme      - Cycle site themes (monochrome, gold, platinum)');
         printLine(mob ? '  social     - GitHub & LinkedIn'          : '  social     - Quick links to GitHub & LinkedIn');
         printLine(mob ? '  clear      - Clear console'              : '  clear      - Wipes the console history clean');
         printLine(mob ? '  hack       - Hack sequence'              : '  hack       - Initiate terminal hack sequence');
@@ -376,15 +380,44 @@
         });
         break;
 
-      case 'theme':
-        terminalPanel.classList.remove(...themes.filter(t => t !== 'default'));
-        currentThemeIdx = (currentThemeIdx + 1) % themes.length;
-        const targetTheme = themes[currentThemeIdx];
-        if (targetTheme !== 'default') {
-          terminalPanel.classList.add(targetTheme);
+      case 'theme': {
+        const siteThemes = [
+          { id: 'monochrome', name: 'Monochrome Silver' },
+          { id: 'gold', name: 'Luxe Gold' },
+          { id: 'platinum-gold', name: 'Platinum & Gold Fusion' },
+          { id: 'emerald', name: 'Emerald Cyber' }
+        ];
+
+        const targetArg = args[1] ? args[1].toLowerCase() : '';
+
+        if (targetArg) {
+          let targetObj = null;
+          if (targetArg === '1' || targetArg.includes('mono') || targetArg.includes('silver')) {
+            targetObj = siteThemes[0];
+          } else if (targetArg === '2' || targetArg === 'gold' || targetArg.includes('luxe')) {
+            targetObj = siteThemes[1];
+          } else if (targetArg === '3' || targetArg.includes('plat') || targetArg.includes('fusion')) {
+            targetObj = siteThemes[2];
+          } else if (targetArg === '4' || targetArg.includes('em') || targetArg.includes('green')) {
+            targetObj = siteThemes[3];
+          }
+
+          if (targetObj) {
+            applySiteTheme(targetObj);
+            break;
+          }
         }
-        printLine(`Console theme switched to: ${targetTheme.replace('theme-', '')}`, 'success');
+
+        // Display interactive selection menu
+        printLine('Select a Site Color Theme:', 'banner');
+        printLine('  [1] Monochrome Silver');
+        printLine('  [2] Luxe Gold');
+        printLine('  [3] Platinum & Gold Fusion');
+        printLine('  [4] Emerald Cyber');
+        printLine('Type theme number [1-4] or name (or "cancel"):');
+        activeSubMode = 'theme';
         break;
+      }
 
       case 'social':
         printHTML('LinkedIn: <a href="https://www.linkedin.com/in/osama-ahmed-67127222a" target="_blank" style="color:var(--term-accent)">Osama Ahmed</a>');
@@ -509,6 +542,56 @@
     setTimeout(() => {
       terminalInput.focus();
     }, 10);
+  }
+
+  function applySiteTheme(targetObj) {
+    document.documentElement.setAttribute('data-theme', targetObj.id);
+    localStorage.setItem('osama-portfolio-theme', targetObj.id);
+
+    document.querySelectorAll('.theme-option-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.themeId === targetObj.id);
+    });
+
+    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: targetObj.id } }));
+    printLine(`Site theme successfully set to: ${targetObj.name} ✨`, 'success');
+  }
+
+  async function handleThemeSelection(input) {
+    const trimmed = input.trim().toLowerCase();
+    activeSubMode = null; // reset state
+    terminalInput.value = '';
+    terminalInputGhost.textContent = '';
+
+    if (trimmed === 'cancel' || trimmed === 'exit' || trimmed === 'q') {
+      printLine('Theme selection cancelled.', 'info');
+      return;
+    }
+
+    const siteThemes = [
+      { id: 'monochrome', name: 'Monochrome Silver' },
+      { id: 'gold', name: 'Luxe Gold' },
+      { id: 'platinum-gold', name: 'Platinum & Gold Fusion' },
+      { id: 'emerald', name: 'Emerald Cyber' }
+    ];
+
+    let selectedObj = null;
+    if (trimmed === '1' || trimmed.includes('mono') || trimmed.includes('silver')) {
+      selectedObj = siteThemes[0];
+    } else if (trimmed === '2' || trimmed === 'gold' || trimmed.includes('luxe')) {
+      selectedObj = siteThemes[1];
+    } else if (trimmed === '3' || trimmed.includes('plat') || trimmed.includes('fusion')) {
+      selectedObj = siteThemes[2];
+    } else if (trimmed === '4' || trimmed.includes('em') || trimmed.includes('green')) {
+      selectedObj = siteThemes[3];
+    }
+
+    if (!selectedObj) {
+      printLine('Invalid choice. Type 1, 2, 3, 4, or theme name (or "cancel"):', 'error');
+      activeSubMode = 'theme'; // keep submode active for retry
+      return;
+    }
+
+    applySiteTheme(selectedObj);
   }
 
   // Handle Projects mode selection

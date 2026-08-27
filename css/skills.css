@@ -22,18 +22,7 @@
 
 .skill-group::before,
 .learning-group::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--p), var(--p-light));
-  opacity: 0;
-  transition: opacity var(--transition);
-}
-
-.skill-group:hover::before,
-.learning-group:hover::before {
-  opacity: 1;
+  display: none !important;
 }
 
 .skill-group:hover,

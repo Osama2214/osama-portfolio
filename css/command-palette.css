@@ -36,7 +36,7 @@
 .cmdk-panel {
   width: min(560px, 90vw);
   max-height: 60vh;
-  background: rgba(10, 14, 26, 0.97);
+  background: rgba(10, 10, 14, 0.97);
   border: 1px solid var(--border-h);
   border-radius: 14px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02);
@@ -69,7 +69,7 @@
   border: none;
   outline: none;
   color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 14.5px;
 }
 
@@ -82,7 +82,7 @@
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--border);
   color: var(--text-3);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   flex-shrink: 0;
 }
 
@@ -112,7 +112,7 @@
   background: none;
   border: none;
   color: var(--text-2);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 13.5px;
   text-align: left;
   cursor: pointer;
@@ -123,7 +123,7 @@
 
 .cmdk-item.active,
 .cmdk-item:hover {
-  background: rgba(124,58,237,0.12);
+  background: var(--p-glow);
   color: var(--text);
 }
 
@@ -134,7 +134,7 @@
   margin-left: auto;
   font-size: 11px;
   color: var(--text-3);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   flex-shrink: 0;
 }
 
@@ -153,7 +153,7 @@
   background: rgba(5, 8, 18, 0.95);
   border: 1px solid var(--border-h);
   color: var(--p-light);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 12.5px;
   padding: 10px 20px;
   border-radius: 40px;

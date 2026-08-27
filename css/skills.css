@@ -7,17 +7,21 @@
   gap: 24px;
 }
 
-.skill-group {
-  background: var(--card);
+.skill-group,
+.learning-group {
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
-  border-radius: var(--r);
+  border-radius: 14px;
   padding: 24px;
   position: relative;
   overflow: hidden;
-  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.skill-group::before {
+.skill-group::before,
+.learning-group::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
@@ -27,18 +31,22 @@
   transition: opacity var(--transition);
 }
 
-.skill-group:hover::before { opacity: 1; }
+.skill-group:hover::before,
+.learning-group:hover::before {
+  opacity: 1;
+}
 
-.skill-group:hover {
-  border-color: rgba(124,58,237,0.35);
+.skill-group:hover,
+.learning-group:hover {
+  border-color: var(--p-h);
+  background: rgba(255, 255, 255, 0.065);
   transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(124,58,237,0.1);
+  box-shadow: 0 8px 24px var(--p-glow);
 }
 
 .learning-group {
   grid-column: 1 / -1;
-  background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(139,92,246,0.04));
-  border-color: rgba(124,58,237,0.2);
+  border-color: var(--border-h);
 }
 
 .sg-title {
@@ -70,29 +78,60 @@
   align-items: center;
   gap: 9px;
   background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-h);
   border-radius: 10px;
   padding: 8px 16px;
   font-size: 13px;
   font-weight: 500;
   color: var(--text);
-  transition: all 0.2s;
+  transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
   cursor: default;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .skill-pill:hover {
-  border-color: rgba(124,58,237,0.45);
-  background: rgba(124,58,237,0.1);
+  border-color: var(--p-h);
+  background: var(--p-glow);
+  color: var(--p-light);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(124,58,237,0.12);
+  box-shadow: 0 4px 16px var(--p-glow);
 }
 
 .skill-icon {
-  width: 22px; height: 22px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   flex-shrink: 0;
+  color: var(--p-light);
+  fill: currentColor;
+  transition: all 0.3s ease;
+}
+
+/* Authentic original brand colors for technology icons */
+img.skill-icon {
+  filter: none;
+  opacity: 1;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+svg.skill-icon {
+  color: var(--p-light);
+  fill: currentColor;
+  transition: transform 0.25s ease;
+}
+
+.skill-pill:hover img.skill-icon {
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 8px var(--p-glow));
+}
+
+.skill-pill:hover svg.skill-icon {
+  color: var(--p-light);
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 8px var(--p-glow));
 }
 
 .skill-badge {
@@ -109,8 +148,8 @@
 }
 
 .learning-pill {
-  border-color: rgba(124,58,237,0.2);
-  background: rgba(124,58,237,0.05);
+  border-color: var(--border-h);
+  background: var(--p-glow);
 }
 
 .learning-progress {

@@ -1,44 +1,7 @@
-/* ── HACKER MATRIX MODE TOGGLE ── */
-.matrix-toggle-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-2);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11.5px;
-  font-weight: 500;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-right: 12px;
-}
-
-.matrix-toggle-btn:hover {
-  background: rgba(124, 58, 237, 0.08);
-  border-color: var(--p);
-  color: var(--p-light);
-  box-shadow: 0 0 12px var(--p-glow);
-}
-
-.matrix-toggle-btn svg {
-  transition: transform 0.3s;
-}
-
-.matrix-toggle-btn:active svg {
-  transform: scale(0.9);
-}
-
-/* Dev Tools Dropdown */
-.dev-tools-dropdown {
-  position: relative;
-  margin-right: 0;
-}
-
+/* ── HACKER MATRIX MODE TOGGLE & DEV TOOLS SUITE ── */
+.matrix-toggle-btn,
 .dev-tools-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
@@ -53,24 +16,18 @@
   padding: 0;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-/* Icon-only at every width now — with the nav-links block able to grow
-   up to 6 items, keeping the nav-right group small and constant is what
-   actually keeps the header from feeling crowded, not breakpoint math. */
-.dev-tools-btn span,
-.dev-tools-btn .dropdown-arrow {
-  display: none;
-}
-
+.matrix-toggle-btn:hover,
 .dev-tools-btn:hover,
 .dev-tools-dropdown.open .dev-tools-btn {
-  background: rgba(124, 58, 237, 0.08);
-  border-color: var(--p);
+  background: var(--p-glow);
+  border-color: var(--p-h);
   color: var(--p-light);
-  box-shadow: 0 0 12px var(--p-glow);
+  box-shadow: 0 0 14px var(--p-glow);
 }
 
 .dev-tools-btn .dropdown-arrow {
@@ -86,17 +43,17 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  min-width: 100%;
-  background: rgba(5, 8, 18, 0.96);
-  border: 1px solid rgba(124, 58, 237, 0.25);
-  border-radius: 10px;
+  min-width: 180px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-h);
+  border-radius: 12px;
   padding: 6px;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(124,58,237,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 16px var(--p-glow);
   opacity: 0;
   transform: translateY(-6px) scale(0.97);
   pointer-events: none;
@@ -115,10 +72,10 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 8px 12px;
+  padding: 9px 12px;
   background: transparent;
   border: none;
-  border-radius: 7px;
+  border-radius: 8px;
   color: var(--text-2);
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
@@ -129,17 +86,19 @@
 }
 
 .dev-tools-item:hover {
-  background: rgba(124, 58, 237, 0.12);
+  background: var(--p-glow);
   color: var(--p-light);
 }
 
 .dev-tools-item svg {
-  opacity: 0.7;
+  opacity: 0.85;
   flex-shrink: 0;
+  color: var(--p-light);
 }
 
 
 /* Color Palette Changes in Hacker Mode */
+html.matrix-mode,
 body.matrix-mode {
   --p: #10b981;
   --p-h: #059669;
@@ -147,101 +106,279 @@ body.matrix-mode {
   --p-glow: rgba(16, 185, 129, 0.25);
   --border-h: rgba(16, 185, 129, 0.4);
   --accent: #10b981;
+  --btn-p-bg: linear-gradient(135deg, #10b981, #047857);
+  --btn-p-text: #060d0b;
+  --name-last-gradient: linear-gradient(135deg, #34d399 0%, #10b981 55%, #00e676 100%);
+  --selection-bg: rgba(16, 185, 129, 0.35);
+  --selection-color: #ffffff;
+  --timeline-gradient: linear-gradient(to bottom, #34d399, #10b981, #00e676, #059669, #047857 80%, transparent) !important;
+  --node-2023: #047857 !important;
+  --node-2024: #059669 !important;
+  --node-2025: #10b981 !important;
+  --node-2026: #34d399 !important;
+  --scrollbar-thumb-bg: linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, #10b981 50%, rgba(16, 185, 129, 0.3) 100%) !important;
+  --scrollbar-thumb-shadow: 0 0 16px rgba(16, 185, 129, 0.7) !important;
+  --particle-rgb: 16, 185, 129 !important;
+  --particle-node-rgb: 52, 211, 153 !important;
+  scrollbar-color: #10b981 transparent !important;
 }
 
-/* Override hardcoded purple borders, backgrounds, and shadows in Hacker Mode */
-body.matrix-mode .skill-group:hover {
-  border-color: rgba(16, 185, 129, 0.35) !important;
-  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15) !important;
+body.matrix-mode .it-line-fill {
+  background: linear-gradient(to bottom, #34d399, #10b981, #00e676) !important;
 }
 
-body.matrix-mode .learning-group {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.03)) !important;
-  border-color: rgba(16, 185, 129, 0.25) !important;
+body.matrix-mode .it-node {
+  background: #10b981 !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.6) !important;
 }
 
-body.matrix-mode .learning-pill {
-  border-color: rgba(16, 185, 129, 0.25) !important;
-  background: rgba(16, 185, 129, 0.05) !important;
+body.matrix-mode .it-node.future-node {
+  border-color: #34d399 !important;
+  color: #34d399 !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.5) !important;
 }
 
+body.matrix-mode .it-card {
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
 
-body.matrix-mode .skill-pill:hover {
+body.matrix-mode .it-card:hover {
   border-color: rgba(16, 185, 129, 0.45) !important;
-  background: rgba(16, 185, 129, 0.1) !important;
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12) !important;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15) !important;
 }
 
-body.matrix-mode .project-card.featured {
-  border-color: rgba(16, 185, 129, 0.2) !important;
-}
-
-body.matrix-mode .project-card.featured:hover {
-  border-color: rgba(16, 185, 129, 0.5) !important;
-  box-shadow: 0 20px 60px rgba(16, 185, 129, 0.18) !important;
-}
-
-body.matrix-mode .project-card:hover {
+body.matrix-mode .hero-badge,
+body.matrix-mode .hero-status-pill,
+body.matrix-mode .status-badge,
+body.matrix-mode .role-badge,
+body.matrix-mode .client-badge,
+body.matrix-mode .hire-badge,
+body.matrix-mode .learning-pill,
+body.matrix-mode .skill-pill,
+body.matrix-mode .tech-tag,
+body.matrix-mode .cert-badge,
+body.matrix-mode .cert-year,
+body.matrix-mode .it-badge,
+body.matrix-mode .copy-action-text {
+  background: rgba(16, 185, 129, 0.12) !important;
   border-color: rgba(16, 185, 129, 0.35) !important;
+  color: #34d399 !important;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15) !important;
 }
 
-body.matrix-mode .tech-tag {
-  background: rgba(16, 185, 129, 0.1) !important;
-  border-color: rgba(16, 185, 129, 0.2) !important;
-  color: var(--p-light) !important;
+body.matrix-mode .copy-tooltip {
+  background: #060d0b !important;
+  border-color: #10b981 !important;
+  color: #e6f4f1 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 16px rgba(16, 185, 129, 0.4) !important;
 }
 
-body.matrix-mode .cs-icon {
-  background: rgba(16, 185, 129, 0.1) !important;
-  border-color: rgba(16, 185, 129, 0.2) !important;
-  color: var(--p-light) !important;
+body.matrix-mode #easterToast,
+body.matrix-mode #steamingCoffeeWidget {
+  background: rgba(7, 12, 10, 0.95) !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  color: #34d399 !important;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3), 0 0 16px rgba(16, 185, 129, 0.2) !important;
 }
 
-body.matrix-mode .cert-card:hover,
-body.matrix-mode a.cert-card-link:hover {
-  border-color: rgba(16, 185, 129, 0.3) !important;
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15) !important;
-}
-
-body.matrix-mode .cert-verify-btn {
-  background: rgba(16, 185, 129, 0.1) !important;
-  border-color: rgba(16, 185, 129, 0.25) !important;
-}
-
-body.matrix-mode .cert-verify-btn:hover {
-  background: rgba(16, 185, 129, 0.2) !important;
-  border-color: rgba(16, 185, 129, 0.5) !important;
-}
-
-body.matrix-mode .cert-year {
-  background: rgba(16, 185, 129, 0.1) !important;
-}
-
-body.matrix-mode .contact-card:hover {
+body.matrix-mode #devHud {
   border-color: rgba(16, 185, 129, 0.4) !important;
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(16, 185, 129, 0.25) !important;
 }
 
-body.matrix-mode .email-icon {
-  background: rgba(16, 185, 129, 0.15) !important;
+body.matrix-mode .dev-hud-btn {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  color: #34d399 !important;
 }
 
-body.matrix-mode .cta-card {
-  border-color: rgba(16, 185, 129, 0.25) !important;
+body.matrix-mode .dev-hud-btn.active {
+  background: linear-gradient(135deg, #10b981, #047857) !important;
+  color: #060d0b !important;
+  border-color: #34d399 !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.6) !important;
 }
 
-body.matrix-mode .cta-glow {
-  background: conic-gradient(
-    from 180deg, transparent 0deg, rgba(16, 185, 129, 0.2) 90deg, transparent 180deg
-  ) !important;
+body.matrix-mode #devInspectorOverlay {
+  border-color: #34d399 !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35), inset 0 0 16px rgba(16, 185, 129, 0.2) !important;
+}
+
+body.matrix-mode #devInspectorTag {
+  background: #060d0b !important;
+  color: #34d399 !important;
+  border-color: #10b981 !important;
+}
+
+body.matrix-mode .pos-window {
+  background: rgba(7, 12, 10, 0.96) !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.9), 0 0 25px rgba(16, 185, 129, 0.25) !important;
+}
+
+body.matrix-mode .pos-window.pos-win-focused {
+  border-color: #34d399 !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.9), 0 0 35px rgba(16, 185, 129, 0.4) !important;
+}
+
+body.matrix-mode .pos-win-header {
+  background: rgba(10, 18, 14, 0.98) !important;
+  border-bottom-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+body.matrix-mode .pos-win-title {
+  color: #34d399 !important;
+}
+
+body.matrix-mode .pos-topbar {
+  background: rgba(6, 13, 11, 0.95) !important;
+  border-bottom-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+body.matrix-mode .pos-start-btn {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  color: #34d399 !important;
+}
+
+body.matrix-mode .pos-dock {
+  background: rgba(6, 13, 11, 0.85) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(16, 185, 129, 0.3) !important;
+}
+
+body.matrix-mode .pos-taskbar-app.pos-app-active .pos-taskbar-icon {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: #34d399 !important;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.5) !important;
+}
+
+body.matrix-mode .pos-taskbar-app::after {
+  background: #34d399 !important;
+  box-shadow: 0 0 8px #34d399 !important;
+}
+
+body.matrix-mode .pos-terminal {
+  background: rgba(5, 10, 8, 0.98) !important;
+}
+
+body.matrix-mode .pos-term-output {
+  color: #34d399 !important;
+}
+
+body.matrix-mode .pos-term-prompt-sym,
+body.matrix-mode .pos-term-input,
+body.matrix-mode .pos-term-line.pos-t-prompt {
+  color: #34d399 !important;
+  caret-color: #34d399 !important;
+}
+
+body.matrix-mode .pos-term-line.pos-t-banner,
+body.matrix-mode .pos-term-line.pos-t-info {
+  color: #00e676 !important;
+}
+
+body.matrix-mode ::-webkit-scrollbar-thumb,
+html.matrix-mode ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, #10b981 50%, rgba(16, 185, 129, 0.3) 100%) !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.6) !important;
+}
+
+body.matrix-mode ::-webkit-scrollbar-thumb:hover,
+html.matrix-mode ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #34d399 0%, #10b981 50%, #34d399 100%) !important;
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.8) !important;
+}
+
+body.matrix-mode .theme-trigger-btn {
+  background: rgba(7, 7, 10, 0.95) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  color: #10b981 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.4) !important;
+}
+
+body.matrix-mode .theme-trigger-btn:hover {
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(16, 185, 129, 0.7) !important;
+}
+
+body.matrix-mode .name-last {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 55%, #00e676 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+body.matrix-mode .run-code-btn {
+  background: linear-gradient(135deg, #10b981, #047857) !important;
+  color: #060d0b !important;
+  border-color: #34d399 !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35) !important;
+}
+
+body.matrix-mode .run-code-btn:hover {
+  background: linear-gradient(135deg, #34d399, #10b981) !important;
+  box-shadow: 0 6px 22px rgba(16, 185, 129, 0.55) !important;
+}
+
+body.matrix-mode .role-badge,
+body.matrix-mode .client-badge,
+body.matrix-mode .hire-badge,
+body.matrix-mode .status-badge {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  color: #34d399 !important;
 }
 
 body.matrix-mode .btn-primary {
-  background: linear-gradient(135deg, var(--p), #065f46) !important;
+  background: linear-gradient(135deg, #10b981, #047857) !important;
+  color: #060d0b !important;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35) !important;
 }
 
 body.matrix-mode .btn-primary:hover {
-  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.45) !important;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.55) !important;
+}
+
+body.matrix-mode .btn-secondary,
+body.matrix-mode .btn-ghost {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  color: #34d399 !important;
+}
+
+body.matrix-mode .btn-secondary:hover,
+body.matrix-mode .btn-ghost:hover {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Navbar Right Quick Buttons & Footer Social Icons in Hacker Mode */
+body.matrix-mode .nav-right a,
+body.matrix-mode .nav-right button,
+body.matrix-mode .nav-cta,
+body.matrix-mode .matrix-toggle-btn,
+body.matrix-mode .dev-tools-btn,
+body.matrix-mode .footer-social a,
+body.matrix-mode .footer-social-link {
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  background: rgba(16, 185, 129, 0.06) !important;
+}
+
+body.matrix-mode .nav-right a:hover,
+body.matrix-mode .nav-right button:hover,
+body.matrix-mode .nav-cta:hover,
+body.matrix-mode .matrix-toggle-btn:hover,
+body.matrix-mode .dev-tools-btn:hover,
+body.matrix-mode .footer-social a:hover,
+body.matrix-mode .footer-social-link:hover {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.4) !important;
 }
 
 body.matrix-mode .hero::before {
@@ -478,8 +615,9 @@ body.matrix-mode::after {
 
 /* ── TERMINAL CONSOLE STYLES ── */
 :root {
-  --term-color: var(--p-light);
-  --term-accent: var(--accent);
+  --term-color: var(--text-2);
+  --term-accent: var(--p-light);
+  --term-gold: var(--p);
 }
 
 .terminal-panel {
@@ -489,29 +627,29 @@ body.matrix-mode::after {
   bottom: 0;
   height: 45vh;
   z-index: 1010;
-  background: rgba(5, 8, 18, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 2px solid var(--term-color);
+  background: rgba(7, 7, 10, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 2px solid var(--p-h);
   font-family: 'JetBrains Mono', Consolas, Monaco, 'Courier New', Courier, monospace;
   display: flex;
   flex-direction: column;
   transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
-  box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+  box-shadow: 0 -12px 40px rgba(0,0,0,0.85), 0 0 20px var(--p-glow);
 }
 
 .terminal-panel.open {
   transform: translateY(0);
 }
 
-/* Drag the top edge (the coloured line) to resize the terminal height */
+/* Drag the top edge to resize terminal height */
 .terminal-resize-handle {
   position: absolute;
-  top: -3px;
+  top: -4px;
   left: 0;
   right: 0;
-  height: 8px;
+  height: 10px;
   cursor: ns-resize;
   z-index: 3;
   touch-action: none;
@@ -525,44 +663,43 @@ body.matrix-mode::after {
   width: 46px;
   height: 4px;
   border-radius: 4px;
-  background: var(--term-color);
-  opacity: 0;
+  background: var(--p-light);
+  opacity: 0.6;
   transition: opacity 0.2s;
 }
 .terminal-resize-handle:hover::after,
-.terminal-panel.is-resizing .terminal-resize-handle::after { opacity: 0.85; }
+.terminal-panel.is-resizing .terminal-resize-handle::after { opacity: 1; }
 
-/* Themes overrides */
+/* Theme Overrides */
 .terminal-panel.theme-green {
-  --term-color: #10b981;
+  --term-color: #e6f4f1;
   --term-accent: #34d399;
 }
 .terminal-panel.theme-cyan {
-  --term-color: #06b6d4;
+  --term-color: #e2e8f0;
   --term-accent: #22d3ee;
 }
 .terminal-panel.theme-amber {
-  --term-color: #f59e0b;
-  --term-accent: #fbbf24;
+  --term-color: #f5f0e1;
+  --term-accent: #e5c158;
 }
 
 .terminal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.4);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border);
   user-select: none;
   -webkit-user-select: none;
 }
 
-
-
 .terminal-title {
-  font-size: 11.5px;
-  color: var(--muted);
-  font-weight: 500;
+  font-size: 12px;
+  color: var(--text-2);
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .terminal-close-btn {
@@ -583,9 +720,9 @@ body.matrix-mode::after {
 .terminal-output-container {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 20px;
+  padding: 18px 24px;
   font-size: 13.5px;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--term-color);
   transition: color 0.3s;
 }
@@ -597,7 +734,7 @@ body.matrix-mode::after {
   background: transparent;
 }
 .terminal-output-container::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
+  background: var(--p-glow);
   border-radius: 3px;
 }
 
@@ -612,11 +749,18 @@ body.matrix-mode::after {
 .terminal-line {
   margin-bottom: 6px;
   white-space: pre-wrap;
+  color: var(--text-2);
+}
+
+.terminal-line.user-cmd {
+  color: var(--p-light);
+  font-weight: 600;
 }
 
 .terminal-line.banner {
   color: var(--term-accent);
   font-weight: bold;
+  text-shadow: 0 0 10px var(--p-glow);
 }
 
 .terminal-line.error { color: var(--red); }
@@ -627,17 +771,18 @@ body.matrix-mode::after {
 .terminal-input-line {
   display: flex;
   align-items: center;
-  padding: 10px 20px;
-  background: rgba(0, 0, 0, 0.25);
-  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.35);
+  border-top: 1px solid var(--border);
 }
 
 .terminal-prompt {
-  color: var(--term-accent);
+  color: var(--p);
   font-weight: bold;
   margin-right: 8px;
   user-select: none;
   -webkit-user-select: none;
+  text-shadow: 0 0 8px var(--p-glow);
 }
 
 .terminal-input-wrapper {
@@ -652,11 +797,11 @@ body.matrix-mode::after {
   background: none;
   border: none;
   outline: none;
-  color: var(--term-color);
+  color: var(--text);
   font-family: 'JetBrains Mono', Consolas, Monaco, 'Courier New', Courier, monospace;
   font-size: 13.5px;
   padding: 0;
-  caret-color: var(--term-accent);
+  caret-color: var(--p);
   transition: color 0.3s;
 }
 

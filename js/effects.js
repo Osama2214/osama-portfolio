@@ -91,6 +91,23 @@ if (!prefersReducedMotion && !isTouchDevice) {
     return grid;
   }
 
+  let particleRgb = '255, 255, 255';
+  let particleNodeRgb = '226, 232, 240';
+
+  function updateThemeParticleColors() {
+    if (document.body.classList.contains('matrix-mode') || document.documentElement.classList.contains('matrix-mode')) {
+      particleRgb = '16, 185, 129';
+      particleNodeRgb = '52, 211, 153';
+    } else {
+      const computed = getComputedStyle(document.documentElement);
+      particleRgb = (computed.getPropertyValue('--particle-rgb') || '255, 255, 255').trim();
+      particleNodeRgb = (computed.getPropertyValue('--particle-node-rgb') || '226, 232, 240').trim();
+    }
+  }
+
+  updateThemeParticleColors();
+  window.addEventListener('themeChanged', updateThemeParticleColors);
+
   function draw() {
     if (isMatrixActive) {
       ctx.fillStyle = 'rgba(5, 8, 18, 0.08)';
@@ -137,7 +154,7 @@ if (!prefersReducedMotion && !isTouchDevice) {
               if (dist < CONNECT_DIST) {
                 const alpha = (1 - dist / CONNECT_DIST) * 0.15;
                 ctx.beginPath();
-                ctx.strokeStyle = `rgba(124, 58, 237, ${alpha})`;
+                ctx.strokeStyle = `rgba(${particleRgb}, ${alpha})`;
                 ctx.lineWidth = 0.5;
                 ctx.moveTo(p.x, p.y);
                 ctx.lineTo(q.x, q.y);
@@ -156,7 +173,7 @@ if (!prefersReducedMotion && !isTouchDevice) {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(167, 139, 250, ${p.a * 0.6})`;
+        ctx.fillStyle = `rgba(${particleNodeRgb}, ${p.a * 0.6})`;
         ctx.fill();
       });
     }
@@ -199,8 +216,8 @@ if (!prefersReducedMotion && !isTouchDevice) {
       z-index: 9998;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      color: #00ff41;
-      text-shadow: 0 0 8px #00ff41;
+      color: #34d399;
+      text-shadow: 0 0 10px #10b981, 0 0 20px rgba(16, 185, 129, 0.4);
       opacity: 0;
       pointer-events: none;
       animation: hackerMsgAnim 3.5s ease forwards;
@@ -254,6 +271,8 @@ if (!prefersReducedMotion && !isTouchDevice) {
   function toggleHackerMode() {
     isMatrixActive = !isMatrixActive;
     document.body.classList.toggle('matrix-mode');
+    document.documentElement.classList.toggle('matrix-mode');
+    updateThemeParticleColors();
 
     const desktopLabel = matrixToggleBtn && matrixToggleBtn.querySelector('.hacker-label');
     const mobileLabel  = mobileMatrixToggleBtn && mobileMatrixToggleBtn.querySelector('.mobile-hacker-label');
@@ -274,5 +293,235 @@ if (!prefersReducedMotion && !isTouchDevice) {
   if (mobileMatrixToggleBtn) mobileMatrixToggleBtn.addEventListener('click', toggleHackerMode);
 
   draw();
+})();
+
+// ── 3D INTERACTIVE CARD TILT EFFECT ──────────────────────
+(function () {
+  if (prefersReducedMotion || isTouchDevice) return;
+
+  const cards = document.querySelectorAll('.project-card, .service-card, .exp-card, .edu-academic-card, .contact-card');
+
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // Calculate tilt angles so the spot under the mouse cursor dips back into 3D perspective space
+      const rotateX = ((y - centerY) / centerY) * -3.5;
+      const rotateY = ((x - centerX) / centerX) * 3.5;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+    });
+  });
+})();
+
+// ── DYNAMIC PHYSICS-BASED SCROLL COLLISION SPARK SYSTEM ──
+(function () {
+  if (prefersReducedMotion) return;
+
+  const sparkCanvas = document.createElement('canvas');
+  sparkCanvas.id = 'sparkCanvas';
+  sparkCanvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:999999;';
+  document.body.appendChild(sparkCanvas);
+
+  const ctx = sparkCanvas.getContext('2d');
+
+  function resizeSparkCanvas() {
+    sparkCanvas.width = window.innerWidth;
+    sparkCanvas.height = window.innerHeight;
+  }
+  resizeSparkCanvas();
+  window.addEventListener('resize', resizeSparkCanvas);
+
+  const sparks = [];
+  let lastScrollY = window.scrollY;
+  let lastScrollTime = performance.now();
+  let lastCollisionTime = 0;
+
+  function spawnSparks(collisionType, velocity) {
+    const now = performance.now();
+    if (now - lastCollisionTime < 130) return; // 130ms collision cooldown
+    lastCollisionTime = now;
+
+    // Calculate spark intensity based on scroll velocity (rich density, 60FPS)
+    const speedRatio = Math.min(Math.max(velocity, 0.4), 4.0);
+    const count = Math.min(Math.floor(28 * speedRatio), 48); // Rich 48 sparks max!
+    const basePower = 4.5 + speedRatio * 5.0;
+
+    // Get current active theme RGB color for sparks
+    let themeRgb = '16, 185, 129';
+    if (document.body.classList.contains('matrix-mode') || document.documentElement.classList.contains('matrix-mode')) {
+      themeRgb = '16, 185, 129';
+    } else {
+      themeRgb = getComputedStyle(document.documentElement).getPropertyValue('--particle-rgb').trim() || '229, 193, 88';
+    }
+
+    for (let i = 0; i < count; i++) {
+      // Natural wide emission contact zone along the collision edge (not a single point!)
+      const sparkX = (window.innerWidth - 45) + Math.random() * 40;
+      const sparkY = collisionType === 'top'
+        ? Math.random() * 12
+        : window.innerHeight - 14 + Math.random() * 10;
+
+      const angle = collisionType === 'top'
+        ? (Math.PI * 0.1) + Math.random() * (Math.PI * 0.8)     // 140-degree downward impact spray
+        : -(Math.PI * 0.1) - Math.random() * (Math.PI * 0.8);   // 140-degree upward impact spray
+
+      const speed = (0.5 + Math.random() * 2.0) * basePower;
+
+      // Natural directional velocity vector
+      const horizontalVel = - Math.abs(Math.cos(angle)) * speed * (0.6 + Math.random() * 1.4);
+      const verticalVel = collisionType === 'top'
+        ? Math.abs(Math.sin(angle)) * speed * (0.8 + Math.random() * 1.3)
+        : - Math.abs(Math.sin(angle)) * speed * (1.0 + Math.random() * 1.5);
+
+      sparks.push({
+        x: sparkX,
+        y: sparkY,
+        vx: horizontalVel,
+        vy: verticalVel,
+        life: 1.0,
+        decay: collisionType === 'bottom' ? (0.009 + Math.random() * 0.013) : (0.016 + Math.random() * 0.022),
+        size: 1.6 + Math.random() * 3.0,
+        color: themeRgb,
+        type: collisionType
+      });
+    }
+  }
+
+  let canTriggerTop = false;
+  let canTriggerBottom = false;
+
+  function updateBoundaryStates() {
+    const docHeight = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight,
+      document.documentElement.offsetHeight
+    );
+    const currentScrollY = window.scrollY || window.pageYOffset || 0;
+    const viewportHeight = window.innerHeight;
+    const distFromBottom = docHeight - (currentScrollY + viewportHeight);
+
+    // Arm Top trigger only when user scrolls down away from top (> 35px)
+    if (currentScrollY > 35) {
+      canTriggerTop = true;
+    }
+
+    // Arm Bottom trigger only when user scrolls up away from bottom (distFromBottom > 35px)
+    if (distFromBottom > 35) {
+      canTriggerBottom = true;
+    }
+  }
+
+  function checkBoundaryCollision(velocity, direction) {
+    updateBoundaryStates();
+
+    const docHeight = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight,
+      document.documentElement.offsetHeight
+    );
+    const currentScrollY = window.scrollY || window.pageYOffset || 0;
+    const viewportHeight = window.innerHeight;
+    const distFromBottom = docHeight - (currentScrollY + viewportHeight);
+
+    // Direction < 0 = scrolling UP into Top boundary from below
+    if (direction < 0 && currentScrollY <= 8 && canTriggerTop) {
+      spawnSparks('top', velocity);
+      canTriggerTop = false; // Disarm until user scrolls down away from top again!
+    }
+    // Direction > 0 = scrolling DOWN into Bottom boundary from above
+    else if (direction > 0 && distFromBottom <= 20 && canTriggerBottom) {
+      spawnSparks('bottom', velocity);
+      canTriggerBottom = false; // Disarm until user scrolls up away from bottom again!
+    }
+  }
+
+  // 1. Listen to scroll events
+  window.addEventListener('scroll', () => {
+    const now = performance.now();
+    const dt = Math.max(now - lastScrollTime, 8);
+    const currentScrollY = window.scrollY || window.pageYOffset || 0;
+    const scrollDiff = currentScrollY - lastScrollY;
+    const velocity = Math.abs(scrollDiff) / dt;
+
+    if (Math.abs(scrollDiff) > 0) {
+      checkBoundaryCollision(velocity, scrollDiff);
+    }
+
+    lastScrollY = currentScrollY;
+    lastScrollTime = now;
+  }, { passive: true });
+
+  // 2. Listen to wheel events (catches overscroll impulses)
+  window.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaY) < 3) return;
+    const velocity = Math.min(Math.abs(e.deltaY) * 0.025, 3.5);
+    checkBoundaryCollision(velocity, e.deltaY);
+  }, { passive: true });
+
+  function renderSparks() {
+    ctx.clearRect(0, 0, sparkCanvas.width, sparkCanvas.height);
+    if (sparks.length === 0) {
+      requestAnimationFrame(renderSparks);
+      return;
+    }
+
+    // Hardware-accelerated GPU additive blending (eliminates expensive CPU shadowBlur lag)
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round';
+
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i];
+
+      // Physics update: gravity + air resistance
+      s.x += s.vx;
+      s.y += s.vy;
+      s.vy += (s.type === 'bottom' ? 0.35 : 0.28); // Gravity pull
+      s.vx *= 0.965; // Horizontal drag
+      s.life -= s.decay;
+
+      // Ground bounce for bottom sparks when falling back down
+      if (s.type === 'bottom' && s.y >= window.innerHeight - 2 && s.vy > 0) {
+        s.y = window.innerHeight - 2;
+        s.vy = -s.vy * 0.45; // Elastic bounce off the bottom edge!
+        s.vx *= 0.65; // Floor friction
+      }
+
+      if (s.life <= 0) {
+        sparks.splice(i, 1);
+        continue;
+      }
+
+      const alpha = Math.max(s.life, 0).toFixed(2);
+
+      // Pass 1: Outer glow trail line
+      ctx.beginPath();
+      ctx.moveTo(s.x - s.vx * 2.5, s.y - s.vy * 2.5);
+      ctx.lineTo(s.x, s.y);
+      ctx.strokeStyle = `rgba(${s.color}, ${(alpha * 0.6).toFixed(2)})`;
+      ctx.lineWidth = s.size * 1.6;
+      ctx.stroke();
+
+      // Pass 2: Ultra-bright glowing spark core
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.size * 0.6, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.fill();
+    }
+
+    // Reset composite mode
+    ctx.globalCompositeOperation = 'source-over';
+    requestAnimationFrame(renderSparks);
+  }
+
+  renderSparks();
 })();
 

@@ -101,7 +101,7 @@ if (contactForm) {
 // ── FOOTER YEAR ──────────────────────────────
 // Already hardcoded as 2026 in HTML
 
-console.log('%c 🚀 Osama Ahmed Portfolio ', 'background:#7c3aed;color:#fff;font-size:16px;padding:8px 16px;border-radius:8px;font-weight:bold;');
+console.log('%c 🚀 Osama Ahmed Portfolio ', 'background:#ffffff;color:#050505;font-size:16px;padding:8px 16px;border-radius:8px;font-weight:bold;');
 console.log('%c Built with ❤️ from Egypt ', 'color:#a78bfa;font-size:13px;');
 
 // ── PROJECTS SHOW MORE / LESS ──────────────────
@@ -114,18 +114,14 @@ if (projectsToggleBtn && hiddenProjects.length > 0) {
   projectsToggleBtn.addEventListener('click', () => {
     const isShowingMore = projectsToggleBtn.classList.contains('showing-more');
     if (isShowingMore) {
-      // Show Less logic
-      hiddenProjects.forEach(el => {
-        el.classList.add('hide-project');
-      });
+      // Show Less
+      hiddenProjects.forEach(el => el.classList.add('hide-project'));
       projectsToggleBtn.classList.remove('showing-more');
       projectsToggleText.textContent = 'Show More';
       if (projectsToggleIcon) projectsToggleIcon.style.transform = 'rotate(0deg)';
     } else {
-      // Show More logic
-      hiddenProjects.forEach(el => {
-        el.classList.remove('hide-project');
-      });
+      // Show More
+      hiddenProjects.forEach(el => el.classList.remove('hide-project'));
       projectsToggleBtn.classList.add('showing-more');
       projectsToggleText.textContent = 'Show Less';
       if (projectsToggleIcon) projectsToggleIcon.style.transform = 'rotate(180deg)';
@@ -145,7 +141,6 @@ const stopHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentC
 
 function openTerminal() {
   runCodeBtn.classList.add('stop-state');
-  runCodeBtn.innerHTML = stopHTML;
   consoleOutput.classList.add('open');
   consoleLines.forEach(line => line.classList.remove('visible'));
   consoleLines.forEach((line, index) => {
@@ -166,7 +161,6 @@ function openTerminal() {
 
 function closeTerminal() {
   runCodeBtn.classList.remove('stop-state');
-  runCodeBtn.innerHTML = runHTML;
   consoleOutput.classList.remove('open');
   consoleLines.forEach(line => line.classList.remove('visible'));
 }
@@ -240,5 +234,110 @@ if (closeConsoleBtn && consoleOutput) {
       futureCard.classList.toggle('revealed');
     });
   }
+})();
+
+// ── TESTIMONIALS DRAG / TOUCH SWIPE ─────────────────
+(function () {
+  const marquee = document.querySelector('.testi-marquee');
+  const track = document.getElementById('testiTrack');
+  if (!marquee || !track) return;
+
+  let isDragging = false;
+  let startX = 0;
+  let currentTranslate = 0;
+  let prevTranslate = 0;
+  let resumeTimer = null;
+
+  const totalDuration = 56.7; // seconds
+  const loopWidth = 1700; // px
+
+  function getTranslateX() {
+    const style = window.getComputedStyle(track);
+    const matrix = new WebKitCSSMatrix(style.transform);
+    return matrix.m41 || 0;
+  }
+
+  function startDrag(e) {
+    if (resumeTimer) clearTimeout(resumeTimer);
+    isDragging = true;
+    startX = e.pageX || (e.touches && e.touches[0].pageX);
+    currentTranslate = getTranslateX();
+    prevTranslate = currentTranslate;
+
+    // Release CSS animation keyframe lock so inline transform moves freely!
+    track.style.animation = 'none';
+    track.style.transform = `translateX(${prevTranslate}px)`;
+    marquee.classList.add('is-dragging');
+  }
+
+  function drag(e) {
+    if (!isDragging) return;
+    const x = e.pageX || (e.touches && e.touches[0].pageX);
+    if (x === undefined) return;
+
+    const diff = (x - startX) * 1.4;
+    let newX = prevTranslate + diff;
+
+    // Wrap bounds (-1700px loop)
+    while (newX > 0) newX -= loopWidth;
+    while (newX < -loopWidth) newX += loopWidth;
+
+    track.style.transform = `translateX(${newX}px)`;
+    currentTranslate = newX;
+  }
+
+  function resumeAutoScroll() {
+    if (isDragging) return;
+    let pos = currentTranslate % loopWidth;
+    if (pos > 0) pos -= loopWidth;
+
+    // Calculate negative animation delay to pick up smoothly from current position
+    const progress = Math.abs(pos) / loopWidth;
+    const negativeDelay = -1 * progress * totalDuration;
+
+    track.style.transform = '';
+    track.style.animation = `testi-scroll ${totalDuration}s linear infinite`;
+    track.style.animationDelay = `${negativeDelay}s`;
+  }
+
+  function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    marquee.classList.remove('is-dragging');
+
+    // Resume auto-scroll after 3 seconds of inactivity
+    if (resumeTimer) clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(resumeAutoScroll, 3000);
+  }
+
+  marquee.addEventListener('mousedown', startDrag);
+  window.addEventListener('mousemove', drag);
+  window.addEventListener('mouseup', endDrag);
+
+  marquee.addEventListener('touchstart', startDrag, { passive: true });
+  window.addEventListener('touchmove', drag, { passive: true });
+  window.addEventListener('touchend', endDrag);
+})();
+
+// ── EMAIL COPY TO CLIPBOARD ──────────────────────────
+(function () {
+  const copyBtn = document.getElementById('copy-email-btn');
+  if (!copyBtn) return;
+
+  const emailText = 'osamaahmed.dev00@gmail.com';
+
+  copyBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    navigator.clipboard.writeText(emailText).then(() => {
+      const originalHTML = copyBtn.innerHTML;
+      copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--p-light)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span class="copy-tooltip">${emailText} <strong class="copy-action-text" style="color:var(--p-light);background:var(--p-glow);border-color:var(--p-h);">✓ Copied!</strong></span>`;
+
+      setTimeout(() => {
+        copyBtn.innerHTML = originalHTML;
+      }, 2500);
+    });
+  });
 })();
 

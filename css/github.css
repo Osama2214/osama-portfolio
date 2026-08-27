@@ -29,7 +29,7 @@ a.gh-stat:hover {
 }
 .gh-ico { width: 17px; height: 17px; color: var(--p-light); flex: 0 0 auto; }
 .gh-num {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-weight: 700;
   font-size: 1.05rem;
   color: var(--text);

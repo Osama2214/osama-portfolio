@@ -15,9 +15,9 @@
       position: fixed;
       ${isMobile ? 'top: 70px; left: 16px; right: 16px;' : 'bottom: 28px; left: 28px;'}
       transform: ${isMobile ? 'translateY(-120%)' : 'translateX(-120%)'};
-      background: rgba(5, 8, 18, 0.95);
-      border: 1px solid rgba(124, 58, 237, 0.45);
-      color: #c4b5fd;
+      background: var(--surface, rgba(7, 10, 20, 0.95));
+      border: 1px solid var(--border-h, rgba(16, 185, 129, 0.45));
+      color: var(--p-light, #34d399);
       font-family: 'JetBrains Mono', monospace;
       font-size: 12.5px;
       padding: 10px 20px;
@@ -27,7 +27,7 @@
       gap: 10px;
       z-index: 99999;
       backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(124,58,237,0.25), 0 0 0 1px rgba(124,58,237,0.1);
+      box-shadow: 0 8px 32px var(--p-glow, rgba(16, 185, 129, 0.25)), 0 0 0 1px var(--p-glow, rgba(16, 185, 129, 0.1));
       opacity: 0;
       transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
       pointer-events: none;

@@ -49,29 +49,51 @@
 }
 
 .service-card {
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 14px;
   padding: 28px;
   position: relative;
   overflow: hidden;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
 }
 
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--p), var(--p-light));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.service-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
 .service-card:hover {
-  border-color: var(--border-h);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  border-color: var(--p-h);
+  background: rgba(255, 255, 255, 0.065);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--p-glow);
 }
 
 .service-icon-wrap {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: rgba(124,58,237,0.1);
-  border: 1px solid rgba(124,58,237,0.25);
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -81,9 +103,7 @@
 }
 
 .service-card:hover .service-icon-wrap {
-  transform: scale(1.06);
-  background: rgba(124,58,237,0.2);
-  border-color: rgba(124,58,237,0.4);
+  border-color: var(--p);
 }
 
 .service-title {
@@ -119,7 +139,7 @@
 }
 
 .sf-icon {
-  color: var(--green);
+  color: var(--p-light);
   flex-shrink: 0;
 }
 
@@ -139,20 +159,22 @@
   font-weight: 600;
   color: var(--p-light);
   text-decoration: none;
-  background: rgba(124,58,237,0.08);
-  border: 1px solid rgba(124,58,237,0.25);
-  padding: 10px 18px;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-h);
+  padding: 11px 20px;
+  border-radius: 10px;
   margin-top: auto;
   transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .service-cta-btn:hover {
-  background: var(--p);
-  color: #fff;
-  border-color: var(--p);
+  background: var(--p-glow);
+  color: var(--p);
+  border-color: var(--p-h);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px var(--p-glow);
+  box-shadow: 0 4px 16px var(--p-glow);
 }
 
 /* ─────────────────────────────────────────────
@@ -165,31 +187,24 @@
 }
 
 .exp-card {
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 14px;
   padding: 28px;
   position: relative;
   overflow: hidden;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
 }
 
 .exp-card:hover {
-  border-color: var(--border-h);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-}
-
-.exp-card.featured-exp {
-  background: linear-gradient(135deg, var(--card), rgba(124,58,237,0.05));
-  border-color: rgba(124,58,237,0.2);
-}
-
-.exp-card.featured-exp:hover {
-  border-color: rgba(124,58,237,0.5);
-  box-shadow: 0 20px 60px rgba(124,58,237,0.15);
+  border-color: var(--p-h);
+  background: rgba(255, 255, 255, 0.065);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--p-glow);
 }
 
 .exp-header {
@@ -297,7 +312,7 @@
 }
 
 .training-card:hover {
-  border-color: rgba(124,58,237,0.3);
+  border-color: var(--border-h);
   transform: translateY(-2px);
 }
 
@@ -330,29 +345,51 @@
 .edu-academic-card {
   max-width: 800px;
   margin: 0 auto;
-  background: linear-gradient(135deg, var(--card), rgba(124,58,237,0.05));
-  border: 1px solid rgba(124,58,237,0.2);
+  position: relative;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--border-h);
   border-radius: 20px;
   padding: 32px;
   display: flex;
   align-items: flex-start;
   gap: 24px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.edu-academic-card::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(
+      ellipse at 85% 15%,
+      var(--p-glow) 0%,
+      transparent 65%
+    );
+  filter: blur(45px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.edu-academic-card > * {
   position: relative;
-  overflow: hidden;
-  transition: all 0.35s ease;
+  z-index: 1;
 }
 
 .edu-academic-card:hover {
-  border-color: rgba(124,58,237,0.5);
-  box-shadow: 0 20px 60px rgba(124,58,237,0.15);
+  border-color: var(--border-h);
+  box-shadow: 0 6px 24px var(--p-glow);
 }
 
 .edu-uni-logo {
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: rgba(124,58,237,0.1);
-  border: 1px solid rgba(124,58,237,0.25);
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -364,8 +401,8 @@
   font-size: 11px;
   font-weight: 600;
   color: var(--p-light);
-  background: rgba(124,58,237,0.12);
-  border: 1px solid rgba(124,58,237,0.25);
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
   padding: 3px 10px;
   border-radius: 10px;
   margin-bottom: 8px;
@@ -501,8 +538,8 @@
 .pq-pill {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  background: rgba(124,58,237,0.1);
-  border: 1px solid rgba(124,58,237,0.2);
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
   color: var(--p-light);
   padding: 3px 9px;
   border-radius: 8px;

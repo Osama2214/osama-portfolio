@@ -4,8 +4,20 @@
 
 .testi-marquee {
   overflow: hidden;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-top: -12px;
+  margin-bottom: -12px;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.testi-marquee.is-dragging {
+  cursor: grabbing !important;
 }
 
 .testi-track {
@@ -19,20 +31,46 @@
 
 @keyframes testi-scroll {
   from { transform: translateX(0); }
-  /* Exactly one full set (5 cards @ 320px + 5 gaps @ 20px) — not -50%, which
-     is thrown off by the odd gap count and causes a visible jump at the seam. */
   to   { transform: translateX(-1700px); }
 }
 
 .testi-card {
   flex: 0 0 320px;
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.testi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--p), var(--p-light));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.testi-card:hover::before {
+  opacity: 1;
+}
+
+.testi-card:hover {
+  border-color: var(--p-h);
+  background: rgba(255, 255, 255, 0.065);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--p-glow);
 }
 
 .testi-stars {
@@ -41,12 +79,7 @@
   letter-spacing: 2px;
 }
 
-/* Half-star rating: splits the star glyph itself down the middle via a
-   background-clip gradient. A percentage-width clip on the whole string
-   doesn't work reliably — the ★ glyph has blank side-bearing inside its
-   own character box, so clipping the box edge can miss the ink entirely
-   and the star still reads as fully filled. Clipping the gradient to the
-   glyph's actual shape (background-clip: text) doesn't have that problem. */
+/* Half-star rating */
 .star-half {
   background: linear-gradient(90deg, #fbbf24 50%, var(--border) 50%);
   -webkit-background-clip: text;
@@ -72,8 +105,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(124,58,237,0.12);
-  border: 1px solid var(--border);
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
   display: flex;
   align-items: center;
   justify-content: center;

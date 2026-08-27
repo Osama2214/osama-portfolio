@@ -12,23 +12,25 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 11px;
+  padding: 6px 13px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.78rem;
   line-height: 1;
   color: var(--text-2);
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-h);
   border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   cursor: pointer;
-  transition: color var(--transition), border-color var(--transition),
-              background var(--transition), transform var(--transition);
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
-.preact svg { width: 15px; height: 15px; }
+.preact svg { width: 14px; height: 14px; }
 .preact:hover {
-  color: var(--text);
-  border-color: var(--border-h);
-  transform: translateY(-1px);
+  color: var(--p-light);
+  border-color: var(--p-h);
+  background: var(--p-glow);
+  box-shadow: 0 4px 14px var(--p-glow);
 }
 .preact:disabled { cursor: default; opacity: 0.7; }
 .preact-count { min-width: 8px; text-align: left; }
@@ -36,8 +38,9 @@
 /* Active — this browser has reacted (icon fills in) */
 .preact-on {
   color: var(--p-light);
-  border-color: var(--border-h);
+  border-color: var(--p);
   background: var(--p-glow);
+  box-shadow: 0 4px 16px var(--p-glow);
 }
 .preact-on svg { fill: currentColor; }
 

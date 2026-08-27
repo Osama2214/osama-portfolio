@@ -37,7 +37,7 @@
   let clockInterval = null;
   let musicEnabled  = false;
   let particlesEnabled = true;
-  let osTheme       = 'site-purple';
+  let osTheme       = 'site-theme';
   let audioCtx      = null;
   let musicNodes    = {};
   let ambientAudio  = null;
@@ -49,8 +49,8 @@
   let brandIconObserver = null;
   let isBooting     = false;
   let isShuttingDown= false;
-  const DESKTOP_ICON_POS_KEY = 'portfolio-os-icon-positions-v3';
-  const DESKTOP_GRID = { x: 22, y: 24, col: 86, row: 74 };
+  const DESKTOP_ICON_POS_KEY = 'portfolio-os-icon-positions-v5';
+  const DESKTOP_GRID = { x: 28, y: 28, col: 104, row: 96 };
   const POS_ICONS = {
     github: '<svg class="pos-brand-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.5 11.5 0 0 1 12 5.4c1.02.01 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.82.58A12.01 12.01 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>',
     linkedin: '<svg class="pos-brand-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.23 0z"/></svg>',
@@ -153,6 +153,7 @@
     document.body.classList.add('pos-os-active');
     document.body.style.overflow = 'hidden';
     osRoot.classList.remove('pos-hidden');
+    applyOsTheme('site-theme');
     setupOsBrandIcons();
     bootScreen.classList.remove('pos-hidden');
     desktop.classList.add('pos-hidden');
@@ -407,7 +408,17 @@
     if (icon && icon.dataset.app === 'trash') {
       return clampDesktopIconPosition(Infinity, Infinity, icon);
     }
-    return { x: DESKTOP_GRID.x, y: DESKTOP_GRID.y + index * DESKTOP_GRID.row };
+    const gh = (iconsGrid && iconsGrid.clientHeight) ? iconsGrid.clientHeight : (window.innerHeight - 110);
+    const availableHeight = Math.max(200, gh - DESKTOP_GRID.y - 30);
+    const maxRowsPerCol = Math.max(1, Math.floor(availableHeight / DESKTOP_GRID.row));
+
+    const col = Math.floor(index / maxRowsPerCol);
+    const row = index % maxRowsPerCol;
+
+    return {
+      x: DESKTOP_GRID.x + col * DESKTOP_GRID.col,
+      y: DESKTOP_GRID.y + row * DESKTOP_GRID.row
+    };
   }
 
   function getSavedDesktopIconPositions() {
@@ -458,12 +469,65 @@
     };
   }
 
-  function snapDesktopIconPosition(x, y, icon) {
-    const rawCol = Math.round((x - DESKTOP_GRID.x) / DESKTOP_GRID.col);
-    const rawRow = Math.round((y - DESKTOP_GRID.y) / DESKTOP_GRID.row);
-    const snappedX = DESKTOP_GRID.x + Math.max(0, rawCol) * DESKTOP_GRID.col;
-    const snappedY = DESKTOP_GRID.y + Math.max(0, rawRow) * DESKTOP_GRID.row;
-    return clampDesktopIconPosition(snappedX, snappedY, icon);
+  function findNearestFreeSlot(targetX, targetY, excludeIcon) {
+    const allIcons = Array.from(iconsGrid.querySelectorAll('.pos-icon'));
+    const occupied = new Set(allIcons.filter(o => o !== excludeIcon).map(o => {
+      const ox = Math.round(parseFloat(o.style.left) || 0);
+      const oy = Math.round(parseFloat(o.style.top) || 0);
+      return `${ox},${oy}`;
+    }));
+
+    for (let radius = 0; radius < 15; radius++) {
+      for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -radius; dy <= radius; dy++) {
+          if (Math.abs(dx) !== radius && Math.abs(dy) !== radius) continue;
+          const gx = Math.max(0, Math.round((targetX - DESKTOP_GRID.x) / DESKTOP_GRID.col) + dx);
+          const gy = Math.max(0, Math.round((targetY - DESKTOP_GRID.y) / DESKTOP_GRID.row) + dy);
+          const px = DESKTOP_GRID.x + gx * DESKTOP_GRID.col;
+          const py = DESKTOP_GRID.y + gy * DESKTOP_GRID.row;
+          const clamped = clampDesktopIconPosition(px, py, excludeIcon);
+          const key = `${Math.round(clamped.x)},${Math.round(clamped.y)}`;
+          if (!occupied.has(key)) {
+            return clamped;
+          }
+        }
+      }
+    }
+    return clampDesktopIconPosition(targetX, targetY, excludeIcon);
+  }
+
+  function snapDesktopIconPosition(x, y, icon, startLeft, startTop) {
+    if (icon && icon.dataset.app === 'trash') {
+      const defaultTrashPos = clampDesktopIconPosition(Infinity, Infinity, icon);
+      if (Math.abs(x - defaultTrashPos.x) < 90 && Math.abs(y - defaultTrashPos.y) < 90) {
+        return defaultTrashPos;
+      }
+    }
+
+    const rawCol = Math.max(0, Math.round((x - DESKTOP_GRID.x) / DESKTOP_GRID.col));
+    const rawRow = Math.max(0, Math.round((y - DESKTOP_GRID.y) / DESKTOP_GRID.row));
+    const snappedX = DESKTOP_GRID.x + rawCol * DESKTOP_GRID.col;
+    const snappedY = DESKTOP_GRID.y + rawRow * DESKTOP_GRID.row;
+    let targetPos = clampDesktopIconPosition(snappedX, snappedY, icon);
+
+    // Collision detection: Check if another icon is occupying the target slot
+    const allIcons = Array.from(iconsGrid.querySelectorAll('.pos-icon'));
+    const conflictingIcon = allIcons.find(other => {
+      if (other === icon) return false;
+      const ox = parseFloat(other.style.left) || 0;
+      const oy = parseFloat(other.style.top) || 0;
+      return Math.abs(ox - targetPos.x) < 20 && Math.abs(oy - targetPos.y) < 20;
+    });
+
+    if (conflictingIcon) {
+      // Swap conflicting icon to dragged icon's original starting slot (or nearest free slot)
+      const freePos = findNearestFreeSlot(startLeft, startTop, conflictingIcon);
+      conflictingIcon.style.left = freePos.x + 'px';
+      conflictingIcon.style.top = freePos.y + 'px';
+      saveDesktopIconPositions(conflictingIcon);
+    }
+
+    return targetPos;
   }
 
   function setDesktopIconPosition(icon, x, y) {
@@ -472,8 +536,8 @@
     icon.style.top = pos.y + 'px';
   }
 
-  function setDesktopIconSnappedPosition(icon, x, y) {
-    const pos = snapDesktopIconPosition(x, y, icon);
+  function setDesktopIconSnappedPosition(icon, x, y, startLeft, startTop) {
+    const pos = snapDesktopIconPosition(x, y, icon, startLeft, startTop);
     icon.style.left = pos.x + 'px';
     icon.style.top = pos.y + 'px';
   }
@@ -511,7 +575,7 @@
       icon.classList.remove('pos-icon-dragging');
       try { icon.releasePointerCapture(pointerId); } catch (err) {}
       if (didDragDesktopIcon) {
-        setDesktopIconSnappedPosition(icon, parseFloat(icon.style.left) || 0, parseFloat(icon.style.top) || 0);
+        setDesktopIconSnappedPosition(icon, parseFloat(icon.style.left) || 0, parseFloat(icon.style.top) || 0, startLeft, startTop);
         saveDesktopIconPositions(icon);
       }
     });
@@ -657,11 +721,39 @@
 
   function closeWindow(appId) {
     const state = openWindows[appId];
-    if (!state) return;
-    state.el.remove();
-    state.taskbarBtn && state.taskbarBtn.remove();
-    delete openWindows[appId];
-    updateDockVisibility();
+    if (!state || state.closing) return;
+    state.closing = true;
+    const { el, taskbarBtn } = state;
+
+    const isLastApp = Object.keys(openWindows).length === 1;
+
+    if (el) {
+      el.classList.remove('pos-win-focused');
+      el.classList.add('pos-win-minimizing');
+    }
+
+    // Genie animate window sucking down into taskbar icon
+    genieAnimate(el, taskbarBtn, 'out', () => {
+      if (el) el.remove();
+
+      if (taskbarBtn) {
+        const dockEl = taskbarBtn.closest('.pos-dock');
+        if (isLastApp && dockEl) {
+          dockEl.classList.add('pos-dock-closing-last');
+        }
+        taskbarBtn.classList.add('pos-taskbar-closing');
+
+        setTimeout(() => {
+          if (taskbarBtn) taskbarBtn.remove();
+          delete openWindows[appId];
+          if (dockEl) dockEl.classList.remove('pos-dock-closing-last');
+          updateDockVisibility();
+        }, 220);
+      } else {
+        delete openWindows[appId];
+        updateDockVisibility();
+      }
+    });
   }
 
   function minimizeWindow(appId) {
@@ -841,10 +933,22 @@
   // ── Taskbar Button ───────────────────────────────────────────
   function createTaskbarBtn(icon, title, appId) {
     const btn = document.createElement('button');
-    btn.className = 'pos-taskbar-app pos-app-running';
+    btn.className = 'pos-taskbar-app pos-app-running pos-taskbar-opening';
     btn.title = title;
-    btn.innerHTML = `<span class="pos-taskbar-icon">${icon}</span><span class="pos-taskbar-label">${title}</span>`;
+
+    const dtImg = iconsGrid ? iconsGrid.querySelector(`.pos-icon[data-app="${appId}"] .pos-app-3d-img`) : null;
+    const iconHTML = dtImg ? dtImg.outerHTML : `<span style="font-size:20px">${icon}</span>`;
+
+    btn.innerHTML = `<span class="pos-taskbar-icon">${iconHTML}</span><span class="pos-taskbar-label">${title}</span>`;
     btn.addEventListener('click', () => toggleMinimize(appId));
+
+    // Smoothly expand and pop icon up into dock
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        btn.classList.remove('pos-taskbar-opening');
+      });
+    });
+
     return btn;
   }
 
@@ -1451,7 +1555,16 @@
   // ── APP: Settings ─────────────────────────────────────────────
   function buildSettings(body) {
     body.style.overflow = 'auto';
-    const themeLabels = { 'site-purple': 'Site Purple', 'cyan-blue': 'Cyan Blue', 'deep-violet': 'Deep Violet' };
+    const themeLabels = {
+      'site-theme': 'Sync with Site Theme',
+      'gold': 'Luxe Gold',
+      'ruby': 'Ruby Crimson',
+      'sunset': 'Amber Sunset',
+      'emerald': 'Emerald Cyber',
+      'monochrome': 'Monochrome Silver',
+      'purple': 'AI Original Purple',
+      'platinum-gold': 'Platinum Gold'
+    };
     body.innerHTML = `
       <div class="pos-settings">
         <div class="pos-settings-section-title">System</div>
@@ -1485,12 +1598,39 @@
           </div>
           <div class="pos-custom-select" id="posThemeSelect" data-value="${osTheme}">
             <button class="pos-custom-select-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span>${themeLabels[osTheme]}</span>
+              <span>${themeLabels[osTheme] || 'Sync with Site Theme'}</span>
             </button>
             <div class="pos-custom-select-menu" role="listbox">
-              <button class="pos-custom-option ${osTheme==='site-purple' ? 'pos-option-active' : ''}" type="button" data-value="site-purple" role="option">Site Purple</button>
-              <button class="pos-custom-option ${osTheme==='cyan-blue' ? 'pos-option-active' : ''}" type="button" data-value="cyan-blue" role="option">Cyan Blue</button>
-              <button class="pos-custom-option ${osTheme==='deep-violet' ? 'pos-option-active' : ''}" type="button" data-value="deep-violet" role="option">Deep Violet</button>
+              <button class="pos-custom-option ${osTheme==='site-theme' ? 'pos-option-active' : ''}" type="button" data-value="site-theme" role="option">Sync with Site Theme</button>
+              <button class="pos-custom-option ${osTheme==='gold' ? 'pos-option-active' : ''}" type="button" data-value="gold" role="option">Luxe Gold</button>
+              <button class="pos-custom-option ${osTheme==='ruby' ? 'pos-option-active' : ''}" type="button" data-value="ruby" role="option">Ruby Crimson</button>
+              <button class="pos-custom-option ${osTheme==='sunset' ? 'pos-option-active' : ''}" type="button" data-value="sunset" role="option">Amber Sunset</button>
+              <button class="pos-custom-option ${osTheme==='emerald' ? 'pos-option-active' : ''}" type="button" data-value="emerald" role="option">Emerald Cyber</button>
+              <button class="pos-custom-option ${osTheme==='monochrome' ? 'pos-option-active' : ''}" type="button" data-value="monochrome" role="option">Monochrome Silver</button>
+              <button class="pos-custom-option ${osTheme==='purple' ? 'pos-option-active' : ''}" type="button" data-value="purple" role="option">AI Original Purple</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pos-setting-row">
+          <div class="pos-setting-row-info">
+            <div class="pos-setting-row-label">Typography</div>
+            <div class="pos-setting-row-sub">Font family suite</div>
+          </div>
+          <div class="pos-custom-select" id="posFontSelect" data-value="${document.documentElement.getAttribute('data-font-suite') || 'default'}">
+            <button class="pos-custom-select-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span>${document.documentElement.getAttribute('data-font-suite') === 'dev-code-core' ? 'Developer Code Core' : (document.documentElement.getAttribute('data-font-suite') === 'minimal-serif' ? 'Modern Minimalist Serif' : (document.documentElement.getAttribute('data-font-suite') === 'retro-arcade' ? 'Retro Arcade & Pixel' : (document.documentElement.getAttribute('data-font-suite') === 'arabic-luxury' ? 'Arabic Luxury Suite' : (document.documentElement.getAttribute('data-font-suite') === 'futuristic-urbanist' ? 'Futuristic Urbanist' : (document.documentElement.getAttribute('data-font-suite') === 'luxury-editorial' ? 'Luxury VIP Editorial' : (document.documentElement.getAttribute('data-font-suite') === 'cyber-matrix' ? 'Cyberpunk Matrix' : (document.documentElement.getAttribute('data-font-suite') === 'modern-tech' ? 'Ultra-Modern Tech' : 'Default Classic')))))))}</span>
+            </button>
+            <div class="pos-custom-select-menu" role="listbox">
+              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='default'||!document.documentElement.getAttribute('data-font-suite') ? 'pos-option-active' : ''}" type="button" data-value="default" role="option">Default Classic</button>
+              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='modern-tech' ? 'pos-option-active' : ''}" type="button" data-value="modern-tech" role="option">Ultra-Modern Tech</button>
+              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='cyber-matrix' ? 'pos-option-active' : ''}" type="button" data-value="cyber-matrix" role="option">Cyberpunk Matrix</button>
+              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='luxury-editorial' ? 'pos-option-active' : ''}" type="button" data-value="luxury-editorial" role="option">Luxury VIP Editorial</button>
+              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='futuristic-urbanist' ? 'pos-option-active' : ''}" type="button" data-value="futuristic-urbanist" role="option">Futuristic Urbanist</button>
+              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='arabic-luxury' ? 'pos-option-active' : ''}" type="button" data-value="arabic-luxury" role="option">Arabic Luxury Suite</button>
+              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='retro-arcade' ? 'pos-option-active' : ''}" type="button" data-value="retro-arcade" role="option">Retro Arcade & Pixel</button>
+              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='minimal-serif' ? 'pos-option-active' : ''}" type="button" data-value="minimal-serif" role="option">Modern Minimalist Serif</button>
+              <button class="pos-custom-option ${document.documentElement.getAttribute('data-font-suite')==='dev-code-core' ? 'pos-option-active' : ''}" type="button" data-value="dev-code-core" role="option">Developer Code Core</button>
             </div>
           </div>
         </div>
@@ -1534,6 +1674,15 @@
 
     setupSettingsSelect(body.querySelector('#posThemeSelect'), (value) => {
       applyOsTheme(value);
+    });
+
+    setupSettingsSelect(body.querySelector('#posFontSelect'), (value) => {
+      if (typeof window.setPortfolioFontSuite === 'function') {
+        window.setPortfolioFontSuite(value);
+      } else {
+        document.documentElement.setAttribute('data-font-suite', value);
+        localStorage.setItem('osama-portfolio-font-suite', value);
+      }
     });
 
     // Shutdown
@@ -1580,7 +1729,7 @@
         const panelRect = panel.getBoundingClientRect();
         const originX = rowRect.left - panelRect.left + rowRect.width / 2;
         const originY = rowRect.top - panelRect.top + rowRect.height / 2;
-        const colors = ['#a78bfa', '#7c3aed', '#c4b5fd', '#f472b6', '#38bdf8'];
+        const colors = ['#ffffff', '#cbd5e1', '#e2e8f0', '#94a3b8', '#f8fafc'];
 
         for (let i = 0; i < 22; i++) {
           const bit = document.createElement('span');
@@ -1655,73 +1804,60 @@
     if (settingsPanel) settingsPanel.addEventListener('click', closeSelect);
   }
 
+  window.addEventListener('fontSuiteChanged', (e) => {
+    const fontSelect = document.getElementById('posFontSelect');
+    if (fontSelect && e.detail && e.detail.font) {
+      const suite = e.detail.font;
+      fontSelect.dataset.value = suite;
+      const activeOption = fontSelect.querySelector(`.pos-custom-option[data-value="${suite}"]`);
+      if (activeOption) {
+        const span = fontSelect.querySelector('.pos-custom-select-btn span');
+        if (span) span.textContent = activeOption.textContent;
+        fontSelect.querySelectorAll('.pos-custom-option').forEach(o => o.classList.toggle('pos-option-active', o === activeOption));
+      }
+    }
+  });
+
+  window.addEventListener('themeChanged', (e) => {
+    const themeSelect = document.getElementById('posThemeSelect');
+    if (themeSelect && osTheme === 'site-theme') {
+      const activeOption = themeSelect.querySelector(`.pos-custom-option[data-value="site-theme"]`);
+      if (activeOption) {
+        const span = themeSelect.querySelector('.pos-custom-select-btn span');
+        if (span) span.textContent = activeOption.textContent;
+      }
+    }
+  });
+
   // OS Theme
-  function applyOsTheme(theme) {
-    osTheme = theme;
-    const themes = {
-      'site-purple': {
-        accent: '#a78bfa',
-        accent2: '#06b6d4',
-        glow: 'rgba(124,58,237,0.4)',
-        dim: 'rgba(124,58,237,0.15)',
-        bg: '#050812',
-        surface: '#080d1a',
-        surface2: '#0c1223',
-        header: '#080d1a',
-        topbar: 'rgba(3,6,16,0.92)',
-        dock: 'rgba(10,14,26,0.7)',
-        control: 'rgba(124,58,237,0.08)',
-        controlH: 'rgba(124,58,237,0.18)',
-        desktop: 'radial-gradient(ellipse at 15% 15%, rgba(124,58,237,0.12) 0%, transparent 45%), radial-gradient(ellipse at 85% 85%, rgba(6,182,212,0.07) 0%, transparent 45%), radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.05) 0%, transparent 50%), linear-gradient(160deg, #050812 0%, #03060f 100%)'
-      },
-      'cyan-blue': {
-        accent: '#22d3ee',
-        accent2: '#38bdf8',
-        glow: 'rgba(34,211,238,0.34)',
-        dim: 'rgba(34,211,238,0.14)',
-        bg: '#031018',
-        surface: '#061722',
-        surface2: '#082132',
-        header: '#061724',
-        topbar: 'rgba(2,16,24,0.92)',
-        dock: 'rgba(4,24,34,0.72)',
-        control: 'rgba(34,211,238,0.08)',
-        controlH: 'rgba(34,211,238,0.18)',
-        desktop: 'radial-gradient(ellipse at 18% 18%, rgba(34,211,238,0.13) 0%, transparent 44%), radial-gradient(ellipse at 88% 82%, rgba(56,189,248,0.11) 0%, transparent 46%), radial-gradient(ellipse at 50% 100%, rgba(14,165,233,0.08) 0%, transparent 52%), linear-gradient(160deg, #031018 0%, #020812 100%)'
-      },
-      'deep-violet': {
-        accent: '#8b5cf6',
-        accent2: '#c084fc',
-        glow: 'rgba(139,92,246,0.45)',
-        dim: 'rgba(139,92,246,0.18)',
-        bg: '#080516',
-        surface: '#100a23',
-        surface2: '#17102f',
-        header: '#100a23',
-        topbar: 'rgba(8,5,18,0.93)',
-        dock: 'rgba(16,10,35,0.72)',
-        control: 'rgba(139,92,246,0.1)',
-        controlH: 'rgba(139,92,246,0.22)',
-        desktop: 'radial-gradient(ellipse at 16% 16%, rgba(139,92,246,0.17) 0%, transparent 44%), radial-gradient(ellipse at 86% 78%, rgba(192,132,252,0.11) 0%, transparent 45%), radial-gradient(ellipse at 50% 100%, rgba(91,33,182,0.10) 0%, transparent 52%), linear-gradient(160deg, #080516 0%, #03020a 100%)'
-      },
-    };
-    const t = themes[theme] || themes['site-purple'];
+  function applyOsTheme(themeId) {
+    osTheme = themeId;
     const r = document.documentElement;
-    r.style.setProperty('--pos-accent',     t.accent);
-    r.style.setProperty('--pos-accent-2',   t.accent2);
-    r.style.setProperty('--pos-accent-glow', t.glow);
-    r.style.setProperty('--pos-accent-dim',  t.dim);
-    r.style.setProperty('--pos-bg',          t.bg);
-    r.style.setProperty('--pos-surface',     t.surface);
-    r.style.setProperty('--pos-surface-2',   t.surface2);
-    r.style.setProperty('--pos-win-header',  t.header);
-    r.style.setProperty('--pos-topbar-bg',   t.topbar);
-    r.style.setProperty('--pos-dock-bg',     t.dock);
-    r.style.setProperty('--pos-control-bg',  t.control);
-    r.style.setProperty('--pos-control-bg-h', t.controlH);
-    r.style.setProperty('--pos-desktop-bg',  t.desktop);
-    r.style.setProperty('--pos-border',     `rgba(${hexToRgb(t.accent)},0.18)`);
-    r.style.setProperty('--pos-border-2',   `rgba(${hexToRgb(t.accent)},0.08)`);
+    const props = [
+      '--pos-accent', '--pos-accent-2', '--pos-accent-glow', '--pos-accent-dim',
+      '--pos-bg', '--pos-surface', '--pos-surface-2', '--pos-win-header',
+      '--pos-topbar-bg', '--pos-dock-bg', '--pos-control-bg', '--pos-control-bg-h',
+      '--pos-desktop-bg', '--pos-border', '--pos-border-2'
+    ];
+
+    // Remove legacy inline variable overrides so CSS theme variables take full effect
+    props.forEach(p => r.style.removeProperty(p));
+
+    if (themeId !== 'site-theme') {
+      const siteThemeMap = {
+        'gold': 'gold',
+        'ruby': 'ruby',
+        'sunset': 'sunset',
+        'emerald': 'emerald',
+        'monochrome': 'monochrome',
+        'purple': 'purple',
+        'platinum-gold': 'platinum-gold'
+      };
+      const selected = siteThemeMap[themeId] || 'gold';
+      r.setAttribute('data-theme', selected);
+      localStorage.setItem('osama-portfolio-theme', selected);
+      window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: selected } }));
+    }
   }
 
   function hexToRgb(hex) {

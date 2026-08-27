@@ -8,45 +8,62 @@
 }
 
 .project-card {
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 14px;
   padding: 28px;
   position: relative;
   overflow: hidden;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Column layout so the reactions bar can pin to the bottom (aligned across cards) */
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform-style: preserve-3d;
+  will-change: transform;
   display: flex;
   flex-direction: column;
 }
 
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--p), var(--p-light));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.project-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
 .project-card:hover {
-  border-color: rgba(124,58,237,0.35);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  border-color: var(--p-h);
+  background: rgba(255, 255, 255, 0.065);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--p-glow);
 }
 
 .project-card.featured {
   grid-column: 1 / -1;
-  background: linear-gradient(135deg, var(--card), rgba(124,58,237,0.05));
-  border-color: rgba(124,58,237,0.2);
+  border-color: var(--border-h);
 }
 
 .project-card.featured:hover {
-  border-color: rgba(124,58,237,0.5);
-  box-shadow: 0 20px 60px rgba(124,58,237,0.15);
+  border-color: var(--p-h);
+  background: rgba(255, 255, 255, 0.065);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--p-glow);
 }
 
 .project-glow {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--p), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
+  display: none !important;
 }
-
-.project-card:hover .project-glow { opacity: 1; }
 
 .project-header {
   display: flex;
@@ -89,18 +106,18 @@
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 10px;
-  background: rgba(255,255,255,0.08);
-  color: var(--text-2);
+  background: var(--p-glow);
+  color: var(--p-light);
+  border: 1px solid var(--border-h);
 }
 
-.pbadge.featured-badge {
-  background: rgba(245,158,11,0.12);
-  color: var(--orange);
-}
-
-.pbadge.open-source {
-  background: rgba(16,185,129,0.1);
-  color: var(--green);
+.pbadge.featured-badge,
+.pbadge.open-source,
+.pbadge.live-badge,
+.pbadge.free-app {
+  background: var(--p-glow);
+  color: var(--p-light);
+  border: 1px solid var(--border-h);
 }
 
 .project-name {
@@ -125,8 +142,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border);
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
   border-radius: 10px;
   color: var(--text-2);
   text-decoration: none;
@@ -134,10 +151,9 @@
 }
 
 .plink:hover {
-  background: var(--p);
+  background: var(--btn-p-bg);
   border-color: var(--p);
-  color: #fff;
-  transform: translateY(-2px);
+  color: var(--btn-p-text);
 }
 
 .project-desc {
@@ -158,12 +174,12 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border);
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
   border-radius: 10px;
   padding: 8px 12px;
   font-size: 13px;
-  color: var(--text-2);
+  color: var(--text);
 }
 
 .pf-icon {
@@ -186,9 +202,9 @@
   font-weight: 500;
   padding: 4px 12px;
   border-radius: 10px;
-  background: rgba(124,58,237,0.1);
+  background: var(--p-glow);
   color: var(--p-light);
-  border: 1px solid rgba(124,58,237,0.2);
+  border: 1px solid var(--border-h);
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -208,14 +224,14 @@
 /* Coming Soon */
 .coming-soon {
   border-style: dashed;
-  border-color: rgba(255,255,255,0.1);
+  border-color: var(--border-h);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .cs-glow {
-  background: linear-gradient(135deg, transparent, rgba(6,182,212,0.05));
+  background: linear-gradient(135deg, transparent, var(--p-glow));
 }
 
 .cs-content { text-align: center; }
@@ -227,8 +243,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(124,58,237,0.1);
-  border: 1px solid rgba(124,58,237,0.2);
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
   border-radius: 16px;
   color: var(--p-light);
   animation: rocket 2s ease-in-out infinite;

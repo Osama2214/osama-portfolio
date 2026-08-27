@@ -4,29 +4,29 @@
 
 /* ── Design Tokens — matched to main site palette ── */
 :root {
-  --pos-accent:      #a78bfa;            /* p-light purple  */
-  --pos-accent-2:    #06b6d4;            /* site cyan       */
-  --pos-accent-dim:  rgba(124,58,237,0.15);
-  --pos-accent-glow: rgba(124,58,237,0.4);
-  --pos-bg:          #050812;            /* exact --bg      */
-  --pos-surface:     #080d1a;            /* exact --bg-2    */
-  --pos-surface-2:   #0c1223;            /* exact --surface */
+  --pos-accent:      var(--p);
+  --pos-accent-2:    var(--p-light);
+  --pos-accent-dim:  var(--p-glow);
+  --pos-accent-glow: var(--p-glow);
+  --pos-bg:          var(--bg);
+  --pos-surface:     var(--bg-2);
+  --pos-surface-2:   var(--surface);
   --pos-desktop-bg:
-    radial-gradient(ellipse at 15% 15%, rgba(124,58,237,0.12) 0%, transparent 45%),
-    radial-gradient(ellipse at 85% 85%, rgba(6,182,212,0.07) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.05) 0%, transparent 50%),
-    linear-gradient(160deg, #050812 0%, #03060f 100%);
-  --pos-topbar-bg:   rgba(3,6,16,0.92);
-  --pos-dock-bg:     rgba(10,14,26,0.7);
-  --pos-control-bg:  rgba(124,58,237,0.08);
-  --pos-control-bg-h: rgba(124,58,237,0.18);
-  --pos-border:      rgba(124,58,237,0.22);
-  --pos-border-2:    rgba(124,58,237,0.09);
-  --pos-text:        #e2e8f0;            /* exact --text    */
-  --pos-text-2:      #94a3b8;            /* exact --text-2  */
-  --pos-win-header:  #080d1a;
+    radial-gradient(ellipse at 15% 15%, var(--p-glow) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 85%, var(--accent-glow) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 100%, var(--p-glow) 0%, transparent 50%),
+    linear-gradient(160deg, var(--bg) 0%, #020202 100%);
+  --pos-topbar-bg:   rgba(3,3,4,0.92);
+  --pos-dock-bg:     rgba(8,8,11,0.7);
+  --pos-control-bg:  var(--p-glow);
+  --pos-control-bg-h: var(--p-glow);
+  --pos-border:      var(--border-h);
+  --pos-border-2:    var(--border);
+  --pos-text:        var(--text);
+  --pos-text-2:      var(--text-2);
+  --pos-win-header:  var(--bg-2);
   --pos-r:           14px;
-  --pos-shadow:      0 24px 80px rgba(0,0,0,0.85), 0 0 40px var(--pos-accent-dim);
+  --pos-shadow:      0 24px 80px rgba(0,0,0,0.9), 0 0 40px var(--pos-accent-dim);
   --pos-topbar-h:    40px;
 }
 
@@ -39,7 +39,7 @@
   inset: 0;
   z-index: 999990;
   background: var(--pos-bg);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-body);
   overflow: hidden;
 }
 
@@ -47,50 +47,32 @@
    NAVBAR BUTTON
 ══════════════════════ */
 .nav-os-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
   width: 34px;
   height: 34px;
   padding: 0;
-  border: 1px solid var(--p-light);
-  background: transparent;
-  color: var(--p-light);
-  font-family: 'Inter', sans-serif;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-2);
+  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
-  letter-spacing: 0.01em;
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
   flex-shrink: 0;
 }
-/* Icon-only at every width — see .dev-tools-btn comment above. */
-.nav-os-btn span {
-  display: none;
+
+.nav-os-btn:hover {
+  background: var(--p-glow);
+  border-color: var(--p-h);
+  color: var(--p-light);
+  box-shadow: 0 0 14px var(--p-glow);
 }
-.nav-os-icon {
-  width: 16px;
-  height: 16px;
-  position: relative;
-  z-index: 1;
-}
-.nav-os-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--p), var(--p-h));
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-.nav-os-btn:hover { color: #fff; box-shadow: 0 0 20px var(--p-glow); transform: translateY(-1px); }
-.nav-os-btn:hover::before { opacity: 1; }
-.nav-os-btn:active { transform: translateY(0); }
-.nav-os-btn > * { position: relative; z-index: 1; }
 /* While the OS assets are being fetched on first launch */
 .nav-os-btn.os-btn-loading { opacity: 0.6; pointer-events: none; animation: navOsPulse 0.9s ease-in-out infinite; }
 @keyframes navOsPulse { 0%,100% { opacity: 0.5; } 50% { opacity: 0.85; } }
@@ -279,7 +261,7 @@
   border: 1px solid var(--pos-border);
   border-radius: 5px;
   color: var(--pos-accent);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -309,7 +291,7 @@
 
 /* ── Bottom Dock (Taskbar) ── */
 .pos-dock-wrap {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   bottom: 14px;
@@ -317,7 +299,8 @@
   justify-content: center;
   pointer-events: none;
   z-index: 500;
-  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s ease;
+  will-change: transform, opacity;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
 }
 .pos-dock-wrap.pos-dock-hidden {
   transform: translateY(120%);
@@ -329,16 +312,23 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  padding: 8px 10px;
-  background: var(--pos-dock-bg);
-  border: 1px solid var(--pos-border);
+  padding: 8px 12px;
+  background: var(--pos-dock-bg, rgba(12, 12, 16, 0.78));
+  border: 1px solid var(--pos-border, rgba(255, 255, 255, 0.12));
   border-radius: 18px;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  will-change: transform, opacity;
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.pos-dock:empty { opacity: 0; transform: translateY(6px) scale(0.98); pointer-events: none; }
+.pos-dock:empty,
+.pos-dock.pos-dock-closing-last {
+  opacity: 0 !important;
+  transform: translateY(20px) scale(0.92) !important;
+  pointer-events: none !important;
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
 
 .pos-dock-apps {
   display: flex;
@@ -359,10 +349,21 @@
   border: none;
   border-radius: 14px;
   color: var(--pos-text-2);
-  font-size: 22px;
-  line-height: 1;
   cursor: pointer;
   outline: none;
+  will-change: transform, opacity, width, margin;
+  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1), margin 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pos-taskbar-app.pos-taskbar-opening,
+.pos-taskbar-app.pos-taskbar-closing {
+  width: 0 !important;
+  opacity: 0 !important;
+  transform: scale(0.15) translateY(18px) !important;
+  pointer-events: none !important;
+  margin: 0 -5px !important;
+  padding: 0 !important;
+  border: none !important;
 }
 .pos-taskbar-app::before {
   content: '';
@@ -378,18 +379,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 12px;
   pointer-events: none;
-  transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), background 0.2s ease, border-color 0.2s ease;
+  will-change: transform, background, border-color, box-shadow;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.pos-taskbar-icon .pos-icon-svg {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  filter: none !important;
+  box-shadow: none !important;
+}
+.pos-taskbar-icon .pos-icon-svg svg {
+  width: 32px;
+  height: 32px;
 }
 .pos-taskbar-label { display: none; }
-.pos-taskbar-app:hover .pos-taskbar-icon { background: var(--pos-control-bg); border-color: var(--pos-border); }
-.pos-taskbar-app:hover .pos-taskbar-icon { transform: translateY(-9px) scale(1.12); }
-.pos-taskbar-app:active .pos-taskbar-icon { transform: translateY(-4px) scale(1.04); }
+.pos-taskbar-app:hover .pos-taskbar-icon {
+  background: var(--pos-control-bg, rgba(255, 255, 255, 0.12));
+  border-color: var(--pos-border, rgba(255, 255, 255, 0.25));
+  transform: translateY(-8px) scale(1.14);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px var(--p-glow, rgba(255, 255, 255, 0.1));
+}
+.pos-taskbar-app:active .pos-taskbar-icon { transform: translateY(-3px) scale(1.04); }
 .pos-taskbar-app.pos-app-active { color: var(--pos-accent); }
-.pos-taskbar-app.pos-app-active .pos-taskbar-icon { background: var(--pos-control-bg-h); border-color: var(--pos-border); }
+.pos-taskbar-app.pos-app-active .pos-taskbar-icon {
+  background: var(--pos-control-bg-h, rgba(255, 255, 255, 0.16));
+  border-color: var(--p-light, var(--border-h));
+  box-shadow: 0 0 14px var(--p-glow, rgba(255, 255, 255, 0.2));
+}
 .pos-taskbar-app:focus-visible .pos-taskbar-icon { box-shadow: 0 0 0 2px var(--pos-border); }
 .pos-taskbar-app::after {
   content: '';
@@ -470,6 +491,29 @@
 }
 .pos-icon:active { transform: scale(0.96); }
 .pos-icon.pos-icon-dragging:active { transform: scale(1.04); }
+
+.pos-app-3d-img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+  flex-shrink: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pos-icon:hover .pos-app-3d-img {
+  transform: translateY(-5px) scale(1.12);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 16px var(--pos-accent-glow));
+}
+
+.pos-taskbar-icon .pos-app-3d-img {
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
 .pos-icon-emoji { font-size: 28px; line-height: 1; filter: drop-shadow(0 2px 10px var(--pos-accent-glow)); }
 .pos-icon-label {
   font-size: 11px;
@@ -478,6 +522,7 @@
   text-shadow: 0 1px 4px rgba(0,0,0,0.8);
   white-space: nowrap;
   font-weight: 500;
+  margin-top: 2px;
 }
 
 /* ══════════════════════
@@ -487,19 +532,19 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  background: var(--pos-surface);
-  border: 1px solid var(--pos-border);
+  background: var(--card, #121217);
+  border: 1px solid var(--border-h, rgba(255, 255, 255, 0.15));
   border-radius: var(--pos-r);
-  box-shadow: var(--pos-shadow);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 25px var(--p-glow, rgba(255, 255, 255, 0.05));
   min-width: 320px;
   min-height: 200px;
   overflow: hidden;
   animation: posWinIn 0.25s cubic-bezier(0.16,1,0.3,1) both;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 .pos-window.pos-win-focused {
-  box-shadow: var(--pos-shadow), 0 0 0 1px var(--pos-border);
-  border-color: var(--pos-border);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.9), 0 0 35px var(--p-glow, rgba(234, 179, 8, 0.35));
+  border-color: var(--p-light, #fbbf24);
 }
 .pos-window.pos-win-minimizing {
   pointer-events: none;
@@ -521,8 +566,8 @@
   justify-content: space-between;
   padding: 0 12px;
   height: 38px;
-  background: var(--pos-win-header);
-  border-bottom: 1px solid var(--pos-border-2);
+  background: var(--surface, rgba(18, 22, 38, 0.95));
+  border-bottom: 1px solid var(--border-h, rgba(234, 179, 8, 0.25));
   cursor: grab;
   flex-shrink: 0;
   user-select: none;
@@ -535,7 +580,7 @@
   gap: 8px;
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--pos-text);
+  color: var(--p-light, var(--text));
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

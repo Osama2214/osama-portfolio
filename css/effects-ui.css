@@ -6,7 +6,7 @@
   position: absolute;
   top: 10%; left: -10%;
   width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%);
+  background: radial-gradient(circle, var(--p-glow), transparent 70%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
@@ -17,7 +17,7 @@
   position: absolute;
   bottom: 10%; right: -10%;
   width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(6,182,212,0.06), transparent 70%);
+  background: radial-gradient(circle, var(--accent-glow), transparent 70%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
@@ -43,25 +43,23 @@
 
 /* ── PROJECTS TOGGLE (SHOW MORE / LESS) ── */
 .project-card.more-project {
-  max-height: 1000px;
+  max-height: 800px;
   opacity: 1;
-  transform: translateY(0) scale(1);
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease, border-color 0.4s ease;
+  transform: translateY(0);
+  transition: max-height 0.65s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.55s ease, transform 0.55s ease, padding 0.55s ease, margin 0.55s ease, border-color 0.3s ease;
   overflow: hidden;
 }
 
 .project-card.more-project.hide-project {
-  max-height: 0 !important;
-  min-height: 0 !important;
-  opacity: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  border-width: 0 !important;
-  border-color: transparent !important;
-  transform: translateY(-15px) scale(0.98) !important;
-  pointer-events: none !important;
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-color: transparent;
+  transform: translateY(-20px);
+  pointer-events: none;
 }
 
 .projects-toggle-container {
@@ -73,8 +71,27 @@
 }
 
 #projects-toggle-btn {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
-  padding: 0 32px;
+  padding: 10px 28px;
+  border-radius: 30px;
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
+  color: var(--p-light);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px var(--p-glow);
+}
+
+#projects-toggle-btn:hover {
+  background: var(--btn-p-bg);
+  border-color: var(--p-h);
+  color: var(--btn-p-text);
+  box-shadow: 0 6px 24px var(--p-glow);
+  transform: translateY(-2px);
 }
 
 /* ── DYNAMIC RESPONSIVE PUSH FOR FLOATING BADGES ── */
@@ -97,43 +114,75 @@
 }
 
 .code-run-btn {
-  display: flex;
+  position: relative;
+  overflow: hidden;
+  min-width: 68px;
+  height: 28px;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  color: #34d399;
-  font-family: 'JetBrains Mono', monospace;
+  justify-content: center;
+  background: var(--p-glow);
+  border: 1px solid var(--border-h);
+  color: var(--p-light);
+  font-family: var(--font-mono);
   font-size: 11.5px;
   font-weight: 600;
-  padding: 4px 10px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.25s ease;
-  margin-left: auto; /* Push it to the right */
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: auto;
   user-select: none;
 }
 
-.code-run-btn svg {
-  transition: transform 0.3s ease;
+.btn-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: absolute;
+  left: 50%;
+  white-space: nowrap;
+  transition: top 0.18s cubic-bezier(0.4, 0, 0.2, 1), transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+}
+
+/* Default state: Run is in center, Stop is below button bounds */
+.state-run {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.state-stop {
+  top: 150%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
 }
 
 .code-run-btn:hover {
-  background: rgba(16, 185, 129, 0.2);
-  border-color: #34d399;
-  box-shadow: 0 0 12px rgba(52, 211, 153, 0.2);
+  background: var(--btn-p-bg);
+  border-color: var(--p);
+  color: var(--btn-p-text);
+  box-shadow: 0 0 12px var(--p-glow);
 }
 
-.code-run-btn.stop-state {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.25);
-  color: #f87171;
-}
-
+/* Active stop-state: background, border, text, and glow change in 100% instant sync */
+.code-run-btn.stop-state,
 .code-run-btn.stop-state:hover {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: #ef4444;
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.18) !important;
+  border-color: rgba(239, 68, 68, 0.55) !important;
+  color: #f87171 !important;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.25) !important;
+}
+
+.code-run-btn.stop-state .state-run {
+  top: -50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.code-run-btn.stop-state .state-stop {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
 }
 
 .code-run-btn.running svg {
@@ -150,7 +199,7 @@
   max-height: 0;
   opacity: 0;
   overflow: hidden;
-  background: #060913;
+  background: var(--bg-2);
   border-top: 1px solid var(--border);
   transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
@@ -164,12 +213,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #090e1a;
+  background: var(--surface);
   padding: 6px 16px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--muted);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border);
 }
 
 .console-close-btn {
@@ -183,12 +232,12 @@
 }
 
 .console-close-btn:hover {
-  color: #f87171;
+  color: var(--red);
 }
 
 .console-body {
   padding: 14px 18px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.6;
   color: var(--text-2);
@@ -215,18 +264,18 @@
 }
 
 .console-line.compilation {
-  color: #a78bfa; /* Purple compiler status */
+  color: var(--p-light);
 }
 
 .console-line.divider {
-  color: rgba(255, 255, 255, 0.08);
+  color: var(--border);
 }
 
 .console-line.info-title {
-  color: #f59e0b; /* Yellow label */
+  color: var(--p);
 }
 
 .console-line.text-success {
-  color: #34d399;
+  color: var(--green);
 }
 

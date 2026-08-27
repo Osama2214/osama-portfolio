@@ -46,8 +46,8 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 99980;
-  background: rgba(8, 12, 24, 0.95);
-  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: var(--surface, rgba(7, 10, 20, 0.95));
+  border: 1px solid var(--border-h, rgba(229, 193, 88, 0.35));
   border-radius: 40px;
   padding: 8px 22px;
   display: flex;
@@ -55,8 +55,8 @@
   gap: 18px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: #e2e8f0;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(56, 189, 248, 0.15);
+  color: var(--text-2, #e2e8f0);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px var(--p-glow, rgba(229, 193, 88, 0.15));
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   animation: hudPopBottom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -72,9 +72,9 @@
   font-size: 11.5px;
 }
 .dev-hud-btn {
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  color: #38bdf8;
+  background: var(--p-glow, rgba(229, 193, 88, 0.12));
+  border: 1px solid var(--border-h, rgba(229, 193, 88, 0.35));
+  color: var(--p-light, #f3e5ab);
   font-family: 'JetBrains Mono', monospace;
   font-size: 11.5px;
   font-weight: 600;
@@ -84,16 +84,16 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .dev-hud-btn:hover {
-  background: rgba(56, 189, 248, 0.25);
+  background: var(--p-glow, rgba(229, 193, 88, 0.25));
   color: #fff;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 12px var(--p-glow, rgba(229, 193, 88, 0.3));
 }
 .dev-hud-btn.active {
-  background: #38bdf8;
-  color: #040914;
-  border-color: #38bdf8;
+  background: var(--btn-p-bg, linear-gradient(135deg, var(--p), var(--p-h)));
+  color: var(--btn-p-text, #0c0c10);
+  border-color: var(--p-light, #f3e5ab);
   font-weight: 700;
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 16px var(--p-glow, rgba(229, 193, 88, 0.5));
 }
 
 /* ── Dev HUD — hide on mobile ── */
@@ -105,18 +105,18 @@
   position: fixed;
   pointer-events: none;
   z-index: 99975;
-  border: 1.5px solid #38bdf8;
-  background: rgba(56, 189, 248, 0.08);
-  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.3), inset 0 0 12px rgba(56, 189, 248, 0.15);
+  border: 1.5px solid var(--p-light, #e5c158);
+  background: var(--p-glow, rgba(229, 193, 88, 0.08));
+  box-shadow: 0 0 0 1px var(--border-h, rgba(229, 193, 88, 0.3)), inset 0 0 12px var(--p-glow, rgba(229, 193, 88, 0.15));
   transition: all 0.05s ease-out;
   display: none;
   border-radius: 3px;
 }
 #devInspectorTag {
   position: absolute;
-  background: #0f172a;
-  color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.4);
+  background: var(--surface, #0f172a);
+  color: var(--p-light, #f3e5ab);
+  border: 1px solid var(--border-h, rgba(229, 193, 88, 0.4));
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   font-weight: 600;
@@ -139,20 +139,20 @@
   bottom: 84px;
   right: 28px;
   z-index: 99985;
-  background: rgba(8, 12, 24, 0.96);
-  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: var(--surface, rgba(8, 12, 24, 0.96));
+  border: 1px solid var(--border-h, rgba(229, 193, 88, 0.35));
   border-radius: 12px;
   padding: 16px 20px;
   width: 320px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: #cbd5e1;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+  color: var(--text-2, #cbd5e1);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--p-glow, rgba(229, 193, 88, 0.2));
   backdrop-filter: blur(16px);
   display: none;
 }
 .inspect-details-title {
-  color: #38bdf8;
+  color: var(--p-light, #f3e5ab);
   font-weight: 700;
   margin-bottom: 8px;
   font-size: 13px;
@@ -170,17 +170,17 @@
 /* 3. 3 AM Midnight Mode & Steaming Coffee Widget */
 body.midnight-mode {
   --bg: #020308;
-  --bg-card: #070a14;
-  --p: #8b5cf6;
-  --p-light: #ddd6fe;
+  --surface: #070a14;
+  --card: #0b0f1e;
 }
+
 #steamingCoffeeWidget {
   position: fixed;
   bottom: 24px;
   right: 24px;
   z-index: 99950;
-  background: rgba(15, 10, 30, 0.9);
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: var(--surface, rgba(15, 10, 30, 0.95));
+  border: 1px solid var(--border-h, rgba(139, 92, 246, 0.45));
   border-radius: 50px;
   padding: 10px 18px;
   display: flex;
@@ -188,8 +188,10 @@ body.midnight-mode {
   gap: 10px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: #fbbf24;
-  box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
+  color: var(--p-light, #ddd6fe);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px var(--p-glow, rgba(139, 92, 246, 0.25)), 0 0 16px var(--p-glow, rgba(139, 92, 246, 0.15));
   animation: floatMug 3s ease-in-out infinite;
 }
 @keyframes floatMug {

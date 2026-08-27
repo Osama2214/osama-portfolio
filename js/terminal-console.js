@@ -212,11 +212,20 @@
     const trimmed = cmdStr.trim();
     if (!trimmed) return;
 
-    printLine(`> ${trimmed}`, 'info');
+    printLine(`> ${trimmed}`, 'user-cmd');
 
     // Add to history
     commandHistory.push(trimmed);
     historyIdx = commandHistory.length;
+
+    const lowerCmd = trimmed.toLowerCase();
+    if (activeSubMode && (lowerCmd === 'exit' || lowerCmd === 'quit' || lowerCmd === 'cancel' || lowerCmd === 'q')) {
+      printLine(`[EXIT] Exited ${activeSubMode} mode.`, 'info');
+      activeSubMode = null;
+      terminalInput.value = '';
+      terminalInputGhost.textContent = '';
+      return;
+    }
 
     // Check sub-modes first
     if (activeSubMode === 'projects') {
@@ -570,9 +579,20 @@
 
   // Handle Guess Game mode
   function handleGuessInput(input) {
+    const lower = input.trim().toLowerCase();
+    if (lower === 'exit' || lower === 'quit' || lower === 'cancel' || lower === 'q') {
+      printLine('[EXIT] Exited guessing game.', 'info');
+      activeSubMode = null;
+      terminalInput.value = '';
+      terminalInputGhost.textContent = '';
+      return;
+    }
+
     const num = parseInt(input.trim());
     if (isNaN(num) || num < 1 || num > 100) {
-      printLine('Please enter a valid number between 1 and 100.', 'error');
+      printLine('Please enter a valid number between 1 and 100 (or type "exit" to quit).', 'error');
+      terminalInput.value = '';
+      terminalInputGhost.textContent = '';
       return;
     }
     guessAttempts++;

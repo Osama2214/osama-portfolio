@@ -9,7 +9,7 @@
 
 .footer-gradient-line {
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(124,58,237,0.5), rgba(167,139,250,0.7), rgba(124,58,237,0.5), transparent);
+  background: linear-gradient(to right, transparent, var(--border), var(--p), var(--border), transparent);
   margin-bottom: 32px;
 }
 
@@ -110,9 +110,9 @@
 }
 
 .footer-social:hover {
-  background: var(--p);
+  background: var(--btn-p-bg);
   border-color: var(--p);
-  color: #fff;
+  color: var(--btn-p-text);
   transform: translateY(-2px);
 }
 

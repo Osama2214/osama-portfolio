@@ -59,16 +59,48 @@ navMobile.querySelectorAll('.nav-mobile-link').forEach(link => {
   });
 });
 
-// ── ACTIVE NAV LINK ──────────────────────────
+// ── ACTIVE NAV LINK & MAGNETIC PILL ──────────────
 const sections = document.querySelectorAll('section[id]');
-const navLinks  = document.querySelectorAll('.nav-link');
-const navPill   = document.getElementById('navPill');
+const navLinks = document.querySelectorAll('.nav-link');
+const navPill  = document.getElementById('navPill');
+const navLinksContainer = document.querySelector('.nav-links');
+let isPillInitialized = false;
 
-function movePillTo(link) {
+function movePillTo(link, animate = true) {
   if (!link || !navPill) return;
+
+  if (!isPillInitialized || animate === false) {
+    navPill.style.transition = 'none';
+    navPill.style.left = link.offsetLeft + 'px';
+    navPill.style.width = link.offsetWidth + 'px';
+    navPill.style.opacity = '1';
+    void navPill.offsetWidth; // Force reflow
+    navPill.style.transition = '';
+    isPillInitialized = true;
+    return;
+  }
+
   navPill.style.left   = link.offsetLeft + 'px';
   navPill.style.width  = link.offsetWidth + 'px';
   navPill.style.opacity = '1';
+}
+
+// Hover gliding logic
+navLinks.forEach(link => {
+  link.addEventListener('mouseenter', () => {
+    movePillTo(link, true);
+  });
+});
+
+if (navLinksContainer) {
+  navLinksContainer.addEventListener('mouseleave', () => {
+    const currentActive = document.querySelector('.nav-link.active');
+    if (currentActive) {
+      movePillTo(currentActive, true);
+    } else if (navPill) {
+      navPill.style.opacity = '0';
+    }
+  });
 }
 
 const navLinksMap = {};
@@ -79,19 +111,26 @@ navLinks.forEach(link => {
   }
 });
 
-// Use a thin horizontal detection band near the middle of the viewport instead
-// of an area threshold — a percentage threshold can never be reached by sections
-// that are taller than the viewport (e.g. Projects), leaving them un-highlighted.
 const observer = new IntersectionObserver((entries) => {
+  if (window.scrollY < 200) {
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (navPill && (!navLinksContainer || !navLinksContainer.matches(':hover'))) {
+      navPill.style.opacity = '0';
+    }
+    return;
+  }
+
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const active = navLinksMap[entry.target.id];
       navLinks.forEach(l => l.classList.remove('active'));
       if (active) {
         active.classList.add('active');
-        movePillTo(active);
-      } else if (navPill) {
-        // No matching nav link (e.g. hero/home section) — hide the pill
+        const isHovered = navLinksContainer && navLinksContainer.matches(':hover');
+        if (!isHovered) {
+          movePillTo(active, true);
+        }
+      } else if (navPill && (!navLinksContainer || !navLinksContainer.matches(':hover'))) {
         navPill.style.opacity = '0';
       }
     }
@@ -100,9 +139,47 @@ const observer = new IntersectionObserver((entries) => {
 
 sections.forEach(s => observer.observe(s));
 
+// Clear active link and hide pill when in Hero section (top of page)
+window.addEventListener('scroll', () => {
+  if (window.scrollY < 200) {
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (navPill && (!navLinksContainer || !navLinksContainer.matches(':hover'))) {
+      navPill.style.opacity = '0';
+    }
+  }
+}, { passive: true });
+
+// Initial positioning without animation on DOMContentLoaded & load
+function initPillPosition() {
+  if (window.scrollY < 200) {
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (navPill) navPill.style.opacity = '0';
+    return;
+  }
+  const current = document.querySelector('.nav-link.active');
+  if (current) {
+    movePillTo(current, false);
+  } else if (navPill) {
+    navPill.style.opacity = '0';
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPillPosition);
+} else {
+  initPillPosition();
+}
+window.addEventListener('load', initPillPosition);
+
 // Keep pill aligned on resize
-  window.addEventListener('resize', () => {
-    const current = document.querySelector('.nav-link.active');
-    if (current) movePillTo(current);
-  });
+window.addEventListener('resize', () => {
+  if (window.scrollY < 200) {
+    if (navPill && (!navLinksContainer || !navLinksContainer.matches(':hover'))) {
+      navPill.style.opacity = '0';
+    }
+    return;
+  }
+  const current = document.querySelector('.nav-link.active') || document.querySelector('.nav-link:hover');
+  if (current) movePillTo(current, false);
+});
 

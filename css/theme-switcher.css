@@ -2,13 +2,7 @@
    FLOATING THEME SWITCHER WIDGET
 ══════════════════════════════════════════════════════════════ */
 .theme-switcher-widget {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  z-index: 99999;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  display: none !important;
 }
 
 .theme-trigger-btn {

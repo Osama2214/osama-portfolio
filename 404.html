@@ -31,8 +31,8 @@
   <link rel="stylesheet" href="css/os-apps.css?v=20260803" />
   <link rel="stylesheet" href="css/os-games.css?v=20260803" />
   <link rel="stylesheet" href="css/command-palette.css?v=20260803" />
-  <link rel="stylesheet" href="css/theme-switcher.css?v=20260827" />
-  <script src="js/theme-switcher.js?v=20260827"></script>
+  <link rel="stylesheet" href="css/theme-switcher.css?v=20260827d" />
+  <script src="js/theme-switcher.js?v=20260827g"></script>
 
   <style>
     /* ── 404-PAGE-ONLY STYLES ──
@@ -61,19 +61,21 @@
       display: inline-flex;
       align-items: center;
       gap: 2px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 15px;
-      font-weight: 600;
+      font-family: var(--font-heading);
+      font-size: 24px;
+      font-weight: 800;
       color: var(--text);
       text-decoration: none;
-      margin-bottom: 56px;
-      opacity: 0.8;
-      transition: opacity 0.2s;
+      margin-bottom: 40px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
     }
 
-    .error-logo:hover { opacity: 1; }
+    .error-logo:hover {
+      transform: scale(1.06);
+      opacity: 1;
+    }
 
-    .error-logo .logo-bracket { color: var(--p-light); }
+    .error-logo .logo-bracket { color: var(--p-light); font-family: var(--font-mono); }
 
     .error-code {
       font-size: clamp(96px, 22vw, 168px);
@@ -286,7 +288,7 @@
                 if (dist < CONNECT_DIST) {
                   const alpha = (1 - dist / CONNECT_DIST) * 0.15;
                   ctx.beginPath();
-                  ctx.strokeStyle = `rgba(124, 58, 237, ${alpha})`;
+                  ctx.strokeStyle = `rgba(229, 193, 88, ${alpha * 1.5})`;
                   ctx.lineWidth = 0.5;
                   ctx.moveTo(p.x, p.y);
                   ctx.lineTo(q.x, q.y);
@@ -305,7 +307,7 @@
 
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(167, 139, 250, ${p.a * 0.6})`;
+          ctx.fillStyle = `rgba(243, 229, 171, ${p.a * 0.7})`;
           ctx.fill();
         });
 

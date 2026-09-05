@@ -52,26 +52,63 @@ Live Deployment: **[osama-portfolio-six.vercel.app](https://osama-portfolio-six.
 ├── Osama_Ahmed_CV.pdf       # Downloadable PDF resume.
 ├── favicon.svg / og-image.png
 ├── robots.txt / sitemap.xml
-└── vercel.json               # Vercel deployment configuration (routing, security headers).
+├── server.js                # Express local & production server (clean URLs, /api/* handlers).
+├── package.json             # NPM dependencies, scripts, and security overrides.
+├── Dockerfile               # Production-ready Node.js container image.
+├── docker-compose.yml       # Docker Compose orchestration.
+├── .env.example             # Template for optional environment variables.
+└── vercel.json              # Vercel deployment configuration (routing, security headers).
 ```
 
 ---
 
-## 💻 Local Setup & Installation
+## 💻 Local Setup & Development
 
-To run this project locally, clone the repository and open `index.html` in your web browser, or run a simple local development server:
+### 1. Requirements
+* **Node.js**: v18+ (tested on v24)
+* **Docker** (optional, for containerized deployment)
 
-### Option A: VS Code Live Server Extension
-Open the directory in VS Code, right-click `index.html`, and select **Open with Live Server**.
+### 2. Quickstart (Development Mode)
 
-### Option B: Python Local Server
-Run the following command in your terminal from the project root:
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **(Optional) Configure environment variables:**
+   ```bash
+   cp .env.example .env
+   ```
+   Add your GitHub Token or Upstash Redis credentials if you want live cached reactions and higher GitHub API rate limits.
+
+3. **Start the development server with live watch mode:**
+   ```bash
+   npm run dev
+   ```
+   Visit **[http://localhost:3000](http://localhost:3000)** in your browser. The dev server serves all static files, clean URLs, and executes `/api/github` and `/api/reactions` with full local support.
+
+---
+
+## 🐳 Docker Setup
+
+Run the entire portfolio inside an isolated, lightweight Docker container:
+
 ```bash
-python -m http.server 8000
-```
-Then navigate to `http://localhost:8000` in your browser.
+# Using Docker Compose (Recommended)
+docker compose up -d
 
-> Note: the static site works fully without any backend configuration. Project reactions and live GitHub stats are backed by Vercel serverless functions and Upstash Redis — without them configured, those features degrade gracefully. Run `vercel dev` to exercise the `api/` functions locally.
+# Or using NPM scripts
+npm run docker:up
+```
+
+Access the portfolio at **[http://localhost:3000](http://localhost:3000)**.
+
+To stop the container:
+```bash
+docker compose down
+# Or
+npm run docker:down
+```
 
 ---
 

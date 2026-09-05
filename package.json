@@ -1,0 +1,32 @@
+{
+  "name": "osama-portfolio",
+  "version": "1.0.0",
+  "description": "Osama Ahmed Abdelaziz — Full Stack Developer Portfolio Website",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "docker:build": "docker build -t osama-portfolio .",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  },
+  "keywords": [
+    "portfolio",
+    "developer",
+    "full-stack",
+    "dotnet",
+    "laravel"
+  ],
+  "author": "Osama Ahmed",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.22.1"
+  },
+  "overrides": {
+    "body-parser": "^1.20.6",
+    "qs": "^6.16.0"
+  }
+}

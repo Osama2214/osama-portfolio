@@ -9,6 +9,16 @@ Thumbs.db
 # Vercel local build output / cache
 .vercel/
 
-# Node (in case any tooling gets added later — npm/live-server/etc.)
+# Node
 node_modules/
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build output & Docker
+.vercel/
